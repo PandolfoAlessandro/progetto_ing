@@ -1,3 +1,6 @@
+<%@page import="java.math.BigDecimal"%>
+<%@page import="it.elbuild.jcoord.resolver.GeoCodeResolver"%>
+<%@page import="it.elbuild.jcoord.LatLng"%>
 <html>
 <body>
 <%@ page language="java" import ="java.sql.*" %>
@@ -35,11 +38,34 @@
     pstmt.clearParameters();
  	// TODO: chiaedere allo Scardo di convertire indirizzo in coordinate geografiche
  	
- 	// CONVERSIONE INDIRIZZO IN COORDINATE GEOGRAFICHE
+    LatLng coord=null;
+    BigDecimal lat=null;
+    BigDecimal lon=null;
+    int count=0;
+    do{
+        try{
+            count++;
+            coord= new LatLng();
+            coord=GeoCodeResolver.findCoordForAddress(
+                    request.getParameter("userVia")+" "+
+                    request.getParameter("userNumCiv")+" "+
+                    request.getParameter("userCAP")+" "+
+                    request.getParameter("userCity")+" "+
+                    request.getParameter("userProv")+" "+
+                    request.getParameter("userState"));
+
+            lat = coord.getLat();
+            lon = coord.getLng();
+					
+					
+        }catch(NullPointerException e){
+            count++;
+        }
+    }while(!(coord instanceof LatLng) || count<=10);
  	
  	
     // imposto i parametri della query
-    pstmt.setString(1, coordinate_geografiche );
+    pstmt.setString(1, lat+" "+lon );
     pstmt.setString(2, request.getParameter("userVia") );
     pstmt.setString(3, request.getParameter("userNumCiv") );
     pstmt.setString(4, request.getParameter("userCAP") );
