@@ -1,17 +1,17 @@
+<%@ page language="java" import="javax.swing.JOptionPane"%>
+<%@ page language="java" import ="java.sql.*" %>
+<%@ page language="java" import ="it.database.*" %>
+<%@ page errorPage="errorLogin.jsp" %>
 <html>
 <body>
-<%@ page language="java" import ="java.sql.*" %>
-<%@ page language="java" import ="java.it.database.*" %>
-<%@ page errorPage="errorLogin.jsp" %>
+
 <%
     String userEmail = request.getParameter("userEmail");    
     String userPwd = request.getParameter("userPwd");
 	String loginUser= "SELECT nome,cognome FROM BookUser WHERE email = '"+userEmail+"' AND password = '"+userPwd+"'";
 	String loginAdmin = "SELECT 1 FROM Admin WHERE email = '"+userEmail+"' AND password = '"+userPwd+"'";
 
-
-    Connessione connect = new Connessione();
-    Connection con = connect.connect();
+    Connection con = Connessione.connect();
 	
     // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
     Statement stmt = con.createStatement();
