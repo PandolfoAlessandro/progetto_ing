@@ -1,10 +1,10 @@
+<%@page import="it.database.Connessione"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="it.elbuild.jcoord.resolver.GeoCodeResolver"%>
 <%@page import="it.elbuild.jcoord.LatLng"%>
 <html>
 <body>
 <%@ page language="java" import ="java.sql.*" %>
-<%@ page language="java" import ="java.it.database.*" %>
 <%@ page errorPage="errorRegistration.jsp" %>
 <%
     
@@ -12,9 +12,7 @@
 	
 	String insertNewAddress="INSERT INTO Indirizzo VALUES (?,?,?,?,?,?,?)";
 
-
-    Connessione connect = new Connessione();
-    Connection con = connect.connect();
+    Connection con = Connessione.connect();
 	
     // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
     PreparedStatement pstmt = con.prepareStatement(insertNewUser);
