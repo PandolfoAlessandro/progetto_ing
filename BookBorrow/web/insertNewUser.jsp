@@ -8,9 +8,9 @@
 <%@ page errorPage="errorRegistration.jsp" %>
 <%
     
-	String insertNewUser= "INSERT INTO Book_User VALUES (?,?,?,?,?,?,?,0)";
+	String insertNewUser= "INSERT INTO Book_User VALUES ('?','?','?','?','?','?','?',0)";
 	
-	String insertNewAddress="INSERT INTO Indirizzo VALUES (?,?,?,?,?,?,?)";
+	String insertNewAddress="INSERT INTO Indirizzo VALUES ('?','?','?','?','?','?','?')";
 
     Connection con = Connessione.connect();
 	
