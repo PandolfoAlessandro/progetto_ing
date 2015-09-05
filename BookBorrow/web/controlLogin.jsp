@@ -11,7 +11,7 @@
 	String loginUser= "SELECT nome, cognome FROM Book_User WHERE email = '"+userEmail+"' AND password = '"+userPwd+"'";
 	String loginAdmin = "SELECT 1 FROM Admin WHERE email = '"+userEmail+"' AND password = '"+userPwd+"'";
 
-    Connection con = Connessione.connect();
+    Connection con = new Connessione().getConnection();
     
     // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
     Statement stmt = con.createStatement();
