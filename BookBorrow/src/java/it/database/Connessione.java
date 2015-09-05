@@ -1,7 +1,6 @@
 package it.database;
 
 import java.sql.*;
-import javax.swing.JOptionPane;
 
 public class Connessione {
 
@@ -10,16 +9,17 @@ public class Connessione {
     private static final String user = "userlab41";
     private static final String psw = "quarantaunoUd";
 
-    public static Connection connect() {
+    public Connessione() throws ClassNotFoundException{
+        Class.forName(DRIVER);
+    }
+    public Connection getConnection() {
         Connection con = null;
 
         try {
-            Class.forName(DRIVER);
+            
             con = DriverManager.getConnection(url, user, psw);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
 
         return con;
