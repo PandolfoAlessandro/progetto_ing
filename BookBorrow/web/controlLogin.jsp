@@ -6,7 +6,7 @@
 <body>
 
 <%
-    String userEmail = request.getParameter("userEmail");    
+    String userEmail = request.getParameter("userEmail");  
     String userPwd = request.getParameter("userPwd");
 	String loginUser= "SELECT nome, cognome FROM Book_User WHERE email = '"+userEmail+"' AND password = '"+userPwd+"'";
 	String loginAdmin = "SELECT 1 FROM Admin WHERE email = '"+userEmail+"' AND password = '"+userPwd+"'";

@@ -17,7 +17,7 @@
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
             PreparedStatement pstmt = con.prepareStatement(insertNewUser);
             pstmt.clearParameters();
-            
+
             // imposto i parametri della query
             pstmt.setString(1, request.getParameter("userEmail"));
             JOptionPane.showMessageDialog(null, "bio parco 1");
@@ -28,13 +28,13 @@
             pstmt.setString(5, request.getParameter("sesso"));
             pstmt.setString(6, request.getParameter("userBirthDate"));
             pstmt.setString(7, request.getParameter("userProfilePhoto"));
-            
+
             pstmt.executeUpdate();
 
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
             pstmt = con.prepareStatement(insertNewAddress);
             pstmt.clearParameters();
-                // TODO: chiaedere allo Scardo di convertire indirizzo in coordinate geografiche
+            // TODO: chiaedere allo Scardo di convertire indirizzo in coordinate geografiche
             JOptionPane.showMessageDialog(null, "bio parco 3");
             LatLng coord = null;
             BigDecimal lat = null;
