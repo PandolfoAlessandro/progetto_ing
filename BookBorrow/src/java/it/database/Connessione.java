@@ -15,9 +15,7 @@ public class Connessione {
 
         try {
             Class.forName(DRIVER);
-            JOptionPane.showMessageDialog(null, "ciao");
             con = DriverManager.getConnection(url, user, psw);
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {

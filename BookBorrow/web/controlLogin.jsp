@@ -8,18 +8,20 @@
 <%
     String userEmail = request.getParameter("userEmail");    
     String userPwd = request.getParameter("userPwd");
-	String loginUser= "SELECT nome,cognome FROM BookUser WHERE email = '"+userEmail+"' AND password = '"+userPwd+"'";
+	String loginUser= "SELECT nome, cognome FROM Book_User WHERE email = '"+userEmail+"' AND password = '"+userPwd+"'";
 	String loginAdmin = "SELECT 1 FROM Admin WHERE email = '"+userEmail+"' AND password = '"+userPwd+"'";
 
     Connection con = Connessione.connect();
-	
+    
     // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
     Statement stmt = con.createStatement();
     
     ResultSet rs;
     // Verifico che le credenziali inserite siano di un utente "normale"
     rs = stmt.executeQuery(loginUser);
+    
     if (rs.next()) {
+        session.setAttribute("loginFailed", false);
         session.setAttribute("userEmail", userEmail);
         session.setAttribute("userName", rs.getString(1));
         session.setAttribute("userSurname", rs.getString(2));
@@ -28,6 +30,7 @@
     } else{
     	rs = stmt.executeQuery(loginAdmin);
     	if(rs.next()){
+                session.setAttribute("loginFailed", false);
     		session.setAttribute("userEmail", userEmail);
     		session.setAttribute("isAdmin", true);
     		response.sendRedirect("admin.jps"); // home page dell'amministratore di sistema
