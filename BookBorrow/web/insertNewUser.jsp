@@ -11,9 +11,10 @@
         <%@ page errorPage="errorRegistration.jsp" %>
         <%
 
-            String insertNewUser = "INSERT INTO book_user(email,password,nome,cognome,sesso,data_nascita,foto_profilo,tipologia) "
-                                 + "VALUES (?,?,?,?,?,?,?,0)";
+            String insertNewUser = "INSERT INTO book_user VALUES (?,?,?,?,?,?,?,0)";
             String insertNewAddress = "INSERT INTO indirizzo VALUES (?,?,?,?,?,?,?)";
+            
+            String insertNewResidence = "INSERT INTO residenza VALUES(?,?) ";
 
             Connection con = new Connessione().getConnection();
             PreparedStatement pstmt=null;
@@ -35,9 +36,8 @@
             pstmt.setDate(6, sql);
             pstmt.setString(7, request.getParameter("userProfilePhoto"));
 
-            JOptionPane.showMessageDialog(null, "bio parco 1");
             
-            int test = pstmt.executeUpdate();   
+            pstmt.executeUpdate();   
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
             pstmt = con.prepareStatement(insertNewAddress);
             pstmt.clearParameters();
@@ -52,7 +52,8 @@
                     + request.getParameter("userState");
             
             // imposto i parametri della query
-            pstmt.setString(1, Geolocalizzazione.getCoordinate(indirizzo));
+            String coordinate_geografiche = Geolocalizzazione.getCoordinate(indirizzo);
+            pstmt.setString(1, coordinate_geografiche);
             pstmt.setString(2, request.getParameter("userVia"));
             pstmt.setString(3, request.getParameter("userNumCiv"));
             pstmt.setString(4, request.getParameter("userCAP"));
@@ -60,6 +61,14 @@
             pstmt.setString(6, request.getParameter("userProv"));
             pstmt.setString(7, request.getParameter("userState"));
 
+            pstmt.executeUpdate();
+            
+            pstmt = con.prepareStatement(insertNewResidence);
+            pstmt.clearParameters();
+            
+            pstmt.setString(1, request.getParameter("userEmail"));
+            pstmt.setString(2,coordinate_geografiche);
+            
             pstmt.executeUpdate();
             
             con.close();
