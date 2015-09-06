@@ -10,8 +10,9 @@
         <%@ page errorPage="errorRegistration.jsp" %>
         <%
 
-            String insertNewUser = "INSERT INTO Book_User VALUES (?,?,?,?,?,?,?,0)";
-            String insertNewAddress = "INSERT INTO Indirizzo VALUES (?,?,?,?,?,?,?)";
+            String insertNewUser = "INSERT INTO book_user(email,password,nome,cognome,sesso,data_nascita,foto_profilo,tipologia) "
+                                 + "VALUES (?,?,?,?,?,?,?,0)";
+            String insertNewAddress = "INSERT INTO indirizzo VALUES (?,?,?,?,?,?,?)";
 
             Connection con = new Connessione().getConnection();
             PreparedStatement pstmt=null;
@@ -26,12 +27,13 @@
             pstmt.setString(3, request.getParameter("userName"));
             pstmt.setString(4, request.getParameter("userSurname"));
             pstmt.setString(5, request.getParameter("sesso"));
-            pstmt.setString(6, request.getParameter("userBirthDate"));
+            // CONVERSIONE STRINGA IN DATA
+            pstmt.setDate(6, (Date)request.getParameter("userBirthDate"));
             pstmt.setString(7, request.getParameter("userProfilePhoto"));
 
             JOptionPane.showMessageDialog(null, "bio parco 1");
-
-            pstmt.executeUpdate();
+            
+            int test = pstmt.executeUpdate();   
             JOptionPane.showMessageDialog(null, " bio parco 2");
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
             
