@@ -33,7 +33,7 @@
                 session.setAttribute("loginFailed", false);
     		session.setAttribute("userEmail", userEmail);
     		session.setAttribute("isAdmin", true);
-    		response.sendRedirect("admin.jps"); // home page dell'amministratore di sistema
+    		response.sendRedirect("admin.jsp"); // home page dell'amministratore di sistema
     	} else{
     		session.setAttribute("loginFailed", true);
     		response.sendRedirect("index.jsp");

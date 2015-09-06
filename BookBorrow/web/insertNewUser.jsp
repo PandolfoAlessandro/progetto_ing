@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="it.database.Geolocalizzazione"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="it.database.Connessione"%>
@@ -28,22 +29,19 @@
             pstmt.setString(4, request.getParameter("userSurname"));
             pstmt.setString(5, request.getParameter("sesso"));
             // CONVERSIONE STRINGA IN DATA
-            pstmt.setDate(6, (Date)request.getParameter("userBirthDate"));
+            SimpleDateFormat formato_data = new SimpleDateFormat("dd/MM/yyyy");
+            java.util.Date parsed = formato_data.parse(request.getParameter("userBirthDate"));
+            java.sql.Date sql = new java.sql.Date(parsed.getTime());
+            pstmt.setDate(6, sql);
             pstmt.setString(7, request.getParameter("userProfilePhoto"));
 
             JOptionPane.showMessageDialog(null, "bio parco 1");
             
             int test = pstmt.executeUpdate();   
-            JOptionPane.showMessageDialog(null, " bio parco 2");
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            
-            
-            
-            
             pstmt = con.prepareStatement(insertNewAddress);
             pstmt.clearParameters();
-            // TODO: chiaedere allo Scardo di convertire indirizzo in coordinate geografiche
-            JOptionPane.showMessageDialog(null, "bio parco 3");
+
 
             String indirizzo = 
                     request.getParameter("userVia") + " "
