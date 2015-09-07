@@ -62,7 +62,8 @@ public class Geolocalizzazione {
         fi = Math.abs(lon_c1 - lon_c2); //calcolo angolo tra due punti
       
         out =R* (Math.acos(Math.sin(lat_c2) * Math.sin(lat_c1)+ Math.cos(lat_c2) * Math.cos(lat_c1) * Math.cos(fi)));
-
+           
+        out=((double)((int)(out*10)))/10;
         return out;
     }
 
