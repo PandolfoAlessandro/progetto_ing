@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Pagina di errore in fase di registrazione</title>
+        <title>Mostra errore</title>
     </head>
     <body>
         <%

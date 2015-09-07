@@ -8,10 +8,33 @@
     </head>
     <body>
         Benvenuto nella pagina di amministrazione di Book Borrow
-        <a href="deleteUser.jsp">Elimina utenti</a>
-        <a href="manageBooks.jsp"> Gestisci libri</a>
-        <a href="statistics.jsp"> Visualizza le statische globali di utilizzo di Book Borrow </a>
-        
-        <a href="logout.jsp"> Logout </a>
+        <div>
+            
+            //da rivedere... ricorda idea radio button
+            <form action="OperazioniAdmin" method="POST">
+                <table>
+                    <tr>					
+                        <td> 
+                            <input type="submit" value="Elimina utenti" name="EliminaUtenti" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" value="Gestisci libri" name="GesticiLibri" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Visualizza le statische globali di utilizzo di Book Borrow<input type="submit" value="qui" name="stat" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" value="Logout" name="logout" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </body>
 </html>
