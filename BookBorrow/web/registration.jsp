@@ -68,10 +68,6 @@
                             <td>Paese: </td>
                             <td><input type="text" name="userState" value="" ></td>
                         </tr>		
-                        <tr>					
-                            <td>Foto Profilo: </td>
-                            <td><input type="text" name="userProfilePhoto" value="" ></td>
-                        </tr>
                         <tr>
                             <td><input type="Submit" value="Registrati!" ></td>
                         </tr>

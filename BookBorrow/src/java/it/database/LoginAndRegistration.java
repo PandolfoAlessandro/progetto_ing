@@ -14,9 +14,8 @@ import javax.servlet.http.*;
  */
 public class LoginAndRegistration extends HttpServlet {
 
-
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * GET usato per la Registrazione
      *
      * @param request servlet request
      * @param response servlet response
@@ -26,75 +25,75 @@ public class LoginAndRegistration extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         HttpSession session = request.getSession();
-        
+
         String insertNewUser = "INSERT INTO book_user VALUES (?,?,?,?,?,?,'',0)";
         String insertNewAddress = "INSERT INTO indirizzo VALUES (?,?,?,?,?,?,?)";
 
         String insertNewResidence = "INSERT INTO residenza VALUES(?,?) ";
-        
-        try{
-        Connection con = Connessione.getConnection();
-        PreparedStatement pstmt = null;
-        // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-        pstmt = con.prepareStatement(insertNewUser);
 
-        pstmt.clearParameters();
+        try {
+            try (Connection con = Connessione.getConnection()) {
+                // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
+                PreparedStatement pstmt = con.prepareStatement(insertNewUser);
+                
+                pstmt.clearParameters();
+                
+                // imposto i parametri della query
+                pstmt.setString(1, request.getParameter("userEmail"));
+                pstmt.setString(2, request.getParameter("userPwd"));
+                pstmt.setString(3, request.getParameter("userName"));
+                pstmt.setString(4, request.getParameter("userSurname"));
+                pstmt.setString(5, request.getParameter("sesso"));
+                // CONVERSIONE STRINGA IN DATA
+                SimpleDateFormat formato_data = new SimpleDateFormat("dd/MM/yyyy");
+                java.util.Date parsed = formato_data.parse(request.getParameter("userBirthDate"));
+                java.sql.Date sql = new java.sql.Date(parsed.getTime());
+                pstmt.setDate(6, sql);
+                
+                pstmt.executeUpdate();
+                
+                // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
+                pstmt = con.prepareStatement(insertNewAddress);
+                pstmt.clearParameters();
+                
+                String indirizzo
+                        = request.getParameter("userVia") + " "
+                        + request.getParameter("userNumCiv") + " "
+                        + request.getParameter("userCAP") + " "
+                        + request.getParameter("userCity") + " "
+                        + request.getParameter("userProv") + " "
+                        + request.getParameter("userState");
+                
+                // imposto i parametri della query
+                String coordinate_geografiche = Geolocalizzazione.getCoordinate(indirizzo);
+                if (!cordinateEsistenti(coordinate_geografiche)) {
+                    pstmt.setString(1, coordinate_geografiche);
+                    pstmt.setString(2, request.getParameter("userVia"));
+                    pstmt.setString(3, request.getParameter("userNumCiv"));
+                    pstmt.setString(4, request.getParameter("userCAP"));
+                    pstmt.setString(5, request.getParameter("userCity"));
+                    pstmt.setString(6, request.getParameter("userProv"));
+                    pstmt.setString(7, request.getParameter("userState"));
+                    
+                    pstmt.executeUpdate();
+                }
+                pstmt = con.prepareStatement(insertNewResidence);
+                pstmt.clearParameters();
+                
+                pstmt.setString(1, request.getParameter("userEmail"));
+                pstmt.setString(2, coordinate_geografiche);
+                
+                pstmt.executeUpdate();
+            }
 
-        // imposto i parametri della query
-        pstmt.setString(1, request.getParameter("userEmail"));
-        pstmt.setString(2, request.getParameter("userPwd"));
-        pstmt.setString(3, request.getParameter("userName"));
-        pstmt.setString(4, request.getParameter("userSurname"));
-        pstmt.setString(5, request.getParameter("sesso"));
-        // CONVERSIONE STRINGA IN DATA
-        SimpleDateFormat formato_data = new SimpleDateFormat("dd/MM/yyyy");
-        java.util.Date parsed = formato_data.parse(request.getParameter("userBirthDate"));
-        java.sql.Date sql = new java.sql.Date(parsed.getTime());
-        pstmt.setDate(6, sql);
-
-        pstmt.executeUpdate();
-        // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-        pstmt = con.prepareStatement(insertNewAddress);
-        pstmt.clearParameters();
-
-        String indirizzo
-                = request.getParameter("userVia") + " "
-                + request.getParameter("userNumCiv") + " "
-                + request.getParameter("userCAP") + " "
-                + request.getParameter("userCity") + " "
-                + request.getParameter("userProv") + " "
-                + request.getParameter("userState");
-
-        // imposto i parametri della query
-        String coordinate_geografiche = Geolocalizzazione.getCoordinate(indirizzo);
-        pstmt.setString(1, coordinate_geografiche);
-        pstmt.setString(2, request.getParameter("userVia"));
-        pstmt.setString(3, request.getParameter("userNumCiv"));
-        pstmt.setString(4, request.getParameter("userCAP"));
-        pstmt.setString(5, request.getParameter("userCity"));
-        pstmt.setString(6, request.getParameter("userProv"));
-        pstmt.setString(7, request.getParameter("userState"));
-
-        pstmt.executeUpdate();
-
-        pstmt = con.prepareStatement(insertNewResidence);
-        pstmt.clearParameters();
-
-        pstmt.setString(1, request.getParameter("userEmail"));
-        pstmt.setString(2, coordinate_geografiche);
-
-        pstmt.executeUpdate();
-
-        con.close();
-
-        session.setAttribute("userEmail", request.getParameter("userEmail"));
-        session.setAttribute("userName", request.getParameter("userName"));
-        session.setAttribute("userSurname", request.getParameter("userSurname"));
-        session.setAttribute("isAdmin", false);
-        response.sendRedirect("main.jsp"); // compleata l'iscrizione, l'utente viene reindirizzato alla sua home page
-        }catch(ClassNotFoundException | SQLException | ParseException | IOException e){
+            session.setAttribute("userEmail", request.getParameter("userEmail"));
+            session.setAttribute("userName", request.getParameter("userName"));
+            session.setAttribute("userSurname", request.getParameter("userSurname"));
+            session.setAttribute("isAdmin", false);
+            response.sendRedirect("completeRegistration.jsp"); // completata l'iscrizione, l'utente viene reindirizzato alla sua home page
+        } catch (ClassNotFoundException | SQLException | ParseException | IOException e) {
             response.sendRedirect("errorPage.jsf");
         }
     }
@@ -155,5 +154,29 @@ public class LoginAndRegistration extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private boolean cordinateEsistenti(String coordinate_geografiche) {
+        String listaIndirizzi = "SELECT coordinate_geografiche FROM Indirizzo";
+        try{
+            Connection con = Connessione.getConnection();
+
+            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
+            Statement stmt = con.createStatement();
+
+            ResultSet rs;
+            // Verifico che le credenziali inserite siano di un utente "normale"
+            rs = stmt.executeQuery(listaIndirizzi);
+            
+            while(rs.next()){
+                if(rs.getString(1).equals(coordinate_geografiche)){
+                    return true;
+                }
+            }
+            
+        }catch(ClassNotFoundException | SQLException e){
+            e.printStackTrace();
+        }   
+        return false;
+    }
 
 }
