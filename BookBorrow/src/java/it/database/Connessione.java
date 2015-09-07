@@ -9,11 +9,8 @@ public class Connessione {
     private static final String user = "userlab41";
     private static final String psw = "quarantaunoUd";
 
-    public Connessione() throws ClassNotFoundException {
+    public static Connection getConnection() throws ClassNotFoundException {
         Class.forName(DRIVER);
-    }
-
-    public Connection getConnection() {
         Connection con = null;
 
         try {
