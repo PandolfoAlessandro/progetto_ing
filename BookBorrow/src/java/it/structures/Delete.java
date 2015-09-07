@@ -1,4 +1,4 @@
-package it.database;
+package it.structures;
 
 
 public interface Delete {

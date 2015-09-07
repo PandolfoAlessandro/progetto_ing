@@ -5,6 +5,8 @@
  */
 package it.database;
 
+import it.structures.Delete;
+
 /**
  *
  * @author Leo

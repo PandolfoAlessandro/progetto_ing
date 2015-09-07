@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.database;
+package it.functions;
 
 import it.elbuild.jcoord.LatLng;
 import it.elbuild.jcoord.resolver.GeoCodeResolver;

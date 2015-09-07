@@ -9,14 +9,15 @@ public class Connessione {
     private static final String user = "userlab41";
     private static final String psw = "quarantaunoUd";
 
-    public Connessione() throws ClassNotFoundException{
+    public Connessione() throws ClassNotFoundException {
         Class.forName(DRIVER);
     }
+
     public Connection getConnection() {
         Connection con = null;
 
         try {
-            
+
             con = DriverManager.getConnection(url, user, psw);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -25,4 +26,5 @@ public class Connessione {
         return con;
 
     }
+    
 }
