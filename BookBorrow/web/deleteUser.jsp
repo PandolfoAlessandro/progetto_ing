@@ -9,7 +9,7 @@
     <body>
         <%
             String selectUsers = "SELECT DISTINCT email, nome, cognome, citta, provincia "
-                    + "FROM book_user join residenza ON email=utente JOIN indirizzo ON coordinate_geografiche = coordinate_geografiche";
+                    + "FROM book_user join residenza ON (email=utente) JOIN indirizzo ON (coordinate_geografiche = coordinate_geografiche)";
 
             Connection con = new Connessione().getConnection();
 
