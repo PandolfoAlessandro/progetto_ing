@@ -81,7 +81,7 @@ public class ImageUpload extends HttpServlet {
         try {
             // connects to the database
            
-            conn = new Connessione().getConnection();
+            conn = Connessione.getConnection();
  
             // constructs SQL statement
             String sql = "UPDATE book_user SET foto_profilo=? WHERE email= '"+email+"'";

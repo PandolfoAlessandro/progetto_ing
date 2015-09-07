@@ -7,7 +7,7 @@
         <title>Registration</title>
     </head>
     <body>
-        <form method="POST" action="insertNewUser.jsp">
+        <form method="GET" action="LoginAndRegistration">
             <center>
                 <table border="1" width="30%" cellpadding="5">
                     <thead>

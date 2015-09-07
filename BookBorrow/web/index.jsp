@@ -7,8 +7,15 @@
         <title>Benvenuto su BookBorrow!</title>
         <h:outputStylesheet library="css" name="style.css"/>
     </head>
-<body>
-    <%
+
+    <%  if (session.getAttribute("userEmail") != null) {
+            if((boolean)session.getAttribute("isAdmin")){
+                response.sendRedirect("admin.jsp");
+            }else{
+                response.sendRedirect("main.jsp");
+            }
+        }
+        
         if (session.getAttribute("loginFailed") == null) {
             session.setAttribute("loginFailed", false);
         }
@@ -33,9 +40,8 @@
     </div>
 
     <div id="sidebarLeft"></div>
-
     <div id="content">
-        <form action="controlLogin.jsp" method="POST">
+        <form action="LoginAndRegistration" method="POST">
             <% if ((Boolean) session.getAttribute("loginFailed")) { %>
                 <p style="color: red"><br>E-mail o password inseriti errati o inesistenti<br></p>
             <% } %>
@@ -52,4 +58,3 @@
         <a href="registration.jsp">Se non sei iscritto, registrati!</a>
     </div>
 
-</body>
