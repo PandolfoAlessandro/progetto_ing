@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import javax.swing.JOptionPane;
  
 @WebServlet("/uploadServlet")
 @MultipartConfig(maxFileSize = 16177215)    // upload file's size up to 16MB
@@ -36,10 +37,13 @@ public class ImageUpload extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response){
+        JOptionPane.showMessageDialog(null, request.getSession().getAttribute("email")+"gsdfsd");
         switch ((String)(request.getParameterNames().nextElement())) {
             case "email":
                 try {
                     doPostUser(request, response);
+                    response.sendRedirect("main.jsp");
+                    
                 } catch (ServletException | IOException ex) {
                     Logger.getLogger(ImageUpload.class.getName()).log(Level.SEVERE, null, ex);
                 }   
@@ -94,7 +98,7 @@ public class ImageUpload extends HttpServlet {
              
             if (inputStream != null) {
                 // fetches input stream of the upload file for the blob column
-                statement.setBlob(1, inputStream);
+                statement.setBinaryStream(1, inputStream);
             }
  
             // sends the statement to the database server
@@ -113,12 +117,12 @@ public class ImageUpload extends HttpServlet {
                 }
             }
             // sets the message in request scope
-            request.setAttribute("Message", message);
+            //request.setAttribute("Message", message);
              
             // forwards to the message page
-            getServletContext().getRequestDispatcher("/Message.jsp").forward(request, response);
+            //getServletContext().getRequestDispatcher("/Message.jsp").forward(request, response);
             
-            response.sendRedirect("main.jsp");
+            
         }
     }
     
@@ -147,7 +151,7 @@ public class ImageUpload extends HttpServlet {
         try {
             // connects to the database
            
-            conn = new Connessione().getConnection();
+            conn = Connessione.getConnection();
  
             // constructs SQL statement
             String sql = "UPDATE libro SET copertina=? WHERE id= '"+id+"'";
