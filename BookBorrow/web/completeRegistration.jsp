@@ -13,7 +13,7 @@
     </head>
     <body>
         <p>Completa la registrazione inserendo un immagine di profilo:</p>
-        <form method="POST" action="ImageUpload">
+        <form method="POST" action="ImageUpload" enctype="multipart/form-data">
             <table>
                 <tr>					
                     <td>Foto Profilo: </td>
