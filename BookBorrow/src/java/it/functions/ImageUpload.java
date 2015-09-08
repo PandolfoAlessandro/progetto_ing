@@ -37,9 +37,9 @@ public class ImageUpload extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response){
-        JOptionPane.showMessageDialog(null, request.getSession().getAttribute("email")+"gsdfsd");
-        switch ((String)(request.getParameterNames().nextElement())) {
-            case "email":
+        
+        //switch ((String)(request.getParameterNames().nextElement())) {
+            //case "userEmail":
                 try {
                     doPostUser(request, response);
                     response.sendRedirect("main.jsp");
@@ -47,7 +47,8 @@ public class ImageUpload extends HttpServlet {
                 } catch (ServletException | IOException ex) {
                     Logger.getLogger(ImageUpload.class.getName()).log(Level.SEVERE, null, ex);
                 }   
-                break;
+               // break;
+                /*
             case "id":
                 try {
                     doPostBook(request, response);
@@ -56,19 +57,22 @@ public class ImageUpload extends HttpServlet {
                 }   
                 break;
         }
-        
+        */
         
     }
     
     private void doPostUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // gets values of text fields
-        String email = request.getParameter("email");
+        String email =(String) request.getSession().getAttribute("userEmail");
 
          
         InputStream inputStream = null; // input stream of the upload file
          
         // obtains the upload file part in this multipart request
         Part filePart = request.getPart("foto_profilo");
+        
+        JOptionPane.showMessageDialog(null, "dio latte");
+        
         if (filePart != null) {
             // prints out some information for debugging
             System.out.println(filePart.getName());
