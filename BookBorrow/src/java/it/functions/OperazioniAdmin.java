@@ -7,10 +7,12 @@ package it.functions;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -35,8 +37,11 @@ public class OperazioniAdmin extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OperazioniAdmin</title>");            
+            out.println("<title>Servlet OperazioniAdmin</title>");
             out.println("</head>");
+
+            out.print(request.getSession().getAttribute("operazione"));
+
             out.println("<body>");
             out.println("<h1>Servlet OperazioniAdmin at " + request.getContextPath() + "</h1>");
             out.println("</body>");
@@ -44,7 +49,6 @@ public class OperazioniAdmin extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -57,6 +61,14 @@ public class OperazioniAdmin extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        switch ((String) request.getSession().getAttribute("Operazione")) {
+            case "elimina": eliminazione(request,response);
+                break;
+            case "gestisci": gestione(request,response);
+                break;
+            case "statistiche": statistiche(request,response);
+                break;
+        }
     }
 
     /**
@@ -71,6 +83,14 @@ public class OperazioniAdmin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        switch ((String) request.getSession().getAttribute("Operazione")) {
+            case "elimina": eliminazione(request,response);
+                break;
+            case "gestisci": gestione(request,response);
+                break;
+            case "statistiche": statistiche(request,response);
+                break;
+        }
     }
 
     /**
@@ -82,5 +102,19 @@ public class OperazioniAdmin extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void gestione(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void eliminazione(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String s = (String) request.getSession().getAttribute("elimSel");
+        JOptionPane.showMessageDialog(null, s);
+        
+    }
+
+    private void statistiche(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

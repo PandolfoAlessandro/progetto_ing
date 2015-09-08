@@ -8,33 +8,32 @@
     </head>
     <body>
         Benvenuto nella pagina di amministrazione di Book Borrow
+        <% session.setAttribute("Operazione", "null"); %>
         <div>
             
-            //da rivedere... ricorda idea radio button
-            <form action="OperazioniAdmin" method="POST">
-                <table>
-                    <tr>					
-                        <td> 
-                            <input type="submit" value="Elimina utenti" name="EliminaUtenti" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="submit" value="Gestisci libri" name="GesticiLibri" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Visualizza le statische globali di utilizzo di Book Borrow<input type="submit" value="qui" name="stat" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="submit" value="Logout" name="logout" />
-                        </td>
-                    </tr>
-                </table>
-            </form>
+         <table>
+                <tr>					
+                    <td> 
+                        <a href="deleteUser.jsp" >Elimina Utenti</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="manageBookAdmin.jsp" >Gestisci Libri</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="statistiche.jsp" >Visualizza Statistiche</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="logout.jsp" >Logout</a>
+                    </td>
+                </tr>
+            </table>
+
         </div>
     </body>
 </html>
