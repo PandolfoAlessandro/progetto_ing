@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -28,7 +29,7 @@ public class LoginAndRegistration extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        String insertNewUser = "INSERT INTO book_user VALUES (?,?,?,?,?,?,'',0)";
+        String insertNewUser = "INSERT INTO book_user VALUES (?,?,?,?,?,?,null,0)";
         String insertNewAddress = "INSERT INTO indirizzo VALUES (?,?,?,?,?,?,?)";
 
         String insertNewResidence = "INSERT INTO residenza VALUES(?,?) ";

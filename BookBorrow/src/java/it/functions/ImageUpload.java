@@ -117,6 +117,8 @@ public class ImageUpload extends HttpServlet {
              
             // forwards to the message page
             getServletContext().getRequestDispatcher("/Message.jsp").forward(request, response);
+            
+            response.sendRedirect("main.jsp");
         }
     }
     
@@ -181,6 +183,7 @@ public class ImageUpload extends HttpServlet {
              
             // forwards to the message page
             getServletContext().getRequestDispatcher("/Message.jsp").forward(request, response);
+            
         }
     }
 }
