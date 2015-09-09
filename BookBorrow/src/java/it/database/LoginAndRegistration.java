@@ -95,7 +95,7 @@ public class LoginAndRegistration extends HttpServlet {
             session.setAttribute("isAdmin", false);
             response.sendRedirect("completeRegistration.jsp"); // completata l'iscrizione, l'utente viene reindirizzato alla sua home page
         } catch (ClassNotFoundException | SQLException | ParseException | IOException e) {
-            response.sendRedirect("errorPage.jsf");
+            response.sendRedirect("errorPage.jsp");
         }
     }
 
