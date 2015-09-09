@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -121,10 +122,14 @@ public class OperazioniAdmin extends HttpServlet {
     }
 
     private void eliminazione(String mail) throws ClassNotFoundException, SQLException{
-        String sql = "DELETE FROM book_user WHERE email='" + mail + "'";
+   
+        String deleteUser = "DELETE FROM book_user WHERE email='" + mail + "'";
+        String banUser = "INSERT INTO black_list VALUES('" + mail + "')";
         try (Connection con = Connessione.getConnection()) {
             Statement stmt =con.createStatement();
-            stmt.executeUpdate(sql);
+            stmt.executeUpdate(deleteUser);
+            stmt.executeUpdate(banUser);
+            con.close();
         }
     }
 
