@@ -41,7 +41,7 @@
                     <TD> <%= rs.getString(3)%></TD>
                     <TD> <%= rs.getString(4)%></TD>
                     <TD> <%= rs.getString(5)%></TD>
-                    <TD> <p>Elimina utente: <input  type="submit" name="delete" value="<%= rs.getString(1)%>"/></p></TD>
+                    <TD><button type="submit" name="delete" value="<%= rs.getString(1)%>">Elimina utente</button></TD>
                 </TR>
 
                 <% }%>
