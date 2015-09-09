@@ -19,6 +19,7 @@
             ResultSet rs;
             // Verifico che le credenziali inserite siano di un utente "normale"
             rs = stmt.executeQuery(selectUsers);
+            con.close();
         %>    
 
         <a href="admin.jsp">Indietro</a>
