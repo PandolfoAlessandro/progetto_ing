@@ -116,7 +116,8 @@ public class LoginAndRegistration extends HttpServlet {
         String userPwd = request.getParameter("userPwd");
         String loginUser = "SELECT nome, cognome FROM Book_User WHERE email = '" + userEmail + "' AND password = '" + userPwd + "'";
         String loginAdmin = "SELECT 1 FROM Admin WHERE email = '" + userEmail + "' AND password = '" + userPwd + "'";
-
+        String isBanned = "SELECT 1 FROM Blacklist WHERE email = '"+ userEmail + "'";
+        
         try {
             Connection con = Connessione.getConnection();
 
@@ -142,7 +143,12 @@ public class LoginAndRegistration extends HttpServlet {
                     session.setAttribute("isAdmin", true);
                     response.sendRedirect("admin.jsp"); // home page dell'amministratore di sistema
                 } else {
-                    session.setAttribute("loginFailed", true);
+                    rs = stmt.executeQuery(isBanned);
+                    if(rs.next()){
+                        session.setAttribute("isBanned", true);
+                    }else{
+                        session.setAttribute("loginFailed", true);
+                    }
                     response.sendRedirect("index.jsp");
                 }
             }
