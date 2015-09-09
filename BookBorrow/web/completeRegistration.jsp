@@ -17,7 +17,7 @@
             <table>
                 <tr>					
                     <td>Foto Profilo: </td>
-                    <td><input method="POST" type="file" name="foto_profilo" value="" ></td>
+                    <td><input type="file" name="foto_profilo" /></td>
                     <td><input type="Submit" value="Carica" ></td>
                 </tr>
                 <tr>
