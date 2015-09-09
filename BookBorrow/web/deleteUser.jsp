@@ -40,7 +40,7 @@
                     <TD> <%= rs.getString(3)%></TD>
                     <TD> <%= rs.getString(4)%></TD>
                     <TD> <%= rs.getString(5)%></TD>
-                    <TD> <input type="submit" name="delete" onSubmit="select(<%= rs.getString(1)%>,<%= sessCorrente %>)" value="Elimina utente"/> </td>
+                    <TD> <input type="submit" name="delete" onSubmit="select(,<%= sessCorrente %>)" value="Elimina utente:<%= rs.getString(1)%>"/> </td>
                 </TR>
                 <% }%>
             </TABLE>

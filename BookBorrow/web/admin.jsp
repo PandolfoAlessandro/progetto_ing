@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,22 +13,23 @@
          <table>
                 <tr>					
                     <td> 
-                        <a href="deleteUser.jsp" >Elimina Utenti</a>
+                        <button onclick="window.location='deleteUser.jsp'">Elimina utente</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="manageBookAdmin.jsp" >Gestisci Libri</a>
+                        <button onclick="window.location='manageBookAdmin.jsp'">Gestisci Libri</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="statistiche.jsp" >Visualizza Statistiche</a>
+                        <p>Visualizza statistiche globali<button onclick="window.location='stat.jsp'">qui</button>
+                        </p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="logout.jsp" >Logout</a>
+                        <button onclick="window.location='logout.jsp'">Logout</button>
                     </td>
                 </tr>
             </table>
