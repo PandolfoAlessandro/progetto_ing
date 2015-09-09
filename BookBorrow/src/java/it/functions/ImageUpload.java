@@ -44,11 +44,11 @@ public class ImageUpload extends HttpServlet {
                     doPostUser(request, response);
                     if(op.split("/")[1].equals("0")){
                         //aggiungi nuova copertina
-                        
                         response.sendRedirect("main.jsp");
+                        
                     }else{
                         //modifica copertina già esistente
-                        //responde.redirect("#########.jsp")
+                        //response.redirect("#########.jsp")
                     }
                     
 

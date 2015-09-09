@@ -12,6 +12,10 @@
         <servlet-name>OperazioniAdmin</servlet-name>
         <servlet-class>it.functions.OperazioniAdmin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OperazioniUser</servlet-name>
+        <servlet-class>it.functions.OperazioniUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ImageUpload</servlet-name>
         <url-pattern>/ImageUpload</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>OperazioniAdmin</servlet-name>
         <url-pattern>/OperazioniAdmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OperazioniUser</servlet-name>
+        <url-pattern>/OperazioniUser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

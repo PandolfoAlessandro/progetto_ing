@@ -9,9 +9,26 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Main Page</title>
     </head>
     <body>
-        <h1>Hello World! This is the Main page</h1>
+        <h1>Ciao <%out.print((String)session.getAttribute("userEmail"));%>! Sei nella mainpage di bookborrow!</h1> 
+        
+        <table>
+            <tr>
+                <td>
+                    <button onclick="window.location = 'manageBooks.jsp'">Modifica libro</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="window.location = 'logout.jsp'">Logout</button>
+                </td>
+            </tr>
+        </table>
+
+
+
+
     </body>
 </html>
