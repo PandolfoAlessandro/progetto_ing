@@ -36,17 +36,46 @@ public class ImageUpload extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        String op=(String)(request.getParameter("upload"));
+        
+        switch (op.split("/")[0] ){
+            case "user":
+                try {
+                    doPostUser(request, response);
+                    if(op.split("/")[1].equals("0")){
+                        //aggiungi nuova copertina
+                        
+                        response.sendRedirect("main.jsp");
+                    }else{
+                        //modifica copertina già esistente
+                        //responde.redirect("#########.jsp")
+                    }
+                    
 
-        //switch ((String)(request.getParameterNames().nextElement())) {
-        //case "userEmail":
-        try {
-            doPostUser(request, response);
-            response.sendRedirect("main.jsp");
-
-        } catch (ServletException | IOException ex) {
-            Logger.getLogger(ImageUpload.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ServletException | IOException ex) {
+                    Logger.getLogger(ImageUpload.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+                
+            case "book":
+                try{
+                    doPostBook(request, response);
+                    if(op.split("/")[1].equals("0")){
+                        //crea nuova copertina
+                        
+                        //scrivi il redirect
+                    }else{
+                        //modifica copertina gia esistente
+                        
+                        //scrivi il redirect
+                    }
+                    
+                    
+                }catch (ServletException | IOException ex) {
+                    Logger.getLogger(ImageUpload.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
         }
-        // break;
                 /*
          case "id":
          try {
@@ -128,7 +157,8 @@ public class ImageUpload extends HttpServlet {
 
     private void doPostBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // gets values of text fields
-        String id = request.getParameter("id");
+        String id = (String) request.getSession().getAttribute("id");
+
 
         InputStream inputStream = null; // input stream of the upload file
 
@@ -160,7 +190,7 @@ public class ImageUpload extends HttpServlet {
 
             if (inputStream != null) {
                 // fetches input stream of the upload file for the blob column
-                statement.setBlob(1, inputStream);
+                statement.setBinaryStream(1, inputStream, (int)filePart.getSize());
             }
 
             // sends the statement to the database server
@@ -178,11 +208,7 @@ public class ImageUpload extends HttpServlet {
                 } catch (SQLException ex) {
                 }
             }
-            // sets the message in request scope
-            request.setAttribute("Message", message);
-
-            // forwards to the message page
-            getServletContext().getRequestDispatcher("/Message.jsp").forward(request, response);
+            
 
         }
     }
