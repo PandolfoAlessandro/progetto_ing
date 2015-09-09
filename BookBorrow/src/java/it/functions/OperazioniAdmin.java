@@ -98,11 +98,21 @@ public class OperazioniAdmin extends HttpServlet {
             }
             break;
             case "gestisci": {
-                try {
-                    gestione(manageSet, response);
+                String whatToDo = manageSet.split("/")[0];
+                String id_libro = manageSet.split("/")[1];
+                switch (whatToDo) {
+                    case "elimina": {
+                        try {
+                            eliminaLibro(id_libro);
+                        } catch (ClassNotFoundException | SQLException ex) {
+                            response.sendRedirect("errorPage.jsp");
+                        }
+                    }
                     response.sendRedirect("manageBookAdmin.jsp");
-                } catch (ClassNotFoundException | SQLException ex) {
-                    response.sendRedirect("errorPage.jsp");
+                    case "gestisci":
+                        response.sendRedirect("dataBookChangeAdmin.jsp");
+                    default:
+                        break;
                 }
             }
             break;
@@ -121,21 +131,6 @@ public class OperazioniAdmin extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private void gestione(String mSet, HttpServletResponse response) throws IOException, ClassNotFoundException, SQLException {
-        String whatToDo = mSet.split("/")[0];
-        String id_libro = mSet.split("/")[1];
-
-        switch (whatToDo) {
-            case "elimina":
-                eliminaLibro(id_libro);
-            case "gestisci":
-                response.sendRedirect("dataBookChangeAdmin.jsp");
-            default:
-                break;
-        }
-        //notifica operazione all'utente!!!!!!!
-    }
 
     private void eliminazione(String mail) throws ClassNotFoundException, SQLException {
 
