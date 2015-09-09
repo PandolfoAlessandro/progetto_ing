@@ -124,7 +124,7 @@ public class OperazioniAdmin extends HttpServlet {
     private void eliminazione(String mail) throws ClassNotFoundException, SQLException{
    
         String deleteUser = "DELETE FROM book_user WHERE email='" + mail + "'";
-        String banUser = "INSERT INTO black_list VALUES('" + mail + "')";
+        String banUser = "INSERT INTO blacklist VALUES('" + mail + "')";
         try (Connection con = Connessione.getConnection()) {
             Statement stmt =con.createStatement();
             stmt.executeUpdate(deleteUser);
