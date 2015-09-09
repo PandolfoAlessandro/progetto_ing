@@ -45,7 +45,10 @@
                     <TD> <%= rs.getString(3)%> <%= rs.getString(4)%> </TD>
                     <TD> <%= rs.getString(5)%> </TD>
                     <TD> <%= rs.getString(6)%> <%= rs.getString(7)%> (<%= rs.getString(8)%>)</TD>
-                    <TD><button type="submit" name="delete" value="<%= rs.getString(1)%>">Elimina utente</button></TD>
+                    <TD>
+                    <button type="submit" name="manage" value="elimina/<%= rs.getString(1)%>">Elimina Libro</button>
+                    <button type="submit" name="manage" value="gestisci/<%= rs.getString(1)%>">Modifica dati libro</button>
+                    </TD>
                 </TR>
 
                 <% }%>

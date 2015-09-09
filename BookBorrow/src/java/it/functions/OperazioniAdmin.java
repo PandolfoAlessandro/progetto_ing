@@ -11,10 +11,13 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.catalina.connector.Response;
 
 /**
  *
@@ -81,23 +84,28 @@ public class OperazioniAdmin extends HttpServlet {
             throws ServletException, IOException {
 
         String mail = request.getParameter("delete");
+        String manageSet = request.getParameter("manage");
 
         //processRequest(request, response);
         switch ((String) request.getSession().getAttribute("Operazione")) {
-            case "elimina":
-        {
-            try {
-                eliminazione(mail);
-                response.sendRedirect("deleteUser.jsp");
-            } catch (ClassNotFoundException | SQLException ex) {
-                response.sendRedirect("errorPage.jsp");
+            case "elimina": {
+                try {
+                    eliminazione(mail);
+                    response.sendRedirect("deleteUser.jsp");
+                } catch (ClassNotFoundException | SQLException ex) {
+                    response.sendRedirect("errorPage.jsp");
+                }
             }
-        }
-
-                break;
-            case "gestisci":
-                gestione(request, response);
-                break;
+            break;
+            case "gestisci": {
+                try {
+                    gestione(manageSet, response);
+                    response.sendRedirect("manageBookAdmin.jsp");
+                } catch (ClassNotFoundException | SQLException ex) {
+                    response.sendRedirect("errorPage.jsp");
+                }
+            }
+            break;
             case "statistiche":
                 statistiche(request, response);
                 break;
@@ -114,16 +122,27 @@ public class OperazioniAdmin extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void gestione(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void gestione(String mSet, HttpServletResponse response) throws IOException, ClassNotFoundException, SQLException {
+        String whatToDo = mSet.split("/")[0];
+        String id_libro = mSet.split("/")[1];
+
+        switch (whatToDo) {
+            case "elimina":
+                eliminaLibro(id_libro);
+            case "gestisci":
+                response.sendRedirect("dataBookChangeAdmin.jsp");
+            default:
+                break;
+        }
+        //notifica operazione all'utente!!!!!!!
     }
 
-    private void eliminazione(String mail) throws ClassNotFoundException, SQLException{
-   
+    private void eliminazione(String mail) throws ClassNotFoundException, SQLException {
+
         String deleteUser = "DELETE FROM book_user WHERE email='" + mail + "'";
         String banUser = "INSERT INTO blacklist VALUES('" + mail + "')";
         try (Connection con = Connessione.getConnection()) {
-            Statement stmt =con.createStatement();
+            Statement stmt = con.createStatement();
             stmt.executeUpdate(deleteUser);
             stmt.executeUpdate(banUser);
             con.close();
@@ -132,6 +151,15 @@ public class OperazioniAdmin extends HttpServlet {
 
     private void statistiche(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void eliminaLibro(String id_libro) throws ClassNotFoundException, SQLException {
+        String deleteBook = "DELETE FROM libro WHERE id='" + id_libro + "'";
+        try (Connection con = Connessione.getConnection()) {
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate(deleteBook);
+            con.close();
+        }
     }
 
 }
