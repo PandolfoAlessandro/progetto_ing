@@ -104,13 +104,16 @@ public class OperazioniAdmin extends HttpServlet {
                     case "elimina": {
                         try {
                             eliminaLibro(id_libro);
+                            response.sendRedirect("manageBookAdmin.jsp");
                         } catch (ClassNotFoundException | SQLException ex) {
                             response.sendRedirect("errorPage.jsp");
                         }
+                        break;
                     }
-                    response.sendRedirect("manageBookAdmin.jsp");
-                    case "gestisci":
+                    case "gestisci": {
                         response.sendRedirect("dataBookChangeAdmin.jsp");
+                        break;
+                    }
                     default:
                         break;
                 }
