@@ -22,7 +22,7 @@
             // Verifico che le credenziali inserite siano di un utente "normale"
             rs = stmt.executeQuery(selectUsers);
         %>    
-        <form method="POST" action="OperazioniAdmin">
+        
             <a href="admin.jsp">Indietro</a>
             <% session.setAttribute("Operazione", "elimina"); %>
             <TABLE BORDER="1">
@@ -34,17 +34,20 @@
                     <TH>Provincia</TH>
                 </TR>
                 <% while (rs.next()) {%>
+                <form method="POST" action="OperazioniAdmin">
                 <TR>
+                    
                     <TD> <%= rs.getString(1)%></TD>
                     <TD> <%= rs.getString(2)%></TD>
                     <TD> <%= rs.getString(3)%></TD>
                     <TD> <%= rs.getString(4)%></TD>
                     <TD> <%= rs.getString(5)%></TD>
-                    <TD> <input type="submit" name="delete" onSubmit="select(,<%= sessCorrente %>)" value="Elimina utente:<%= rs.getString(1)%>"/> </td>
+                    <TD> <p>Elimina utente: <input  type="submit" name="delete" value="<%= rs.getString(1)%>"/></p></td>
                 </TR>
+                </form>
+
                 <% }%>
             </TABLE>
-        </form>
 
 
 

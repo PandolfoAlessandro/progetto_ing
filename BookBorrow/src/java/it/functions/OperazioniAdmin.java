@@ -61,6 +61,7 @@ public class OperazioniAdmin extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
         switch ((String) request.getSession().getAttribute("Operazione")) {
             case "elimina": eliminazione(request,response);
                 break;
@@ -82,6 +83,8 @@ public class OperazioniAdmin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        JOptionPane.showMessageDialog(null, "doPost"+request.getParameter("delete").split(":")[1]);
         processRequest(request, response);
         switch ((String) request.getSession().getAttribute("Operazione")) {
             case "elimina": eliminazione(request,response);
@@ -109,7 +112,7 @@ public class OperazioniAdmin extends HttpServlet {
 
     private void eliminazione(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String s = (String) request.getSession().getAttribute("elimSel");
-        JOptionPane.showMessageDialog(null, s);
+        
         
     }
 
