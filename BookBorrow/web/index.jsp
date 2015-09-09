@@ -5,17 +5,17 @@
 <html>
     <head>
         <title>Benvenuto su BookBorrow!</title>
-        <h:outputStylesheet library="css" name="style.css"/>
-    </head>
-
+</head>
+<body>
+    <h:outputStylesheet library="css" name="style.css"/>
     <%  if (session.getAttribute("userEmail") != null) {
-            if((boolean)session.getAttribute("isAdmin")){
+            if ((boolean) session.getAttribute("isAdmin")) {
                 response.sendRedirect("admin.jsp");
-            }else{
+            } else {
                 response.sendRedirect("main.jsp");
             }
         }
-        
+
         if (session.getAttribute("loginFailed") == null) {
             session.setAttribute("loginFailed", false);
         }
@@ -43,12 +43,12 @@
     <div id="content">
         <form action="LoginAndRegistration" method="POST">
             <% if ((Boolean) session.getAttribute("loginFailed")) { %>
-                <p style="color: red"><br>E-mail o password inseriti errati o inesistenti<br></p>
-            <% } %>
+            <p style="color: red"><br>E-mail o password inseriti errati o inesistenti<br></p>
+                <% } %>
 
             <% if ((Boolean) session.getAttribute("isBanned")) { %>
-                <p style="color: red"><br>Le credenziali inserite corrispondono a un utente espulso dal sistema.<br></p>
-            <% } %>
+            <p style="color: red"><br>Le credenziali inserite corrispondono a un utente espulso dal sistema.<br></p>
+                <% }%>
 
             User: <input type="text" name="userEmail"> <br />
             Password: <input type="password" name="userPwd" /> 
@@ -57,4 +57,5 @@
 
         <a href="registration.jsp">Se non sei iscritto, registrati!</a>
     </div>
-
+</body>
+</html>
