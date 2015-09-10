@@ -17,7 +17,7 @@
         <script type="text/javascript">
             function openPopUp()
             {
-                window.open("changeImg.jsp", "Cambia coperina", "scrollbars=1,resizable=0,height=200,width=550,left=450,top=200");
+                window.open("changeImg.jsp?libro_sel=<%= request.getParameter("id_l")%>", "Cambia coperina", "scrollbars=1,resizable=0,height=200,width=550,left=450,top=200");
             }
         </script>
         

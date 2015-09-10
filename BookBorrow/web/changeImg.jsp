@@ -14,6 +14,7 @@
     <body>
         <br/>
         <br/>
+        <% session.setAttribute("id", request.getParameter("libro_sel")); %>
         <form method="POST" action="ImageUpload" enctype="multipart/form-data">
             <table>
                 <tr>					
