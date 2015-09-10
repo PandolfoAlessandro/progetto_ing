@@ -7,7 +7,6 @@
         <title>ADMIN LOGIN</title>
     </head>
     <body>
-        <jsp:useBean id="confermeAdmin" class="Conferma" scope="session"/>
         Benvenuto nella pagina di amministrazione di Book Borrow
         <% session.setAttribute("Operazione", "null"); %>
         <div>
