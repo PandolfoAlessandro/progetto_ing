@@ -17,6 +17,9 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td colspan="2"><b>Dati utente</b></td>
+                        </tr>
+                        <tr>
                             <td>Email:</td>
                             <td><input type="text" name="userEmail" value="" ></td>
                         </tr>
@@ -46,6 +49,8 @@
                             <td><input type="date" name="userBirthDate" value="" ></td>
                         </tr>
                         <tr>
+                            <td colspan="2"><b>Dati indirizzo</b></td>
+                        </tr>
                         <tr>
                             <td>Via: </td>
                             <td><input type="text" name="userVia" value="" ></td>
