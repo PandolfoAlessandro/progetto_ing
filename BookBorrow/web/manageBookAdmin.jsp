@@ -29,7 +29,7 @@
 
         <a href="admin.jsp">Indietro</a>
         <% session.setAttribute("Operazione", "gestisci"); %>
-        <form method="POST" action="OperazioniAdmin">
+        <form method="POST" action="OperazioniAdmin"  >
             <TABLE BORDER="1">
                 <TR>
                     <TH>Titolo</TH>
@@ -46,7 +46,7 @@
                     <TD> <%= rs.getString(5)%> </TD>
                     <TD> <%= rs.getString(6)%> <%= rs.getString(7)%> (<%= rs.getString(8)%>)</TD>
                     <TD>
-                    <button type="submit" name="manage" value="elimina/<%= rs.getString(1)%>">Elimina Libro</button>
+                    <button type="submit" onclick="confirm('sicuro di voler eliminare il libro?')" name="manage" value="elimina/<%= rs.getString(1)%>">Elimina Libro</button>
                     <button type="submit" name="manage" value="gestisci/<%= rs.getString(1)%>">Modifica dati libro</button>
                     </TD>
                 </TR>

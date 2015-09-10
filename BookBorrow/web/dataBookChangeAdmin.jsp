@@ -39,7 +39,7 @@
         %>
         <% session.setAttribute("Operazione", "gestisciLibro"); %>
         <% session.setAttribute("id_lib", request.getParameter("id_l")); %>
-        <form method="POST" action="OperazioniAdmin">
+        <form method="POST" action="OperazioniAdmin" onsubmit="confirm('sicuro di voler modificare i dati del libro?')">
             <center>
                 <table border="1" width="30%" cellpadding="5">
                     <thead>

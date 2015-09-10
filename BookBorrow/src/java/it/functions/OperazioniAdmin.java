@@ -18,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.JOptionPane;
 import org.apache.catalina.connector.Response;
 
 /**
@@ -91,14 +90,12 @@ public class OperazioniAdmin extends HttpServlet {
         //processRequest(request, response);
         switch ((String) request.getSession().getAttribute("Operazione")) {
             case "elimina": {
-                int conferma = JOptionPane.showConfirmDialog(null, "sicuro di voler rimuovere l'utente:" + mail);
-                if (conferma == JOptionPane.YES_OPTION) {
-                    try {
-                        eliminazione(mail);
-                    } catch (ClassNotFoundException | SQLException ex) {
-                        response.sendRedirect("errorPage.jsp");
-                    }
+                try {
+                    eliminazione(mail);
+                } catch (ClassNotFoundException | SQLException ex) {
+                    response.sendRedirect("errorPage.jsp");
                 }
+
                 response.sendRedirect("deleteUser.jsp");
             }
             break;
@@ -107,13 +104,10 @@ public class OperazioniAdmin extends HttpServlet {
                 String id_libro = manageSet.split("/")[1];
                 switch (whatToDo) {
                     case "elimina": {
-                        int conferma = JOptionPane.showConfirmDialog(null, "sicuro di voler rimuovere il libro selezionato(id=" + mail + ")");
-                        if (conferma == JOptionPane.YES_OPTION) {
-                            try {
-                                eliminaLibro(id_libro);
-                            } catch (ClassNotFoundException | SQLException ex) {
-                                response.sendRedirect("errorPage.jsp");
-                            }
+                        try {
+                            eliminaLibro(id_libro);
+                        } catch (ClassNotFoundException | SQLException ex) {
+                            response.sendRedirect("errorPage.jsp");
                         }
                         response.sendRedirect("manageBookAdmin.jsp");
                     }
@@ -132,15 +126,13 @@ public class OperazioniAdmin extends HttpServlet {
                 statistiche(request, response);
                 break;
             case "gestisciLibro": {
-                int conferma = JOptionPane.showConfirmDialog(null, "sicuro di voler modificare il libro selezionato(id=" + mail + ")");
                 String id_libro = (String) request.getSession().getAttribute("id_lib");
-                if (conferma == JOptionPane.YES_OPTION) {
-                    try {
-                        modificaDatiLibro(id_libro, request);
-                    } catch (ClassNotFoundException | SQLException ex) {
-                        response.sendRedirect("errorPage.jsp");
-                    }
+                try {
+                    modificaDatiLibro(id_libro, request);
+                } catch (ClassNotFoundException | SQLException ex) {
+                    response.sendRedirect("errorPage.jsp");
                 }
+
                 response.sendRedirect("dataBookChangeAdmin.jsp?id_l=" + id_libro);
                 break;
             }

@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="it.database.Conferma" %>
 <!DOCTYPE html>
 <html>
     <head>

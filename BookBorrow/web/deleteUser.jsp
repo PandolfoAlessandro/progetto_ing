@@ -7,12 +7,6 @@
         <title>Lista utenti</title>
     </head>
     <body>        
-        <script type="text/javascript">
-            function Confirm()
-            {
-                window.open("changeImg.jsp", "Cambia coperina", "scrollbars=1,resizable=0,height=200,width=550,left=450,top=200");
-            }
-        </script>
         <%
             String selectUsers = "SELECT DISTINCT b.email, b.nome, b.cognome, i.citta, i.provincia "
                     + "FROM book_user b join residenza r ON (b.email=r.utente) JOIN indirizzo i ON (r.coordinate_geografiche = i.coordinate_geografiche)";
@@ -30,7 +24,7 @@
 
         <a href="admin.jsp">Indietro</a>
         <% session.setAttribute("Operazione", "elimina"); %>
-        <form method="POST" action="OperazioniAdmin">
+        <form name="mio_form" method="POST" action="OperazioniAdmin" onsubmit="confirm('sicuro di voler rimuovere l\'utente?')">
             <TABLE BORDER="1">
                 <TR>
                     <TH>Email</TH>
