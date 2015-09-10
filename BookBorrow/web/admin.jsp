@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="it.database.Conferma" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,6 +7,7 @@
         <title>ADMIN LOGIN</title>
     </head>
     <body>
+        <jsp:useBean id="confermeAdmin" class="Conferma" scope="session"/>
         Benvenuto nella pagina di amministrazione di Book Borrow
         <% session.setAttribute("Operazione", "null"); %>
         <div>
