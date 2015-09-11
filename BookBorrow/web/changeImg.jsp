@@ -14,18 +14,13 @@
     <body>
         <br/>
         <br/>
-        <script type="text/javascript">
-            function doReaload(){
-                window.opener.location.reload();
-            }
-        </script>
         <% session.setAttribute("id", request.getParameter("libro_sel")); %>
         <form method="POST" action="ImageUpload" enctype="multipart/form-data" onsubmit="window.close()">
             <table>
                 <tr>					
                     <td>Copertina: </td>
                     <td><input type="file" name="copertina"></td>
-                    <td><button type="Submit" name=upload value="book/1" onclick="doReload()">Carica</button></td>
+                    <td><button type="Submit" name=upload value="book/1" >Carica</button></td>
                 </tr>
                 <tr>
                     <td>
