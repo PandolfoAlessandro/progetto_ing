@@ -1,8 +1,4 @@
-<%-- 
-    Document   : manageBookAdmin
-    Created on : 9-set-2015, 14.08.05
-    Author     : alessandro
---%>
+
 
 <%@page import="java.sql.*"%>
 <%@page import="it.database.Connessione"%>
@@ -14,8 +10,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%
-            // Set to expire far in the past.
+        
+        <%   // Set to expire far in the past.
             response.setHeader("Expires", "Sat, 6 May 1971 12:00:00 GMT");
             // Set standard HTTP/1.1 no-cache headers.
             response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -24,19 +20,18 @@
             // Set standard HTTP/1.0 no-cache header.
             response.setHeader("Pragma", "no-cache");
             response.setDateHeader("Expires", 0); //prevents caching at the proxy server
-        %>
-        <%
-                if (session.getAttribute("userEmail") == null) {
+            
+            if (session.getAttribute("userEmail") == null) {
                     response.sendRedirect("index.jsp");
                 } else {
                     if (!((boolean) session.getAttribute("isAdmin"))) {
                         response.sendRedirect("main.jsp");
                     }
-                }
-
             }
-        %>
-        <%  String bookList = "SELECT l.id, l.titolo, l.nome_autore, l.cognome_autore, l.casa_ed, b.nome,"
+
+             
+
+            String bookList = "SELECT l.id, l.titolo, l.nome_autore, l.cognome_autore, l.casa_ed, b.nome,"
                     + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.proprietario=b.email);";
 
             Connection con = new Connessione().getConnection();

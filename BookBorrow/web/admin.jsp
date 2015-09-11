@@ -26,7 +26,7 @@
                     }
                 }
 
-            }
+            
         %>
         Benvenuto nella pagina di amministrazione di Book Borrow
         <% session.setAttribute (
