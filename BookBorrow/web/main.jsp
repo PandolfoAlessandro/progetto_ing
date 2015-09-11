@@ -41,7 +41,7 @@
                         <button onclick="window.location = 'dataProfileChangeUser.jsp'">Modifica profilo</button>
                     </td>
                     <td>
-                        <button onclick="window.location = 'manageBooks.jsp'">Modifica libro</button>
+                        <button onclick="window.location = 'manageBooks.jsp'">Gestisci libri</button>
                     </td>
                     <td>
                         <button onclick="window.location = 'logout.jsp'">Logout</button>
@@ -50,7 +50,22 @@
             </table>
         </div>
 
-       
+        <div style="background-color: burlywood">
+            <table>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="text" name="userEmail" value="" ></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" name="userPwd" value="" ></td>
+                </tr>
+                <tr>
+                    <td>Nome</td>
+                    <td><input type="text" name="userName" value="" ></td>
+                </tr>
+            </table>
+        </div>
 
 
 
