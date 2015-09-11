@@ -5,9 +5,9 @@
 <html>
     <head>
         <title>Benvenuto su BookBorrow!</title>
-</head>
-<body>
-    <%
+    </head>
+    <body>
+        <%
             // Set to expire far in the past.
             response.setHeader("Expires", "Sat, 6 May 1971 12:00:00 GMT");
             // Set standard HTTP/1.1 no-cache headers.
@@ -18,55 +18,54 @@
             response.setHeader("Pragma", "no-cache");
             response.setDateHeader("Expires", 0); //prevents caching at the proxy server
         %>
-    <h:outputStylesheet library="css" name="style.css"/>
-    <%  if (session.getAttribute("userEmail") != null) {
-            if ((boolean) session.getAttribute("isAdmin")) {
-                response.sendRedirect("admin.jsp");
-            } else {
-                response.sendRedirect("main.jsp");
+        <%  if (session.getAttribute("userEmail") != null) {
+                if ((boolean) session.getAttribute("isAdmin")) {
+                    response.sendRedirect("admin.jsp");
+                } else {
+                    response.sendRedirect("main.jsp");
+                }
             }
-        }
 
-        if (session.getAttribute("loginFailed") == null) {
-            session.setAttribute("loginFailed", false);
-        }
-        if (session.getAttribute("isBanned") == null) {
-            session.setAttribute("isBanned", false);
-        }
-    %>
-    <div id="header">
-        <table>
-            <tr>
-                <td>
-                    <p>BookBorrow</p>
-                </td>
-                <td>
-                    <!-- img -->
-                </td>
-                <td>
-                    <p>PGS.srl</p>
-                </td>
-            </tr>
-        </table>
-    </div>
+            if (session.getAttribute("loginFailed") == null) {
+                session.setAttribute("loginFailed", false);
+            }
+            if (session.getAttribute("isBanned") == null) {
+                session.setAttribute("isBanned", false);
+            }
+        %>
+        <div id="header">
+            <table>
+                <tr>
+                    <td>
+                        <p>BookBorrow</p>
+                    </td>
+                    <td>
+                        <!-- img -->
+                    </td>
+                    <td>
+                        <p>PGS.srl</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-    <div id="sidebarLeft"></div>
-    <div id="content">
-        <form action="LoginAndRegistration" method="POST">
-            <% if ((Boolean) session.getAttribute("loginFailed")) { %>
-            <p style="color: red"><br>E-mail o password inseriti errati o inesistenti<br></p>
+        <div id="sidebarLeft"></div>
+        <div id="content">
+            <form action="LoginAndRegistration" method="POST">
+                <% if ((Boolean) session.getAttribute("loginFailed")) { %>
+                <p style="color: red">E-mail o password inseriti errati o inesistenti</p>
                 <% } %>
 
-            <% if ((Boolean) session.getAttribute("isBanned")) { %>
-            <p style="color: red"><br>Le credenziali inserite corrispondono a un utente espulso dal sistema.<br></p>
-                <% }%>
+                <% if ((Boolean) session.getAttribute("isBanned")) { %>
+                <p style="color: red">Le credenziali inserite corrispondono a un utente espulso dal sistema.</p>
+                <% } %>
 
-            User: <input type="text" name="userEmail"> <br />
-            Password: <input type="password" name="userPwd" /> 
-            <input type="submit" value="Submit" />
-        </form>
+                <p>User: <input type="text" name="userEmail" ></p>
+                <p>Password: <input type="password" name="userPwd" ></p>
+                <input type="submit" value="Submit" >
+            </form>
 
-        <a href="registration.jsp">Se non sei iscritto, registrati!</a>
-    </div>
-</body>
+            <a href="registration.jsp">Se non sei iscritto, registrati!</a>
+        </div>
+    </body>
 </html>
