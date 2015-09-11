@@ -14,6 +14,9 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <script type="text/javascript">
+            window.location.reload();
+        </script>
         <%  String bookList = "SELECT l.id, l.titolo, l.nome_autore, l.cognome_autore, l.casa_ed, b.nome,"
                 + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.proprietario=b.email);";
 
