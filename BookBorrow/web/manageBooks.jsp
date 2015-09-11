@@ -44,10 +44,14 @@
             rs = stmt.executeQuery(bookList);
         %>    
 
-        <a href="main.jsp">Indietro</a>
+        
         <% session.setAttribute("Operazione", "gestisci"); %>
+        
+
+        <button onclick="window.location = 'addLibro.jsp'">Aggiungi libro</button>
         <form method="POST" action="OperazioniUser"  >
             <TABLE BORDER="1">
+                
                 <TR>
                     <TH>Titolo</TH>
                     <TH>Autore</TH>
@@ -71,5 +75,6 @@
                 <% }%>
             </TABLE>
         </form>
+        <a href="main.jsp">Indietro</a>
     </body>
 </html>
