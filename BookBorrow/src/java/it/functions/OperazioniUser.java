@@ -166,7 +166,7 @@ public class OperazioniUser extends HttpServlet {
         String control
                 = "SELECT count(libro.id) AS numLibri"
                 + "FROM libro "
-                + "WHERE libro.proprietario='" + user + "'";
+                + "WHERE libro.book_user='" + user + "'";
 
         String modifing = "UPDATE book_user SET tipologia= ";
         int numLibri = 0;

@@ -31,8 +31,8 @@
             response.setDateHeader("Expires", 0); //prevents caching at the proxy server
         %>
         <%  String bookList = "SELECT l.id, l.titolo, l.nome_autore, l.cognome_autore, l.casa_ed, b.nome,"
-                    + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.proprietario=b.email) "
-                    + "where l.proprietario='"+(String)(session.getAttribute("userEmail"))+"'";
+                    + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.book_user=b.email) "
+                    + "where l.book_user='"+(String)(session.getAttribute("userEmail"))+"'";
 
             Connection con = new Connessione().getConnection();
 
