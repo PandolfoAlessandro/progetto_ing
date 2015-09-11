@@ -31,7 +31,7 @@ public class LoginAndRegistration extends HttpServlet {
         HttpSession session = request.getSession();
 
         String insertNewUser = "INSERT INTO book_user VALUES (?,?,?,?,?,?,null,0)";
-        String insertNewAddress = "INSERT INTO indirizzo VALUES (?,?,?,?,?,?,?)";
+        String insertNewAddress = "INSERT INTO indirizzo VALUES (?,?,?,?,?,?,?,?,1)";
         String isBanned = "SELECT 1 FROM Blacklist WHERE email = '" + request.getParameter("userEmail") + "'";
         
         Connection con=null;
@@ -92,12 +92,13 @@ public class LoginAndRegistration extends HttpServlet {
                 String coordinate_geografiche = Geolocalizzazione.getCoordinate(indirizzo);
                 if (!cordinateEsistenti(coordinate_geografiche)) {
                     pstmt.setString(1, coordinate_geografiche);
-                    pstmt.setString(2, request.getParameter("userVia"));
-                    pstmt.setString(3, request.getParameter("userNumCiv"));
-                    pstmt.setString(4, request.getParameter("userCAP"));
-                    pstmt.setString(5, request.getParameter("userCity"));
-                    pstmt.setString(6, request.getParameter("userProv"));
-                    pstmt.setString(7, request.getParameter("userState"));
+                    pstmt.setString(2, request.getParameter("userEmail"));
+                    pstmt.setString(3, request.getParameter("userVia"));
+                    pstmt.setString(4, request.getParameter("userNumCiv"));
+                    pstmt.setString(5, request.getParameter("userCAP"));
+                    pstmt.setString(6, request.getParameter("userCity"));
+                    pstmt.setString(7, request.getParameter("userProv"));
+                    pstmt.setString(8, request.getParameter("userState"));
 
                     pstmt.executeUpdate();
                 }
