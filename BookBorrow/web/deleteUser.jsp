@@ -27,7 +27,7 @@
                     }
                 }
 
-            }
+            
         %>
         <%
             String selectUsers = "SELECT DISTINCT b.email, b.nome, b.cognome, i.citta, i.provincia "
