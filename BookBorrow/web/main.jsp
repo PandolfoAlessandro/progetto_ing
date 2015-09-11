@@ -23,8 +23,17 @@
             response.setHeader("Pragma", "no-cache");
             response.setDateHeader("Expires", 0); //prevents caching at the proxy server
         %>
-        <h1>Ciao <%out.print((String)session.getAttribute("userEmail"));%>! Sei nella mainpage di bookborrow!</h1> 
-        
+        <%
+            if (session.getAttribute("userEmail") == null) {
+                response.sendRedirect("index.jsp");
+            } else {
+                if ((boolean) session.getAttribute("isAdmin")) {
+                    response.sendRedirect("admin.jsp");
+                }
+            }
+        %>
+        <h1>Ciao <%out.print((String) session.getAttribute("userEmail"));%>! Sei nella mainpage di bookborrow!</h1> 
+
         <table>
             <tr>
                 <td>
