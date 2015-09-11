@@ -24,7 +24,7 @@
 
         <a href="admin.jsp">Indietro</a>
         <% session.setAttribute("Operazione", "elimina"); %>
-        <form name="mio_form" method="POST" action="OperazioniAdmin" onsubmit="confirm('sicuro di voler rimuovere l\'utente?')">
+        <form name="mio_form" method="POST" action="OperazioniAdmin" onsubmit="return confirm('sicuro di voler rimuovere l\'utente?');">
             <TABLE BORDER="1">
                 <TR>
                     <TH>Email</TH>
