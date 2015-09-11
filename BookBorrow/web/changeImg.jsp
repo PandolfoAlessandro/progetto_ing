@@ -19,7 +19,7 @@
             <table>
                 <tr>					
                     <td>Copertina: </td>
-                    <td><input type="file" name="foto_profilo"></td>
+                    <td><input type="file" name="copertina"></td>
                     <td><button type="Submit" name=upload value="book/1" >Carica</button></td>
                 </tr>
                 <tr>
