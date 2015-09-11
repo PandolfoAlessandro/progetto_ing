@@ -33,8 +33,7 @@ public class LoginAndRegistration extends HttpServlet {
         String insertNewUser = "INSERT INTO book_user VALUES (?,?,?,?,?,?,null,0)";
         String insertNewAddress = "INSERT INTO indirizzo VALUES (?,?,?,?,?,?,?)";
         String isBanned = "SELECT 1 FROM Blacklist WHERE email = '" + request.getParameter("userEmail") + "'";
-        String insertNewResidence = "INSERT INTO residenza VALUES(?,?) ";
-
+        
         Connection con=null;
         try {
             con= Connessione.getConnection();
@@ -102,13 +101,6 @@ public class LoginAndRegistration extends HttpServlet {
 
                     pstmt.executeUpdate();
                 }
-                pstmt = con.prepareStatement(insertNewResidence);
-                pstmt.clearParameters();
-
-                pstmt.setString(1, request.getParameter("userEmail"));
-                pstmt.setString(2, coordinate_geografiche);
-
-                pstmt.executeUpdate();
 
                 session.setAttribute("userEmail", request.getParameter("userEmail"));
                 session.setAttribute("userName", request.getParameter("userName"));

@@ -33,23 +33,24 @@
             }
         %>
         <h1>Ciao <%out.print((String) session.getAttribute("userEmail"));%>! Sei nella mainpage di bookborrow!</h1> 
-        
+
         <div style="background-color: aquamarine">
             <table>
-            <tr>
-                <td>
-                    <button onclick="window.location = 'dataProfileChangeUser.jsp'">Modifica profilo</button>
-                </td>
-                <td>
-                    <button onclick="window.location = 'manageBooks.jsp'">Modifica libro</button>
-                </td>
-                <td>
-                    <button onclick="window.location = 'logout.jsp'">Logout</button>
-                </td>
-            </tr>
-        </table>
+                <tr>
+                    <td>
+                        <button onclick="window.location = 'dataProfileChangeUser.jsp'">Modifica profilo</button>
+                    </td>
+                    <td>
+                        <button onclick="window.location = 'manageBooks.jsp'">Modifica libro</button>
+                    </td>
+                    <td>
+                        <button onclick="window.location = 'logout.jsp'">Logout</button>
+                    </td>
+                </tr>
+            </table>
         </div>
-        
+
+       
 
 
 
