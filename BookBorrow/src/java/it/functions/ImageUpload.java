@@ -46,9 +46,6 @@ public class ImageUpload extends HttpServlet {
                         //aggiungi nuova copertina
                         response.sendRedirect("main.jsp");
                         
-                    }else{
-                        //modifica copertina già esistente
-                        //response.redirect("#########.jsp")
                     }
                     
 
@@ -60,15 +57,7 @@ public class ImageUpload extends HttpServlet {
             case "book":
                 try{
                     doPostBook(request, response);
-                    if(op.split("/")[1].equals("0")){
-                        //crea nuova copertina
-                        
-                        //scrivi il redirect
-                    }else{
-                        //modifica copertina gia esistente
-                        
-                        //scrivi il redirect
-                    }
+                    
                     
                     
                 }catch (ServletException | IOException ex) {
