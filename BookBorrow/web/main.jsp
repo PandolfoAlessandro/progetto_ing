@@ -38,7 +38,7 @@
             <table>
             <tr>
                 <td>
-                    <button onclick="window.location = 'logout.jsp'">Logout</button>
+                    <button onclick="window.location = 'dataProfileChangeUser.jsp'">Modifica profilo</button>
                 </td>
                 <td>
                     <button onclick="window.location = 'manageBooks.jsp'">Modifica libro</button>
