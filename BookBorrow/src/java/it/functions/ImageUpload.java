@@ -43,7 +43,7 @@ public class ImageUpload extends HttpServlet {
                 try {
                     doPostUser(request, response);
                     if(op.split("/")[1].equals("0")){
-                        //aggiungi nuova copertina
+                        
                         response.sendRedirect("main.jsp");
                         
                     }
