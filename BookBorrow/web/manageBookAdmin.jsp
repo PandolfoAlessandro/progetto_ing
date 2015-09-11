@@ -14,11 +14,19 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <script type="text/javascript">
-            window.location.reload();
-        </script>
+        <%
+            // Set to expire far in the past.
+            response.setHeader("Expires", "Sat, 6 May 1971 12:00:00 GMT");
+            // Set standard HTTP/1.1 no-cache headers.
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+            // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+            response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+            // Set standard HTTP/1.0 no-cache header.
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0); //prevents caching at the proxy server
+        %>
         <%  String bookList = "SELECT l.id, l.titolo, l.nome_autore, l.cognome_autore, l.casa_ed, b.nome,"
-                + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.proprietario=b.email);";
+                    + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.proprietario=b.email);";
 
             Connection con = new Connessione().getConnection();
 
@@ -49,8 +57,8 @@
                     <TD> <%= rs.getString(5)%> </TD>
                     <TD> <%= rs.getString(6)%> <%= rs.getString(7)%> (<%= rs.getString(8)%>)</TD>
                     <TD>
-                    <button type="submit" onclick="return confirm('sicuro di voler eliminare il libro?');" name="manage" value="elimina/<%= rs.getString(1)%>">Elimina Libro</button>
-                    <button type="submit" name="manage" value="gestisci/<%= rs.getString(1)%>">Modifica dati libro</button>
+                        <button type="submit" onclick="return confirm('sicuro di voler eliminare il libro?');" name="manage" value="elimina/<%= rs.getString(1)%>">Elimina Libro</button>
+                        <button type="submit" name="manage" value="gestisci/<%= rs.getString(1)%>">Modifica dati libro</button>
                     </TD>
                 </TR>
 
