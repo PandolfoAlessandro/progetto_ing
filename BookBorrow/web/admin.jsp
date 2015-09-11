@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ADMIN LOGIN</title>
     </head>
-    <body>
+    <body>    
         <%
             // Set to expire far in the past.
             response.setHeader("Expires", "Sat, 6 May 1971 12:00:00 GMT");
@@ -17,30 +17,42 @@
             response.setHeader("Pragma", "no-cache");
             response.setDateHeader("Expires", 0); //prevents caching at the proxy server
         %>
+        <%
+                if (session.getAttribute("userEmail") == null) {
+                    response.sendRedirect("index.jsp");
+                } else {
+                    if (!((boolean) session.getAttribute("isAdmin"))) {
+                        response.sendRedirect("main.jsp");
+                    }
+                }
+
+            }
+        %>
         Benvenuto nella pagina di amministrazione di Book Borrow
-        <% session.setAttribute("Operazione", "null"); %>
+        <% session.setAttribute (
+        "Operazione", "null"); %>
         <div>
-            
-         <table>
+
+            <table>
                 <tr>					
                     <td> 
-                        <button onclick="window.location='deleteUser.jsp'">Elimina utente</button>
+                        <button onclick="window.location = 'deleteUser.jsp'">Elimina utente</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <button onclick="window.location='manageBookAdmin.jsp'">Gestisci Libri</button>
+                        <button onclick="window.location = 'manageBookAdmin.jsp'">Gestisci Libri</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Visualizza statistiche globali<button onclick="window.location='stat.jsp'">qui</button>
+                        <p>Visualizza statistiche globali<button onclick="window.location = 'stat.jsp'">qui</button>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <button onclick="window.location='logout.jsp'">Logout</button>
+                        <button onclick="window.location = 'logout.jsp'">Logout</button>
                     </td>
                 </tr>
             </table>

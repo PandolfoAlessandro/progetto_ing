@@ -19,6 +19,17 @@
             response.setDateHeader("Expires", 0); //prevents caching at the proxy server
         %>
         <%
+                if (session.getAttribute("userEmail") == null) {
+                    response.sendRedirect("index.jsp");
+                } else {
+                    if (!((boolean) session.getAttribute("isAdmin"))) {
+                        response.sendRedirect("main.jsp");
+                    }
+                }
+
+            }
+        %>
+        <%
             String selectUsers = "SELECT DISTINCT b.email, b.nome, b.cognome, i.citta, i.provincia "
                     + "FROM book_user b join residenza r ON (b.email=r.utente) JOIN indirizzo i ON (r.coordinate_geografiche = i.coordinate_geografiche)";
 
