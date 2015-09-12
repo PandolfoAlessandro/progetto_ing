@@ -146,6 +146,12 @@ public class OperazioniUser extends HttpServlet {
                 break;
 
             }
+            case "modificaUser":{
+                String query = "UPDATE libro VALUES(?,?,?,?,?,?,null,1,?,?,?,?)";
+                faiquery
+                break;
+            }
+                
         }
     }
 
