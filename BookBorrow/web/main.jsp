@@ -65,9 +65,9 @@
         </div>
         <%
             String cord = null;
-            String qCord = "SELECT coordinate_geografiche FROM indirizzo"
-                    + "WHERE BOOK_USER='" + session.getAttribute("userEmail") + "'"
-                    + "and Principale=1";
+            String qCord = "SELECT coordinate_geografiche FROM indirizzo "
+                    + "WHERE BOOK_USER='" + session.getAttribute("userEmail") + "' "
+                    + "and Principale=1 ";
 
             Connection con = Connessione.getConnection();
 
