@@ -35,8 +35,13 @@
                     response.sendRedirect("admin.jsp");
                 }
             }
-            
+
         %>
+        <script type="text/javascript">
+            function CercaUser() {
+                window.location.replace("main.jsp?uS=" + document.getElementById("utenteSel").value);
+            }
+        </script>
         <h1>Ciao <%out.print((String) session.getAttribute("userEmail"));%>! Sei nella mainpage di bookborrow!</h1> 
 
         <div style="background-color: aquamarine">
@@ -59,8 +64,8 @@
             <table>
                 <tr>
                     <td>Inserisci nome, cognome o mail dell'utente:</td>
-                    <td><input type="text" name=utenteSel value="" ></td>
-                    <td><button type="submit" onsubmit="window.location = 'main.jsp?uS='+document.getElementsByClassName('utenteSel')">Cerca</button></td>
+                    <td><input type="text" id="utenteSel" value="" ></td>
+                    <td><button onclick="CercaUser()">Cerca</button></td>
                 </tr>
             </table>
         </div>
@@ -88,9 +93,13 @@
                     + "JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
                     + "Where u.tipologia = 1 "/* and u.email!='"+session.getAttribute("userEmail")+"' "*/;
-            
-            
-            
+
+            if (request.getParameter("uS") != null && !(request.getParameter("uS").equals(""))) {
+                selectUsers += " and (u.nome ilike '" + request.getParameter("uS") + "' or "
+                        + "u.cognome ilike '" + request.getParameter("uS") + "' or "
+                        + "u.email= '"+request.getParameter("uS")+"') ";
+            }
+
             selectUsers += "group by u.email, i.provincia, i.citta,i.coordinate_geografiche ";
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
             Statement stmt = con.createStatement();
@@ -104,6 +113,7 @@
             Object[] utenteCorrente;
             Object[][] distanze = null;
             if (rs.next()) {
+                session.setAttribute("trovato", true);
                 distanze = new Object[2][rs.getInt(1)];
                 int i = 0;
                 do {
@@ -117,11 +127,11 @@
                     utenteCorrente[6] = rs.getInt(9);
                     utenteCorrente[7] = rs.getInt(10);
                     listaUtenti.add(utenteCorrente);
-                    distanze[0][i] = (int)i;
+                    distanze[0][i] = (int) i;
                     distanze[1][i] = Geolocalizzazione.getDistance(cord, rs.getString(6));
                 } while (rs.next());
             } else {
-                response.sendRedirect("errorPage.jsp");
+                session.setAttribute("trovato", false);
             }
             if (distanze instanceof Object[][]) {
                 for (int j = 0; j < distanze[0].length; j++) {
@@ -142,16 +152,16 @@
                     }
                 }
         %>    
-
-
+        <% if ((Boolean) session.getAttribute("trovato")) {%>
         <TABLE BORDER="1" style="border-color: orangered">
             <TR>
                 <TH>Foto Profilo</TH>
                 <TH>Dettaglio</TH>
                 <TH>Distanza</TH>
             </TR>
-            <% int p;for (int pos = 0; pos < distanze[0].length; pos++) {
-                p=(int)distanze[0][pos];
+            <% int p;
+                for (int pos = 0; pos < distanze[0].length; pos++) {
+                    p = (int) distanze[0][pos];
             %>
             <TR>
                 <TD><img src="PrintImage?id_img=<%= listaUtenti.get(p)[0]%>&amp;what=utente" 
@@ -161,8 +171,8 @@
                     <table>
                         <tr>
                             <td><a href="profile.jsp?emailSel=<%= listaUtenti.get(p)[0]%>">
-                                <p><%= listaUtenti.get(p)[1]%> <%= listaUtenti.get(p)[2]%> (<%= listaUtenti.get(p)[3]%>)
-                                </p>
+                                    <p><%= listaUtenti.get(p)[1]%> <%= listaUtenti.get(p)[2]%> (<%= listaUtenti.get(p)[3]%>)
+                                    </p>
                                 </a>
                             </td>       
                         </tr>
@@ -185,9 +195,10 @@
             </TR>
             <%}%>
         </TABLE>
+        <% }%>
         <%con.close();
-            }%>
-
+           
+        }%>
 
 
     </body>
