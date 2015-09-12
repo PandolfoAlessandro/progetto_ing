@@ -4,6 +4,7 @@
     Author     : insan3
 --%>
 
+
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="it.database.Connessione"%>
@@ -64,7 +65,7 @@
                         <tr>
                             <td>Indirizzo:</td>
                             
-<%!!!!!!!%>non prende su i valori dal menu a tendina
+
 
                             <td><select name="mydropdown">
                                     <%
@@ -74,10 +75,10 @@
                                         ResultSet rs = stmt.executeQuery(indirizzi);
 
                                         while (rs.next()) {
-
+                                        
                                     %>    
 
-                                    <option value="<%rs.getString("coordinate_geografiche");%>"> 
+                                    <option value="<%=rs.getString("coordinate_geografiche")%>"> 
                                         <%out.print(rs.getString("via") + " " + rs.getString("n_civico") + ", " + rs.getString("cap") + " " + rs.getString("citta") + " (" + rs.getString("provincia") + ") " + rs.getString("paese"));%> 
                                     </option>                    
                                     <%}

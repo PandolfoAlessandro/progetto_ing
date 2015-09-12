@@ -63,7 +63,7 @@
                 </tr>
             </table>
         </div>
-        <%
+        <%/*
             String cord = null;
             String qCord = "SELECT coordinate_geografiche FROM indirizzo "
                     + "WHERE BOOK_USER='" + session.getAttribute("userEmail") + "' "
@@ -139,49 +139,49 @@
             }
 
 
-        %>    
+        */%>    
 
 
-        <TABLE BORDER="1" style="border-color: orangered">
+        <!--TABLE BORDER="1" style="border-color: orangered">
             <TR>
                 <TH>Foto Profilo</TH>
                 <TH>Dettaglio</TH>
                 <TH>Distanza</TH>
             </TR>
-            <% for (int pos = 0; pos < distanze[0].length; pos++) {%>
+            <%// for (int pos = 0; pos < distanze[0].length; pos++) {%>
             <TR>
-                <TD><img src="PrintImage?id_L=<%= listaUtenti.get((int) distanze[0][pos])[0]%>&what=utente" 
+                <TD><img src="PrintImage?id_L=<%//= listaUtenti.get((int) distanze[0][pos])[0]%>&what=utente" 
                                      width="200" height="200"
                                      alt="Immagine non Disponibile"/></TD>
                 <TD> 
                     <table>
                         <tr>
                             <td>
-                                <%= listaUtenti.get((int) distanze[0][pos])[1]%> <%= listaUtenti.get((int) distanze[0][pos])[2]%> (<%= listaUtenti.get((int) distanze[0][pos])[3]%>)
+                                <%//= listaUtenti.get((int) distanze[0][pos])[1]%> <%//= listaUtenti.get((int) distanze[0][pos])[2]%> (<%//= listaUtenti.get((int) distanze[0][pos])[3]%>)
                             </td>       
                         </tr>
                         <tr>
-                            <td><%= listaUtenti.get((int) distanze[0][pos])[0]%></td>
+                            <td><%//= listaUtenti.get((int) distanze[0][pos])[0]%></td>
                         </tr>
                         <tr>
-                            <td><%= listaUtenti.get((int) distanze[0][pos])[4]%>(<%= listaUtenti.get((int) distanze[0][pos])[5]%>)</td>
+                            <td><%//= listaUtenti.get((int) distanze[0][pos])[4]%>(<%//= listaUtenti.get((int) distanze[0][pos])[5]%>)</td>
                         </tr>
                         <tr>
-                            <td>Libri nel sistema:<%= listaUtenti.get((int) distanze[0][pos])[6]%><%
-                                int ind = (int) listaUtenti.get((int) distanze[0][pos])[7];
-                                if (ind - 1 > 0) {
-                                %>(Alcuni libri non sono all'indirizzo di residenza)<%}%>
+                            <td>Libri nel sistema:<%//= listaUtenti.get((int) distanze[0][pos])[6]%><%
+                                //int ind = (int) listaUtenti.get((int) distanze[0][pos])[7];
+                                //if (ind - 1 > 0) {
+                                %>(Alcuni libri non sono all'indirizzo di residenza)<%//}%>
                             </td>
                         </tr>
                     </table> 
                 </TD>
             </TR>
             <TR>
-                <TD> <%= distanze[1][pos]%></TD>
+                <TD> <%//= distanze[1][pos]%></TD>
             </TR>
-            <% }%>
-        </TABLE>
-        <%con.close();%>
+            <%// }%>
+        </TABLE-->
+        <%//con.close();%>
 
 
 

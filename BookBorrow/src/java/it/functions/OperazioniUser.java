@@ -19,7 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -122,7 +122,7 @@ public class OperazioniUser extends HttpServlet {
                     id+=1;
                     
                     
-                    JOptionPane.showMessageDialog(null, request.getParameter("annoPubblicazione")); 
+                    
                     pstmt.setString( 1, id+"" );
                     pstmt.setInt( 2, Integer.parseInt(request.getParameter("annoPubblicazione")) );
                     pstmt.setInt( 3, Integer.parseInt(request.getParameter("numeroPagine")) );
@@ -137,7 +137,7 @@ public class OperazioniUser extends HttpServlet {
                     pstmt.setString( 10, email );
                     
                     pstmt.executeUpdate();
-                   
+                    setTipologiaUser(email);
                     con.close();
                     response.sendRedirect("completeInsertion.jsp?id="+id);
                 } catch (ClassNotFoundException | SQLException ex) {
