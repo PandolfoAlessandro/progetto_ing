@@ -86,7 +86,7 @@
                     + "FROM Book_User u JOIN Indirizzo i on (u.email=i.Book_User) "
                     + "JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "Where u.tipologia = 1"
+                    + "Where u.tipologia = 1 "
                     + "group by u.email, i.provincia, i.citta,i.coordinate_geografiche";
 
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
