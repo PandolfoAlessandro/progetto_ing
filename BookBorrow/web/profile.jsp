@@ -20,16 +20,30 @@
         <link href="Resources/css/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
+        <%  String cord ="";
+            String queryCord="SELECT i.coordinate_geografiche FROM "
+                    + "Book_user u JOIN Indirizzo i ON (u.email=i.Book_user) "
+                    + "WHERE u.email='"+session.getAttribute("userEmail")+"' ";
+            
+            Connection con = Connessione.getConnection();
+          Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(queryCord);
+            
+            if(rs.next()){
+                cord= rs.getString(1);
+            }
+        %>    
         <%
             String profiloUtente = "SELECT u.nome, u.cognome, date_part('Year', u.data_nascita) as an, "
                     + "i.coordinate_geografiche, i.citta, i.provincia, i.paese "
                     + "FROM Book_user u JOIN Indirizzo i ON (u.email=i.Book_user) "
-                    + "WHERE u.mail='" + request.getParameter("emailSel") + "' AND principale=1 ";
-            
-            Connection con = Connessione.getConnection();
+                    + "WHERE u.email='" + request.getParameter("emailSel") + "' AND principale=1 ";
+
+            con = Connessione.getConnection();
 
             Statement stmt = con.createStatement();
             ResultSet rspu = stmt.executeQuery(profiloUtente);
+            if (rspu.next()) {
         %>
         <div id="fotoProfilo">
             <img src="PrintImage?id_img=<%=request.getParameter("emailSel")%>&amp;what=utente" 
@@ -39,53 +53,73 @@
 
         <div id="infoProfilo">
             <h1><%= rspu.getString("nome")%> <%= rspu.getString("cognome")%></h1>
-            <p>email: <%= rspu.getString("email")%></p>
+            <p>email: <%= request.getParameter("emailSel")%></p>
             <p>Anno di nascita: <%= rspu.getInt("an")%></p>
             <p>Residenza: <%= rspu.getString("citta")%>(<%= rspu.getString("provincia")%>),<%= rspu.getString("paese")%></p>
         </div>
-            <%  String cord = rspu.getString("coordinate_geografiche");
+        <%  }
+            
             String libriUtente = "SELECT count(*), l.id, l.titolo, l.nome_autore, l.cognome_autore, "
                     + "l.casa_ed, l.n_pagine, l.anno_pubblicazione, l.genere, "
                     + "i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale "
                     + "FROM Indirizzo i JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
                     + "WHERE l.Book_User = '" + request.getParameter("emailSel") + "' "
-                    + "group by l.id, i.coordinate_geografiche, i.citta, i.provincia, i.paese ";
+                    + "group by l.id, i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale ";
 
             Statement stmt1 = con.createStatement();
             ResultSet rslu = stmt1.executeQuery(libriUtente);
-            
+
             ArrayList<Object[]> listaUtenti = new ArrayList<Object[]>();
             Object[] utenteCorrente;
             Object[][] distanze = null;
-            
+
             if (rslu.next()) {
                 session.setAttribute("trovato", true);
                 distanze = new Object[2][rslu.getInt(1)];
                 int i = 0;
                 do {
-                    utenteCorrente = new Object[11];
-                    utenteCorrente[0] = rslu.getString(2);
-                    utenteCorrente[1] = rslu.getString(3);
-                    utenteCorrente[2] = rslu.getString(4);
-                    utenteCorrente[3] = rslu.getInt(5);
-                    utenteCorrente[4] = rslu.getString(7);
-                    utenteCorrente[5] = rslu.getString(8);
-                    utenteCorrente[6] = rslu.getInt(9);
-                    utenteCorrente[7] = rslu.getInt(10);
-                    utenteCorrente[8] = rslu.getInt(10);
-                    utenteCorrente[9] = rslu.getInt(10);
-                    utenteCorrente[10] = rslu.getInt(10);
+                    utenteCorrente = new Object[12];
+                    utenteCorrente[0] = rslu.getString(3);
+                    utenteCorrente[1] = rslu.getString(4);
+                    utenteCorrente[2] = rslu.getString(5);
+                    utenteCorrente[3] = rslu.getString(6);
+                    utenteCorrente[4] = rslu.getInt(7);
+                    utenteCorrente[5] = rslu.getInt(8);
+                    utenteCorrente[6] = rslu.getString(9);
+                    utenteCorrente[7] = rslu.getString(11);
+                    utenteCorrente[8] = rslu.getString(12);
+                    utenteCorrente[9] = rslu.getString(13);
+                    utenteCorrente[10] = rslu.getInt(14);
+                    utenteCorrente[11] = rslu.getString(2);
                     listaUtenti.add(utenteCorrente);
                     distanze[0][i] = (int) i;
-                    distanze[1][i] = Geolocalizzazione.getDistance(cord, rslu.getString(6));
+                    distanze[1][i] = Geolocalizzazione.getDistance(cord, rslu.getString(10));
                 } while (rslu.next());
             } else {
                 session.setAttribute("trovato", false);
             }
+            if (distanze instanceof Object[][]) {
+                for (int j = 0; j < distanze[0].length; j++) {
+                    boolean flag = false;
+                    for (int k = 0; k < distanze[0].length - 1; k++) {
+                        if (Double.compare((Double) distanze[1][j], (Double) distanze[1][j + 1]) > 0) {
+                            Double temp1 = (Double) distanze[1][j];
+                            int temp2 = (int) distanze[0][j];
+                            distanze[0][j] = distanze[0][j + 1];
+                            distanze[1][j] = distanze[1][j + 1];
+                            distanze[0][j + 1] = temp2;
+                            distanze[1][j + 1] = temp1;
+                            flag = true;
+                        }
+                        if (!flag) {
+                            break;
+                        }
+                    }
+                }
         %>
-        
 
+        <% if ((Boolean) session.getAttribute("trovato")) {%>
         <div id="infoLibri">
             <form method="POST" action="OperazioniPrestito" >
                 <center>
@@ -99,28 +133,36 @@
                                 <th>Numero di pagine:</th> 
                                 <th>Anno di pubblicazione:</th>
                                 <th>Genere:</th>
+                                <th>Indirizzo:</th>
                                 <th>Distanza:</th>
                             </tr>
-                            <%while (rslu.next()) {%>
+                            <% int p;
+                                for (int pos = 0; pos < distanze[0].length; pos++) {
+                                    p = (int) distanze[0][pos];
+                            %>
                             <tr>
 
-                                <td><img src="PrintImage?id_img=<%= pb.getString("copertina")%>&amp;what=utente" 
+                                <td><img src="PrintImage?id_img=<%= listaUtenti.get(p)[11]%>&amp;what=libro" 
                                          width="50" height="50"
                                          alt="Immagine non Disponibile"/>
 
-                                <td> <p><%= pb.getString("titolo")%> </p></td>
+                                <td> <p><%= listaUtenti.get(p)[0]%> </p></td>
 
-                                <td> <p><%= pb.getString("nome_autore")%>,<%= pb.getString("cognome_autore")%> </p></td>    
+                                <td> <p><%= listaUtenti.get(p)[1]%>,<%= listaUtenti.get(p)[2]%> </p></td>    
 
-                                <td> <p><%= pb.getString("casa_ed")%> </p></td>
+                                <td> <p><%= listaUtenti.get(p)[3]%> </p></td>
 
-                                <td> <p><%= pb.getInt("n_pagine")%> </p></td>
+                                <td> <p><%= listaUtenti.get(p)[4]%> </p></td>
 
-                                <td> <p><%= pb.getInt("anno_pubblicazione")%> </p></td>
+                                <td> <p><%= listaUtenti.get(p)[5]%> </p></td>
 
-                                <td> <p><%= pb.getString("genere")%> </p></td>
+                                <td> <p><%= listaUtenti.get(p)[6]%> </p></td>
+                                
+                                <td> <p><%= listaUtenti.get(p)[7]%>(<%= listaUtenti.get(p)[8]%>),<%= listaUtenti.get(p)[9]%> </p><p
+                                     ><%if((int)listaUtenti.get(p)[10]==1)
+                                     {%><p>[Residenza]</p><%}%></td>
 
-                                <td> <p> Km </p></td>
+                                <td> <p> <%= distanze[1][pos]%> Km </p></td>
 
                                 <td> prenota </td>
                             </tr>
@@ -131,7 +173,7 @@
                     </table>
                 </center>
             </form>
-
+            <%} %>
 
         </div>    
 
