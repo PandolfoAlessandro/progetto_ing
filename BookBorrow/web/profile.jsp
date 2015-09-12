@@ -4,6 +4,7 @@
     Author     : insan3
 --%>
 
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
@@ -18,15 +19,20 @@
     </head>
     <body>
         <%
-            String utentePagina = "SELECT * FROM book_user WHERE email='" + request.getParameter("emailSel") + "'";
-            String libriUtentePagina = "SELECT * from libro WHERE disponibilita=1 AND book_user='" + request.getParameter("emailSel") + "'";
+            String librieUtente = "SELECT * "
+                    + "from libro join book_user on (libro.book_user=book_user.email) "
+                    + "WHERE disponibilita=1 AND book_user='" + request.getParameter("emailSel") + "'";
             Connection con = Connessione.getConnection();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(utentePagina);
+            int go = 0;
+            PreparedStatement stmt = con.prepareStatement(librieUtente);
+            stmt.clearParameters();
+            ResultSet pb = null;
+            pb = stmt.executeQuery();
+            if (pb.next()) {
+                go = 1;
+            }
 
-            ResultSet lib = stmt.executeQuery(libriUtentePagina);
-
-            if (rs.next()) {
+            if (go == 1) {
         %>
         <div id="fotoProfilo">
             <img src="PrintImage?id_img=<%=request.getParameter("emailSel")%>&amp;what=utente" 
@@ -38,8 +44,8 @@
 
         <div id="infoProfilo">
 
-            <h1><%= rs.getString("nome")%> <%= rs.getString("cognome")%></h1>
-            <p>email: <%= rs.getString("email")%></p>
+            <h1><%= pb.getString("nome")%> <%= pb.getString("cognome")%></h1>
+            <p>email: <%= pb.getString("email")%></p>
 
         </div>
 
@@ -47,32 +53,43 @@
             <form method="POST" action="OperazioniPrestito" >
                 <center>
                     <table border="1" width="30%" cellpadding="5">
-                        
                         <tbody>
-                            <%while(lib.next()){%>
                             <tr>
-                
-                                <td><img src="PrintImage?id_L=<% lib.getString("copertina");%>" 
-                                         width="50" height="50"
-                                         alt="Immagine non Disponibile"/></td>
-                                
-                                
-                            
-                                <td> <p>Titolo:<%= lib.getString(7)%> </p></td>
-                                    
-                                <td> <p>Autore:<%= lib.getString(4)%>,<%= rs.getString(3)%> </p></td>    
-                                
-                                <td> <p>Casa editrice:<%= lib.getString(6)%> </p></td>
-                               
-                                <td> <p>Numero di pagine:<%= lib.getInt(2)%> </p></td>
-                                
-                                <td> <p>Anno di pubblicazione:<%= lib.getInt(1)%> </p></td>
-                                
-                                <td> <p>Genere:<%= lib.getString(5)%> </p></td>
+                                <th>Copertina:</th>
+                                <th>Titolo:</th>
+                                <th>Autore:</th>
+                                <th>Casa editrice:</th>
+                                <th>Numero di pagine:</th> 
+                                <th>Anno di pubblicazione:</th>
+                                <th>Genere:</th>
+                                <th>Distanza:</th>
                             </tr>
-                    
+                            <%while (pb.next()) {%>
+                            <tr>
+
+                                <td><img src="PrintImage?id_img=<%= pb.getString("copertina")%>&amp;what=utente" 
+                                         width="50" height="50"
+                                         alt="Immagine non Disponibile"/>
+
+                                <td> <p><%= pb.getString("titolo")%> </p></td>
+
+                                <td> <p><%= pb.getString("nome_autore")%>,<%= pb.getString("cognome_autore")%> </p></td>    
+
+                                <td> <p><%= pb.getString("casa_ed")%> </p></td>
+
+                                <td> <p><%= pb.getInt("n_pagine")%> </p></td>
+
+                                <td> <p><%= pb.getInt("anno_pubblicazione")%> </p></td>
+
+                                <td> <p><%= pb.getString("genere")%> </p></td>
+                                
+                                <td> <p> Km </p></td>
+                                
+                                <td> prenota </td>
+                            </tr>
+
                             <%}%>
-                           
+
                         </tbody>
                     </table>
                 </center>

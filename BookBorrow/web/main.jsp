@@ -191,7 +191,7 @@
                         </tr>
                     </table> 
                 </TD>
-                <TD> <%= distanze[1][pos]%></TD>
+                <TD> <%= distanze[1][pos]%> Km</TD>
             </TR>
             <%}%>
         </TABLE>
