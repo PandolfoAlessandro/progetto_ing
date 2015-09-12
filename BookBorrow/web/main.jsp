@@ -35,7 +35,6 @@
                     response.sendRedirect("admin.jsp");
                 }
             }
-            
         %>
         <h1>Ciao <%out.print((String) session.getAttribute("userEmail"));%>! Sei nella mainpage di bookborrow!</h1> 
 
@@ -60,7 +59,7 @@
                 <tr>
                     <td>Inserisci nome, cognome o mail dell'utente:</td>
                     <td><input type="text" name=utenteSel value="" ></td>
-                    <td><button type="submit" onsubmit="window.location = 'main.jsp?uS='+document.getElementsByClassName('utenteSel')">Cerca</button></td>
+                    <td><button onclick="">Cerca</button></td>
                 </tr>
             </table>
         </div>
@@ -87,11 +86,9 @@
                     + "FROM Book_User u JOIN Indirizzo i on (u.email=i.Book_User) "
                     + "JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "Where u.tipologia = 1 "/* and u.email!='"+session.getAttribute("userEmail")+"' "*/;
-            
-            
-            
-            selectUsers += "group by u.email, i.provincia, i.citta,i.coordinate_geografiche ";
+                    + "Where u.tipologia = 1 "
+                    + "group by u.email, i.provincia, i.citta,i.coordinate_geografiche";
+
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
             Statement stmt = con.createStatement();
 
@@ -160,10 +157,8 @@
                 <TD> 
                     <table>
                         <tr>
-                            <td><a href="profile.jsp?emailSel=<%= listaUtenti.get(p)[0]%>">
-                                <p><%= listaUtenti.get(p)[1]%> <%= listaUtenti.get(p)[2]%> (<%= listaUtenti.get(p)[3]%>)
-                                </p>
-                                </a>
+                            <td>
+                                <%= listaUtenti.get(p)[1]%> <%= listaUtenti.get(p)[2]%> (<%= listaUtenti.get(p)[3]%>)
                             </td>       
                         </tr>
                         <tr>
