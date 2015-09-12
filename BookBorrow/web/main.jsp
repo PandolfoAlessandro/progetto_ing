@@ -63,7 +63,7 @@
                 </tr>
             </table>
         </div>
-        <%/*
+        <%
             String cord = null;
             String qCord = "SELECT coordinate_geografiche FROM indirizzo "
                     + "WHERE BOOK_USER='" + session.getAttribute("userEmail") + "' "
@@ -114,74 +114,74 @@
                     utenteCorrente[6] = rs.getInt(9);
                     utenteCorrente[7] = rs.getInt(10);
                     listaUtenti.add(utenteCorrente);
-                    distanze[0][i] = i;
+                    distanze[0][i] = (int)i;
                     distanze[1][i] = Geolocalizzazione.getDistance(cord, rs.getString(6));
                 } while (rs.next());
             } else {
-                throw new Exception();
+                response.sendRedirect("errorPage.jsp");
             }
-            for (int j = 0; j < distanze[0].length; j++) {
-                boolean flag = false;
-                for (int k = 0; k < distanze[0].length - 1; k++) {
-                    if (Double.compare((Double) distanze[1][j], (Double) distanze[1][j + 1]) > 0) {
-                        Double temp1 = (Double) distanze[1][j];
-                        int temp2 = (int) distanze[0][j];
-                        distanze[0][j] = distanze[0][j + 1];
-                        distanze[1][j] = distanze[1][j + 1];
-                        distanze[0][j + 1] = temp2;
-                        distanze[1][j + 1] = temp1;
-                        flag = true;
-                    }
-                    if (!flag) {
-                        break;
+            if (distanze instanceof Object[][]) {
+                for (int j = 0; j < distanze[0].length; j++) {
+                    boolean flag = false;
+                    for (int k = 0; k < distanze[0].length - 1; k++) {
+                        if (Double.compare((Double) distanze[1][j], (Double) distanze[1][j + 1]) > 0) {
+                            Double temp1 = (Double) distanze[1][j];
+                            int temp2 = (int) distanze[0][j];
+                            distanze[0][j] = distanze[0][j + 1];
+                            distanze[1][j] = distanze[1][j + 1];
+                            distanze[0][j + 1] = temp2;
+                            distanze[1][j + 1] = temp1;
+                            flag = true;
+                        }
+                        if (!flag) {
+                            break;
+                        }
                     }
                 }
-            }
+        %>    
 
 
-        */%>    
-
-
-        <!--TABLE BORDER="1" style="border-color: orangered">
+        <TABLE BORDER="1" style="border-color: orangered">
             <TR>
                 <TH>Foto Profilo</TH>
                 <TH>Dettaglio</TH>
                 <TH>Distanza</TH>
             </TR>
-            <%// for (int pos = 0; pos < distanze[0].length; pos++) {%>
+            <% int p;for (int pos = 0; pos < distanze[0].length; pos++) {
+                p=(int)distanze[0][pos];
+            %>
             <TR>
-                <TD><img src="PrintImage?id_L=<%//= listaUtenti.get((int) distanze[0][pos])[0]%>&what=utente" 
-                                     width="200" height="200"
-                                     alt="Immagine non Disponibile"/></TD>
+                <TD><img src="PrintImage?id_img=<%= listaUtenti.get(p)[0]%>&amp;what=utente" 
+                         width="200" height="200"
+                         alt="Immagine non Disponibile"/></TD>
                 <TD> 
                     <table>
                         <tr>
                             <td>
-                                <%//= listaUtenti.get((int) distanze[0][pos])[1]%> <%//= listaUtenti.get((int) distanze[0][pos])[2]%> (<%//= listaUtenti.get((int) distanze[0][pos])[3]%>)
+                                <%= listaUtenti.get(p)[1]%> <%= listaUtenti.get(p)[2]%> (<%= listaUtenti.get(p)[3]%>)
                             </td>       
                         </tr>
                         <tr>
-                            <td><%//= listaUtenti.get((int) distanze[0][pos])[0]%></td>
+                            <td><%= listaUtenti.get(p)[0]%></td>
                         </tr>
                         <tr>
-                            <td><%//= listaUtenti.get((int) distanze[0][pos])[4]%>(<%//= listaUtenti.get((int) distanze[0][pos])[5]%>)</td>
+                            <td><%= listaUtenti.get(p)[4]%>(<%= listaUtenti.get(p)[5]%>)</td>
                         </tr>
                         <tr>
-                            <td>Libri nel sistema:<%//= listaUtenti.get((int) distanze[0][pos])[6]%><%
-                                //int ind = (int) listaUtenti.get((int) distanze[0][pos])[7];
-                                //if (ind - 1 > 0) {
-                                %>(Alcuni libri non sono all'indirizzo di residenza)<%//}%>
+                            <td>Libri nel sistema:<%= listaUtenti.get(p)[6]%><%
+                                int ind = (int) listaUtenti.get(p)[7];
+                                if (ind - 1 > 0) {
+                                %>(Alcuni libri non sono all'indirizzo di residenza)<%}%>
                             </td>
                         </tr>
                     </table> 
                 </TD>
+                <TD> <%= distanze[1][pos]%></TD>
             </TR>
-            <TR>
-                <TD> <%//= distanze[1][pos]%></TD>
-            </TR>
-            <%// }%>
-        </TABLE-->
-        <%//con.close();%>
+            <%}%>
+        </TABLE>
+        <%con.close();
+            }%>
 
 
 

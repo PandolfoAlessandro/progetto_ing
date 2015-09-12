@@ -65,7 +65,7 @@ public class PrintImage extends HttpServlet {
             throws ServletException, IOException {
 
         String imgLibro = "SELECT l.copertina FROM libro l WHERE l.id = '" + request.getParameter("id_img") + "'";
-        String imgUtente = "SELECT u.foro_profilo FROM Book_User u WHERE u.email = '" + request.getParameter("id_img") + "'";
+        String imgUtente = "SELECT u.foto_profilo FROM Book_User u WHERE u.email = '" + request.getParameter("id_img") + "'";
         String query=null;
         if(request.getParameter("what").equalsIgnoreCase("libro")){
             query=imgLibro;
