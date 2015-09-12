@@ -1,0 +1,21 @@
+#fotoProfilo {
+   border: thin solid lightGray;
+   padding: 5px;
+   top: 30.5%;
+   background: #eeeeee;
+   position: relative;
+   width: 22.5%;
+   float:left;
+  
+}
+
+#infoProfilo {
+   border: thin solid lightGray;
+   padding: 5px;
+   top: 30.5%;
+   background: #eeeeee;
+   position: relative;
+   width: 22.5%;
+   float:left;
+  
+}
