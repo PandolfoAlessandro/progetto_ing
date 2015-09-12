@@ -64,7 +64,18 @@ public class PrintImage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String img = "SELECT l.copertina FROM libro l WHERE l.id = '" + request.getParameter("id_L") + "'";
+        String imgLibro = "SELECT l.copertina FROM libro l WHERE l.id = '" + request.getParameter("id_img") + "'";
+        String imgUtente = "SELECT u.foro_profilo FROM Book_User u WHERE u.email = '" + request.getParameter("id_img") + "'";
+        String query=null;
+        if(request.getParameter("what").equalsIgnoreCase("libro")){
+            query=imgLibro;
+        }else{
+            if(request.getParameter("what").equalsIgnoreCase("utente")){
+                query=imgUtente;
+            }else{
+                response.sendRedirect("errorPage.jsp");
+            }
+        }
         
         try {
             Connection con = Connessione.getConnection();
@@ -74,7 +85,7 @@ public class PrintImage extends HttpServlet {
 
             ResultSet rs;
             // Verifico che le credenziali inserite siano di un utente "normale"
-            rs = stmt.executeQuery(img);
+            rs = stmt.executeQuery(query);
             
             if(rs.next()){
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

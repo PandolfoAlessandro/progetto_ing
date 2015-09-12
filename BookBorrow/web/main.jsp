@@ -150,7 +150,9 @@
             </TR>
             <% for (int pos = 0; pos < distanze[0].length; pos++) {%>
             <TR>
-                <TD> non adesso</TD>
+                <TD><img src="PrintImage?id_L=<%= listaUtenti.get((int) distanze[0][pos])[0]%>&what=utente" 
+                                     width="200" height="200"
+                                     alt="Immagine non Disponibile"/></TD>
                 <TD> 
                     <table>
                         <tr>
