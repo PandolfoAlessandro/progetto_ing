@@ -58,7 +58,7 @@ public class ImageUpload extends HttpServlet {
                 try{
                     doPostBook(request, response);
                     
-                    
+                    response.sendRedirect("manageBooks.jsp");
                     
                 }catch (ServletException | IOException ex) {
                     Logger.getLogger(ImageUpload.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,8 +146,8 @@ public class ImageUpload extends HttpServlet {
 
     private void doPostBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // gets values of text fields
-        String id = (String) request.getSession().getAttribute("id");
-
+        //String id = (String) request.getSession().getAttribute("id");
+        String id=(String)(request.getParameter("upload").split("/")[1]);
 
         InputStream inputStream = null; // input stream of the upload file
 
