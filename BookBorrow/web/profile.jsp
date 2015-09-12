@@ -4,6 +4,8 @@
     Author     : insan3
 --%>
 
+<%@page import="it.functions.Geolocalizzazione"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
@@ -19,35 +21,70 @@
     </head>
     <body>
         <%
-            String librieUtente = "SELECT * "
-                    + "from libro join book_user on (libro.book_user=book_user.email) "
-                    + "WHERE disponibilita=1 AND book_user='" + request.getParameter("emailSel") + "'";
+            String profiloUtente = "SELECT u.nome, u.cognome, date_part('Year', u.data_nascita) as an, "
+                    + "i.coordinate_geografiche, i.citta, i.provincia, i.paese "
+                    + "FROM Book_user u JOIN Indirizzo i ON (u.email=i.Book_user) "
+                    + "WHERE u.mail='" + request.getParameter("emailSel") + "' AND principale=1 ";
+            
             Connection con = Connessione.getConnection();
-            int go = 0;
-            PreparedStatement stmt = con.prepareStatement(librieUtente);
-            stmt.clearParameters();
-            ResultSet pb = null;
-            pb = stmt.executeQuery();
-            if (pb.next()) {
-                go = 1;
-            }
 
-            if (go == 1) {
+            Statement stmt = con.createStatement();
+            ResultSet rspu = stmt.executeQuery(profiloUtente);
         %>
         <div id="fotoProfilo">
             <img src="PrintImage?id_img=<%=request.getParameter("emailSel")%>&amp;what=utente" 
                  width="200" height="200" 
                  alt="Immagine non Disponibile"/>
-
-
         </div>
 
         <div id="infoProfilo">
-
-            <h1><%= pb.getString("nome")%> <%= pb.getString("cognome")%></h1>
-            <p>email: <%= pb.getString("email")%></p>
-
+            <h1><%= rspu.getString("nome")%> <%= rspu.getString("cognome")%></h1>
+            <p>email: <%= rspu.getString("email")%></p>
+            <p>Anno di nascita: <%= rspu.getInt("an")%></p>
+            <p>Residenza: <%= rspu.getString("citta")%>(<%= rspu.getString("provincia")%>),<%= rspu.getString("paese")%></p>
         </div>
+            <%  String cord = rspu.getString("coordinate_geografiche");
+            String libriUtente = "SELECT count(*), l.id, l.titolo, l.nome_autore, l.cognome_autore, "
+                    + "l.casa_ed, l.n_pagine, l.anno_pubblicazione, l.genere, "
+                    + "i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale "
+                    + "FROM Indirizzo i JOIN libro l "
+                    + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
+                    + "WHERE l.Book_User = '" + request.getParameter("emailSel") + "' "
+                    + "group by l.id, i.coordinate_geografiche, i.citta, i.provincia, i.paese ";
+
+            Statement stmt1 = con.createStatement();
+            ResultSet rslu = stmt1.executeQuery(libriUtente);
+            
+            ArrayList<Object[]> listaUtenti = new ArrayList<Object[]>();
+            Object[] utenteCorrente;
+            Object[][] distanze = null;
+            
+            if (rslu.next()) {
+                session.setAttribute("trovato", true);
+                distanze = new Object[2][rslu.getInt(1)];
+                int i = 0;
+                do {
+                    utenteCorrente = new Object[11];
+                    utenteCorrente[0] = rslu.getString(2);
+                    utenteCorrente[1] = rslu.getString(3);
+                    utenteCorrente[2] = rslu.getString(4);
+                    utenteCorrente[3] = rslu.getInt(5);
+                    utenteCorrente[4] = rslu.getString(7);
+                    utenteCorrente[5] = rslu.getString(8);
+                    utenteCorrente[6] = rslu.getInt(9);
+                    utenteCorrente[7] = rslu.getInt(10);
+                    utenteCorrente[8] = rslu.getInt(10);
+                    utenteCorrente[9] = rslu.getInt(10);
+                    utenteCorrente[10] = rslu.getInt(10);
+                    listaUtenti.add(utenteCorrente);
+                    distanze[0][i] = (int) i;
+                    distanze[1][i] = Geolocalizzazione.getDistance(cord, rslu.getString(6));
+                } while (rslu.next());
+            } else {
+                session.setAttribute("trovato", false);
+            }
+        %>
+        
 
         <div id="infoLibri">
             <form method="POST" action="OperazioniPrestito" >
@@ -64,7 +101,7 @@
                                 <th>Genere:</th>
                                 <th>Distanza:</th>
                             </tr>
-                            <%while (pb.next()) {%>
+                            <%while (rslu.next()) {%>
                             <tr>
 
                                 <td><img src="PrintImage?id_img=<%= pb.getString("copertina")%>&amp;what=utente" 
@@ -82,9 +119,9 @@
                                 <td> <p><%= pb.getInt("anno_pubblicazione")%> </p></td>
 
                                 <td> <p><%= pb.getString("genere")%> </p></td>
-                                
+
                                 <td> <p> Km </p></td>
-                                
+
                                 <td> prenota </td>
                             </tr>
 

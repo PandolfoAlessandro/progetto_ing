@@ -71,7 +71,8 @@
         </div>
         <%
             String cord = null;
-            String qCord = "SELECT coordinate_geografiche FROM indirizzo "
+            String provincia = null;
+            String qCord = "SELECT coordinate_geografiche, provincia FROM indirizzo "
                     + "WHERE BOOK_USER='" + session.getAttribute("userEmail") + "' "
                     + "and Principale=1 ";
 
@@ -85,6 +86,7 @@
 
             if (rs1.next()) {
                 cord = rs1.getString(1);
+                provincia = rs1.getString(2);
             }
 
             String selectUsers = "SELECT count(*), u.email, u.nome, u.cognome, date_part('Year', u.data_nascita),i.coordinate_geografiche, i.citta, i.provincia, "
@@ -98,6 +100,8 @@
                 selectUsers += " and (u.nome ilike '" + request.getParameter("uS") + "' or "
                         + "u.cognome ilike '" + request.getParameter("uS") + "' or "
                         + "u.email= '"+request.getParameter("uS")+"') ";
+            }else{
+                selectUsers += "and i.provincia ilike '"+provincia+"' ";
             }
 
             selectUsers += "group by u.email, i.provincia, i.citta,i.coordinate_geografiche, l.id ";
