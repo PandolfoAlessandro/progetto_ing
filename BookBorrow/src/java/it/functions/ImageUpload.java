@@ -146,8 +146,8 @@ public class ImageUpload extends HttpServlet {
 
     private void doPostBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // gets values of text fields
-        //String id = (String) request.getSession().getAttribute("id");
-        String id=(String)(request.getParameter("upload").split("/")[1]);
+        String id = (String) request.getSession().getAttribute("id");
+        //String id=(String)(request.getParameter("upload").split("/")[1]);
 
         InputStream inputStream = null; // input stream of the upload file
 

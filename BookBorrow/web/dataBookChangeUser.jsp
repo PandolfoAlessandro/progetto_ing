@@ -37,7 +37,7 @@
                     + "nome_autore, cognome_autore, genere, casa_ed, titolo "
                     + "FROM libro l "
                     + "WHERE l.id='" + request.getParameter("id_l") 
-                    + "' AND l.proprietario='"+(String)(session.getAttribute("userEmail"))+"'";
+                    + "' AND l.book_user='"+(String)(session.getAttribute("userEmail"))+"'";
 
             Connection con = Connessione.getConnection();
 
@@ -93,7 +93,7 @@
                         </tr>
                         <tr>
                             <td>Copertina:</td>
-                            <td><img src="PrintImage?id_L=<% out.print(request.getParameter("id_l"));%>" 
+                            <td><img src="PrintImage?id_img=<% out.print(request.getParameter("id_l"));%>&amp;what=libro" 
                                      width="200" height="200"
                                      alt="Immagine non Disponibile"/></td>
                             <td>
