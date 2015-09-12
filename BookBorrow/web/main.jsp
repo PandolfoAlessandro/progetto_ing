@@ -88,11 +88,11 @@
             }
 
             String selectUsers = "SELECT count(*), u.email, u.nome, u.cognome, date_part('Year', u.data_nascita),i.coordinate_geografiche, i.citta, i.provincia, "
-                    + "count(distinct l.id), count(distinct l.coordinate_geografiche) "
+                    + "count(distinct l.id), count(distinct l.coordinate_geografiche), l.id "
                     + "FROM Book_User u JOIN Indirizzo i on (u.email=i.Book_User) "
                     + "JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "Where u.tipologia = 1 "/* and u.email!='"+session.getAttribute("userEmail")+"' "*/;
+                    + "Where u.tipologia = 1  and u.email!='"+session.getAttribute("userEmail")+"' ";
 
             if (request.getParameter("uS") != null && !(request.getParameter("uS").equals(""))) {
                 selectUsers += " and (u.nome ilike '" + request.getParameter("uS") + "' or "
@@ -100,7 +100,7 @@
                         + "u.email= '"+request.getParameter("uS")+"') ";
             }
 
-            selectUsers += "group by u.email, i.provincia, i.citta,i.coordinate_geografiche ";
+            selectUsers += "group by u.email, i.provincia, i.citta,i.coordinate_geografiche, l.id ";
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
             Statement stmt = con.createStatement();
 

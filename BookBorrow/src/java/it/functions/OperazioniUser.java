@@ -209,7 +209,7 @@ public class OperazioniUser extends HttpServlet {
 
     private void setTipologiaUser(String user) throws ClassNotFoundException, SQLException {
         String control
-                = "SELECT count(libro.id) AS numLibri"
+                = "SELECT count(libro.id) AS numLibri "
                 + "FROM libro "
                 + "WHERE libro.book_user='" + user + "'";
 

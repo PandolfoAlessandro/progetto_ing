@@ -30,13 +30,14 @@ public class LoginAndRegistration extends HttpServlet {
 
         HttpSession session = request.getSession();
 
+        String controlloEsistenza = "SELECT 1 FROM Book_user WHERE email = '" + request.getParameter("userEmail") + "'";
         String insertNewUser = "INSERT INTO book_user VALUES (?,?,?,?,?,?,null,0)";
         String insertNewAddress = "INSERT INTO indirizzo VALUES (?,?,?,?,?,?,?,?,1)";
         String isBanned = "SELECT 1 FROM Blacklist WHERE email = '" + request.getParameter("userEmail") + "'";
-        
-        Connection con=null;
+
+        Connection con = null;
         try {
-            con= Connessione.getConnection();
+            con = Connessione.getConnection();
         } catch (ClassNotFoundException ex) {
             response.sendRedirect("errorPage.jsp");
         }
@@ -44,71 +45,82 @@ public class LoginAndRegistration extends HttpServlet {
             Statement stmt = con.createStatement();
 
             ResultSet rs;
-            // Verifico che le credenziali inserite siano di un utente "normale"
-            rs = stmt.executeQuery(isBanned);
-            int n=0;
-            if(rs.next()){
+            rs = stmt.executeQuery(controlloEsistenza);
+            int n = 0;
+            if (rs.next()) {
                 n = rs.getInt(1);
             }
-
-            if (n==1) {
-                
-                session.setAttribute("isBanned", true);
+            if (n == 1) {
+                session.setAttribute("alreadyExist", true);
                 response.sendRedirect("index.jsp");
-
             } else {
-                // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-                PreparedStatement pstmt = con.prepareStatement(insertNewUser);
 
-                pstmt.clearParameters();
+                // Verifico che le credenziali inserite siano di un utente "normale"
+                rs = stmt.executeQuery(isBanned);
 
-                // imposto i parametri della query
-                pstmt.setString(1, request.getParameter("userEmail"));
-                pstmt.setString(2, request.getParameter("userPwd"));
-                pstmt.setString(3, request.getParameter("userName"));
-                pstmt.setString(4, request.getParameter("userSurname"));
-                pstmt.setString(5, request.getParameter("sesso"));
-                // CONVERSIONE STRINGA IN DATA
-                SimpleDateFormat formato_data = new SimpleDateFormat("dd/MM/yyyy");
-                java.util.Date parsed = formato_data.parse(request.getParameter("userBirthDate"));
-                java.sql.Date sql = new java.sql.Date(parsed.getTime());
-                pstmt.setDate(6, sql);
-
-                pstmt.executeUpdate();
-
-                // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-                pstmt = con.prepareStatement(insertNewAddress);
-                pstmt.clearParameters();
-
-                String indirizzo
-                        = request.getParameter("userVia") + " "
-                        + request.getParameter("userNumCiv") + " "
-                        + request.getParameter("userCAP") + " "
-                        + request.getParameter("userCity") + " "
-                        + request.getParameter("userProv") + " "
-                        + request.getParameter("userState");
-
-                // imposto i parametri della query
-                String coordinate_geografiche = Geolocalizzazione.getCoordinate(indirizzo);
-                if (!cordinateEsistenti(coordinate_geografiche)) {
-                    pstmt.setString(1, coordinate_geografiche);
-                    pstmt.setString(2, request.getParameter("userEmail"));
-                    pstmt.setString(3, request.getParameter("userVia"));
-                    pstmt.setString(4, request.getParameter("userNumCiv"));
-                    pstmt.setString(5, request.getParameter("userCAP"));
-                    pstmt.setString(6, request.getParameter("userCity"));
-                    pstmt.setString(7, request.getParameter("userProv"));
-                    pstmt.setString(8, request.getParameter("userState"));
-
-                    pstmt.executeUpdate();
+                if (rs.next()) {
+                    n = rs.getInt(1);
                 }
 
-                session.setAttribute("userEmail", request.getParameter("userEmail"));
-                session.setAttribute("userName", request.getParameter("userName"));
-                session.setAttribute("userSurname", request.getParameter("userSurname"));
-                session.setAttribute("isAdmin", false);
-                response.sendRedirect("completeRegistration.jsp"); // completata l'iscrizione, l'utente viene reindirizzato alla sua home page
+                if (n == 1) {
 
+                    session.setAttribute("isBanned", true);
+                    response.sendRedirect("index.jsp");
+
+                } else {
+                    // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
+                    PreparedStatement pstmt = con.prepareStatement(insertNewUser);
+
+                    pstmt.clearParameters();
+
+                    // imposto i parametri della query
+                    pstmt.setString(1, request.getParameter("userEmail"));
+                    pstmt.setString(2, request.getParameter("userPwd"));
+                    pstmt.setString(3, request.getParameter("userName"));
+                    pstmt.setString(4, request.getParameter("userSurname"));
+                    pstmt.setString(5, request.getParameter("sesso"));
+                    // CONVERSIONE STRINGA IN DATA
+                    SimpleDateFormat formato_data = new SimpleDateFormat("dd/MM/yyyy");
+                    java.util.Date parsed = formato_data.parse(request.getParameter("userBirthDate"));
+                    java.sql.Date sql = new java.sql.Date(parsed.getTime());
+                    pstmt.setDate(6, sql);
+
+                    pstmt.executeUpdate();
+
+                    // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
+                    pstmt = con.prepareStatement(insertNewAddress);
+                    pstmt.clearParameters();
+
+                    String indirizzo
+                            = request.getParameter("userVia") + " "
+                            + request.getParameter("userNumCiv") + " "
+                            + request.getParameter("userCAP") + " "
+                            + request.getParameter("userCity") + " "
+                            + request.getParameter("userProv") + " "
+                            + request.getParameter("userState");
+
+                    // imposto i parametri della query
+                    String coordinate_geografiche = Geolocalizzazione.getCoordinate(indirizzo);
+                    if (!cordinateEsistenti(coordinate_geografiche)) {
+                        pstmt.setString(1, coordinate_geografiche);
+                        pstmt.setString(2, request.getParameter("userEmail"));
+                        pstmt.setString(3, request.getParameter("userVia"));
+                        pstmt.setString(4, request.getParameter("userNumCiv"));
+                        pstmt.setString(5, request.getParameter("userCAP"));
+                        pstmt.setString(6, request.getParameter("userCity"));
+                        pstmt.setString(7, request.getParameter("userProv"));
+                        pstmt.setString(8, request.getParameter("userState"));
+
+                        pstmt.executeUpdate();
+                    }
+
+                    session.setAttribute("userEmail", request.getParameter("userEmail"));
+                    session.setAttribute("userName", request.getParameter("userName"));
+                    session.setAttribute("userSurname", request.getParameter("userSurname"));
+                    session.setAttribute("isAdmin", false);
+                    response.sendRedirect("completeRegistration.jsp"); // completata l'iscrizione, l'utente viene reindirizzato alla sua home page
+
+                }
             }
         } catch (SQLException | ParseException | IOException e) {
             response.sendRedirect("errorPage.jsp");

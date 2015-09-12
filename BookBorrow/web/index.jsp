@@ -26,11 +26,14 @@
                 }
             }
 
-            if (session.getAttribute("loginFailed") == null) {
-                session.setAttribute("loginFailed", false);
+            if (session.getAttribute("alreadyExist") == null) {
+                session.setAttribute("alreadyExist", false);
             }
             if (session.getAttribute("isBanned") == null) {
                 session.setAttribute("isBanned", false);
+            }
+            if (session.getAttribute("loginFailed") == null) {
+                session.setAttribute("loginFailed", false);
             }
         %>
         <div id="header">
@@ -54,6 +57,10 @@
             <form action="LoginAndRegistration" method="POST">
                 <% if ((Boolean) session.getAttribute("loginFailed")) { %>
                 <p style="color: red">E-mail o password inseriti errati o inesistenti</p>
+                <% } %>
+                
+                <% if ((Boolean) session.getAttribute("alreadyExist")) { %>
+                <p style="color: red">L'E-mail inserita per iscriversi &egrave; gi&agrave; utilizzata</p>
                 <% } %>
 
                 <% if ((Boolean) session.getAttribute("isBanned")) { %>
