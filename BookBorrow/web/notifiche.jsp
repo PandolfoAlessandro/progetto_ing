@@ -17,7 +17,7 @@
         <%
             String ricevute = "SELECT p.email_richiedente, l.titolo, l.nome_autore, "
                     + "l.cognome_autore, date_part('Year', p.data_richiesta), date_part('Month', p.data_richiesta), "
-                    + "date_part('Day', p.data_richiesta) "
+                    + "date_part('Day', p.data_richiesta), l.id "
                     + "FROM prestito p JOIN libro l ON (p.id_libro=l.id) "
                     + "WHERE p.stato ilike 'p' and "
                     + "p.email_proprietario = '" + session.getAttribute("userEmail") + "'";
@@ -26,9 +26,9 @@
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(ricevute);
             int col = 0;
-            String azione = "OperazioniPrestito?ep="+ session.getAttribute("userEmail");
+
         %>
-        <form method="get" action="<%= azione %>">
+        <form method="get" action="OperazioniPrestito">
             <table>
                 <th>RICHIESTE DI PRESTITO RICEVUTE</th>
                     <%while (rs.next()) {%>
@@ -38,8 +38,8 @@
                         out.print("appwoekspase");
                     }%>">
                     <td>In data <%= rs.getInt(7)%>/<%= rs.getInt(6)%>/<%= rs.getInt(5)%>, l'utente <%= rs.getString(1)%> ha chiesto in prestito il libro <%= rs.getString(2)%> di <%= rs.getString(3)%> <%= rs.getString(4)%></td><td></td>
-                    <td><button type="submit" name="delete" value="<%= rs.getString(1)%>/<%= rs.getString(2)%>/a">Accetta</button></td>
-                    <td><button type="submit" name="delete" value="<%= rs.getString(1)%>/<%= rs.getString(2)%>/r">Rifiuta</button></td>
+                    <td><button type="submit" name="delete" value="<%= rs.getString(1)%>/<%= rs.getString(8)%>/a">Accetta</button></td>
+                    <td><button type="submit" name="delete" value="<%= rs.getString(1)%>/<%= rs.getString(8)%>/r">Rifiuta</button></td>
                 </tr>
                 <%col++;
                     }%>

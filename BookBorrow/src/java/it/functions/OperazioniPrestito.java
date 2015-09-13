@@ -1,4 +1,3 @@
-
 package it.functions;
 
 import it.database.Connessione;
@@ -37,7 +36,7 @@ public class OperazioniPrestito extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OperazioniPrestito</title>");            
+            out.println("<title>Servlet OperazioniPrestito</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet OperazioniPrestito at " + request.getContextPath() + "</h1>");
@@ -58,10 +57,34 @@ public class OperazioniPrestito extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String proprietario =request.getParameter("ep");
-        String richiedente =request.getParameter("delete").split("/")[0];
-        String libro =request.getParameter("delete").split("/")[1];
-        char stato =request.getParameter("delete").split("/")[2].charAt(0);
+        String proprietario = (String) request.getSession().getAttribute("userEmail");
+        String richiedente = request.getParameter("delete").split("/")[0];
+        String libro = request.getParameter("delete").split("/")[1];
+        char stato = request.getParameter("delete").split("/")[2].charAt(0);
+
+        String setStatoPr = "Update prestito set stato='" + stato + "' "
+                + "WHERE email_proprietario='" + proprietario + "' and email_richiedente='" + richiedente + "' "
+                + "and id_libro='" + libro + "' ";
+        String disponibile = "Update libro set disponibilita=1 where id='" + libro + "'";
+
+        try {
+            Connection con = Connessione.getConnection();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate(setStatoPr);
+
+            con.close();
+
+            if (stato == 'r' ||stato == 'R') {
+                con = Connessione.getConnection();
+                stmt = con.createStatement();
+                stmt.executeUpdate(disponibile);
+            }
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            response.sendRedirect("errorPage.sql");
+        }
+        response.sendRedirect("notifiche.jsp");
+
     }
 
     /**
@@ -80,19 +103,19 @@ public class OperazioniPrestito extends HttpServlet {
         String libro = request.getParameter("prestito").split("/")[2];
         Date data = new Date(System.currentTimeMillis());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String prestito = "Insert into Prestito values ('"+proprietario+"','"+richiedente+"','"+libro+"','p','"+dateFormat.format(data)+"')";
-        String disponibile="Update libro set disponibilita=0 where id='"+libro+"'";
-        
+        String prestito = "Insert into Prestito values ('" + proprietario + "','" + richiedente + "','" + libro + "','p','" + dateFormat.format(data) + "')";
+        String disponibile = "Update libro set disponibilita=0 where id='" + libro + "'";
+
         try {
             Connection con = Connessione.getConnection();
             Statement stmt = con.createStatement();
             stmt.executeUpdate(prestito);
-            
+
             con.close();
-            con= Connessione.getConnection();
+            con = Connessione.getConnection();
             stmt = con.createStatement();
             stmt.executeUpdate(disponibile);
-            
+
         } catch (ClassNotFoundException | SQLException ex) {
             response.sendRedirect("errorPage.sql");
         }
