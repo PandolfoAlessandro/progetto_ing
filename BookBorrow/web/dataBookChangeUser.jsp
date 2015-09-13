@@ -34,7 +34,7 @@
         
         <%
             String datiLibro = "SELECT anno_pubblicazione, n_pagine, "
-                    + "nome_autore, cognome_autore, genere, casa_ed, titolo "
+                    + "nome_autore, cognome_autore, genere, casa_ed, titolo, disponibilita "
                     + "FROM libro l "
                     + "WHERE l.id='" + request.getParameter("id_l") 
                     + "' AND l.book_user='"+(String)(session.getAttribute("userEmail"))+"'";
@@ -90,6 +90,10 @@
                         <tr>
                             <td>Genere:</td>
                             <td><input type="text" name="gen" value="<%= rs.getString(5)%>" ></td>
+                        </tr>
+                        <tr>
+                            <td>Disponibilita:</td>
+                            <td><input type="text" name="disp" value="<%= rs.getString(8)%>" ></td>
                         </tr>
                         <tr>
                             <td>Copertina:</td>

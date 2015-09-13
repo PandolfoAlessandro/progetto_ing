@@ -243,7 +243,7 @@ public class OperazioniUser extends HttpServlet {
 
     private void modificaDatiLibro(String id_l, HttpServletRequest request) throws ClassNotFoundException, SQLException {
         String updateBook = "UPDATE Libro SET anno_pubblicazione=?, n_pagine=?, "
-                + "nome_autore=?, cognome_autore=?, genere=?, casa_ed=?, titolo=? "
+                + "nome_autore=?, cognome_autore=?, genere=?, casa_ed=?, titolo=?, disponibilita=? "
                 + "WHERE id='" + id_l + "'";
         try (Connection con = Connessione.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(updateBook);
@@ -257,6 +257,7 @@ public class OperazioniUser extends HttpServlet {
             pstmt.setString(5, request.getParameter("gen"));
             pstmt.setString(6, request.getParameter("casaEd"));
             pstmt.setString(7, request.getParameter("libroTitolo"));
+            pstmt.setInt(8, Integer.parseInt(request.getParameter("disp")));
 
             pstmt.executeUpdate();
             con.close();
