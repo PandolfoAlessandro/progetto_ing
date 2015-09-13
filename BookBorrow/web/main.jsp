@@ -54,8 +54,11 @@
                         <button onclick="window.location = 'manageBooks.jsp'">Gestisci libri</button>
                     </td>
                     <td>
-                        <button onclick="window.location = 'logout.jsp'">Logout</button>
+                        <button onclick="window.location = 'manageIndirizzo.jsp'">Gestisci i tuoi indirizzi</button>
                     </td>
+                    <td>
+                        <button onclick="window.location = 'logout.jsp'">Logout</button>
+                    </td>            
                 </tr>
             </table>
         </div>
