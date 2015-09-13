@@ -69,7 +69,7 @@
                 </tr>
             </table>
         </div>
-        <%
+        <%  int c = (int) session.getAttribute("conta") + 1;
             String cord = null;
             String provincia = null;
             String qCord = "SELECT coordinate_geografiche, provincia FROM indirizzo "
@@ -88,37 +88,52 @@
                 cord = rs1.getString(1);
                 provincia = rs1.getString(2);
             }
-
-            String selectUsers = "SELECT count(*), u.email, u.nome, u.cognome, date_part('Year', u.data_nascita),i.coordinate_geografiche, i.citta, i.provincia, "
-                    + "count(distinct l.id), count(distinct l.coordinate_geografiche), l.id "
+            con.close();
+            con = Connessione.getConnection();
+            String selectUsers = "SELECT distinct 1, u.email, u.nome, u.cognome, date_part('Year', u.data_nascita),i.coordinate_geografiche, i.citta, i.provincia, "
+                    + "count(distinct l.id), count(distinct l.coordinate_geografiche) "
                     + "FROM Book_User u JOIN Indirizzo i on (u.email=i.Book_User) "
                     + "JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "Where u.tipologia = 1  and u.email!='"+session.getAttribute("userEmail")+"' ";
+                    + "Where u.tipologia = 1  and u.email!='" + session.getAttribute("userEmail") + "' ";
 
             if (request.getParameter("uS") != null && !(request.getParameter("uS").equals(""))) {
                 selectUsers += " and (u.nome ilike '" + request.getParameter("uS") + "' or "
                         + "u.cognome ilike '" + request.getParameter("uS") + "' or "
-                        + "u.email= '"+request.getParameter("uS")+"') ";
-            }else{
-                selectUsers += "and i.provincia ilike '"+provincia+"' ";
+                        + "u.email= '" + request.getParameter("uS") + "') ";
+            } else {
+                selectUsers += "and i.provincia ilike '" + provincia + "' ";
             }
 
             selectUsers += "group by u.email, i.provincia, i.citta,i.coordinate_geografiche, l.id ";
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
             Statement stmt = con.createStatement();
 
-            ResultSet rs;
+            ResultSet rssel1;
 
             // Verifico che le credenziali inserite siano di un utente "normale"
-            rs = stmt.executeQuery(selectUsers);
+            rssel1 = stmt.executeQuery(selectUsers);
+
+            int size = 0;
+            if (!rssel1.isLast()) {
+                while (rssel1.next()) {
+                    size++;
+                }
+            }
 
             ArrayList<Object[]> listaUtenti = new ArrayList<Object[]>();
             Object[] utenteCorrente;
             Object[][] distanze = null;
+            Statement stmtsel2 = con.createStatement();
+
+            ResultSet rs;
+
+            // Verifico che le credenziali inserite siano di un utente "normale"
+            rs = stmtsel2.executeQuery(selectUsers);
+            
             if (rs.next()) {
                 session.setAttribute("trovato", true);
-                distanze = new Object[2][rs.getInt(1)];
+                distanze = new Object[2][size];
                 int i = 0;
                 do {
                     utenteCorrente = new Object[8];
@@ -133,25 +148,28 @@
                     listaUtenti.add(utenteCorrente);
                     distanze[0][i] = (int) i;
                     distanze[1][i] = Geolocalizzazione.getDistance(cord, rs.getString(6));
+                    i++;
                 } while (rs.next());
             } else {
                 session.setAttribute("trovato", false);
             }
             if (distanze instanceof Object[][]) {
-                for (int j = 0; j < distanze[0].length; j++) {
-                    boolean flag = false;
-                    for (int k = 0; k < distanze[0].length - 1; k++) {
-                        if (Double.compare((Double) distanze[1][j], (Double) distanze[1][j + 1]) > 0) {
-                            Double temp1 = (Double) distanze[1][j];
-                            int temp2 = (int) distanze[0][j];
-                            distanze[0][j] = distanze[0][j + 1];
-                            distanze[1][j] = distanze[1][j + 1];
-                            distanze[0][j + 1] = temp2;
-                            distanze[1][j + 1] = temp1;
-                            flag = true;
-                        }
-                        if (!flag) {
-                            break;
+                if (distanze[0].length > 1) {
+                    for (int j = 0; j < distanze[0].length; j++) {
+                        boolean flag = false;
+                        for (int k = 0; k < distanze[0].length - 1; k++) {
+                            if (Double.compare((Double) distanze[1][k], (Double) distanze[1][k + 1]) > 0) {
+                                Double temp1 = (Double) distanze[1][k];
+                                int temp2 = (int) distanze[0][k];
+                                distanze[0][k] = distanze[0][k + 1];
+                                distanze[1][k] = distanze[1][k + 1];
+                                distanze[0][k + 1] = temp2;
+                                distanze[1][k + 1] = temp1;
+                                flag = true;
+                            }
+                            if (!flag) {
+                                break;
+                            }
                         }
                     }
                 }
@@ -201,8 +219,8 @@
         </TABLE>
         <% }%>
         <%con.close();
-           
-        }%>
+
+            }%>
 
 
     </body>

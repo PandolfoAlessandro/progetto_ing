@@ -35,6 +35,7 @@
             if (session.getAttribute("loginFailed") == null) {
                 session.setAttribute("loginFailed", false);
             }
+            session.setAttribute("conta", 1);
         %>
         <div id="header">
             <table>

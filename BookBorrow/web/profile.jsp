@@ -20,17 +20,17 @@
         <link href="Resources/css/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <%  String cord ="";
-            String queryCord="SELECT i.coordinate_geografiche FROM "
+        <%  String cord = "";
+            String queryCord = "SELECT i.coordinate_geografiche FROM "
                     + "Book_user u JOIN Indirizzo i ON (u.email=i.Book_user) "
-                    + "WHERE u.email='"+session.getAttribute("userEmail")+"' ";
-            
+                    + "WHERE u.email='" + session.getAttribute("userEmail") + "' ";
+
             Connection con = Connessione.getConnection();
-          Statement st = con.createStatement();
+            Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(queryCord);
-            
-            if(rs.next()){
-                cord= rs.getString(1);
+
+            if (rs.next()) {
+                cord = rs.getString(1);
             }
         %>    
         <%
@@ -58,25 +58,28 @@
             <p>Residenza: <%= rspu.getString("citta")%>(<%= rspu.getString("provincia")%>),<%= rspu.getString("paese")%></p>
         </div>
         <%  }
-            
-            String libriUtente = "SELECT count(*), l.id, l.titolo, l.nome_autore, l.cognome_autore, "
+
+            String libriUtente = "SELECT 1, l.id, l.titolo, l.nome_autore, l.cognome_autore, "
                     + "l.casa_ed, l.n_pagine, l.anno_pubblicazione, l.genere, "
                     + "i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale "
                     + "FROM Indirizzo i JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "WHERE l.Book_User = '" + request.getParameter("emailSel") + "' "
-                    + "group by l.id, i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale ";
+                    + "WHERE l.Book_User = '" + request.getParameter("emailSel") + "' ";
 
-            Statement stmt1 = con.createStatement();
+            Statement stmt1 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rslu = stmt1.executeQuery(libriUtente);
+            int size = 0;
+            while (rslu.next()) {
+                size++;
+            }
 
             ArrayList<Object[]> listaUtenti = new ArrayList<Object[]>();
             Object[] utenteCorrente;
             Object[][] distanze = null;
-
+            rslu.first();
             if (rslu.next()) {
                 session.setAttribute("trovato", true);
-                distanze = new Object[2][rslu.getInt(1)];
+                distanze = new Object[2][size-1];
                 int i = 0;
                 do {
                     utenteCorrente = new Object[12];
@@ -95,21 +98,24 @@
                     listaUtenti.add(utenteCorrente);
                     distanze[0][i] = (int) i;
                     distanze[1][i] = Geolocalizzazione.getDistance(cord, rslu.getString(10));
+                    i++;
                 } while (rslu.next());
             } else {
                 session.setAttribute("trovato", false);
             }
+   
             if (distanze instanceof Object[][]) {
+                if (distanze[0].length > 1) {
                 for (int j = 0; j < distanze[0].length; j++) {
                     boolean flag = false;
                     for (int k = 0; k < distanze[0].length - 1; k++) {
-                        if (Double.compare((Double) distanze[1][j], (Double) distanze[1][j + 1]) > 0) {
-                            Double temp1 = (Double) distanze[1][j];
-                            int temp2 = (int) distanze[0][j];
-                            distanze[0][j] = distanze[0][j + 1];
-                            distanze[1][j] = distanze[1][j + 1];
-                            distanze[0][j + 1] = temp2;
-                            distanze[1][j + 1] = temp1;
+                        if (Double.compare((Double) distanze[1][k], (Double) distanze[1][k + 1]) > 0) {
+                            Double temp1 = (Double) distanze[1][k];
+                            int temp2 = (int) distanze[0][k];
+                            distanze[0][k] = distanze[0][k + 1];
+                            distanze[1][k] = distanze[1][k + 1];
+                            distanze[0][k + 1] = temp2;
+                            distanze[1][k + 1] = temp1;
                             flag = true;
                         }
                         if (!flag) {
@@ -117,6 +123,7 @@
                         }
                     }
                 }
+            }
         %>
 
         <% if ((Boolean) session.getAttribute("trovato")) {%>
@@ -157,10 +164,9 @@
                                 <td> <p><%= listaUtenti.get(p)[5]%> </p></td>
 
                                 <td> <p><%= listaUtenti.get(p)[6]%> </p></td>
-                                
+
                                 <td> <p><%= listaUtenti.get(p)[7]%>(<%= listaUtenti.get(p)[8]%>),<%= listaUtenti.get(p)[9]%> </p><p
-                                     ><%if((int)listaUtenti.get(p)[10]==1)
-                                     {%><p>[Residenza]</p><%}%></td>
+                                    ><%if ((int) listaUtenti.get(p)[10] == 1) {%><p>[Residenza]</p><%}%></td>
 
                                 <td> <p> <%= distanze[1][pos]%> Km </p></td>
 
