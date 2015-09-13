@@ -20,6 +20,10 @@
         <servlet-name>PrintImage</servlet-name>
         <servlet-class>it.functions.PrintImage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OperazioniPrestito</servlet-name>
+        <servlet-class>it.functions.OperazioniPrestito</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ImageUpload</servlet-name>
         <url-pattern>/ImageUpload</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>PrintImage</servlet-name>
         <url-pattern>/PrintImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OperazioniPrestito</servlet-name>
+        <url-pattern>/OperazioniPrestito</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

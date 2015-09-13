@@ -60,6 +60,9 @@
                         <button onclick="window.location = 'manageIndirizzo.jsp'">Gestisci i tuoi indirizzi</button>
                     </td>
                     <td>
+                        <button onclick="window.location = 'notifiche.jsp'">Prestiti</button>
+                    </td>
+                    <td>
                         <button onclick="window.location = 'logout.jsp'">Logout</button>
                     </td>            
                 </tr>

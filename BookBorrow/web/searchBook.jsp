@@ -78,10 +78,11 @@
 
             String listaLibri = "SELECT 1, l.id, l.titolo, l.nome_autore, l.cognome_autore, "
                     + "l.casa_ed, l.n_pagine, l.anno_pubblicazione, l.genere, "
-                    + "i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale "
+                    + "i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale, l.Book_User "
                     + "FROM Indirizzo i JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "WHERE l.Book_User != '" + session.getAttribute("userEmail") + "' ";
+                    + "WHERE l.disponibilita=1 and "
+                    + "l.Book_User != '" + session.getAttribute("userEmail") + "' ";
 
             if (request.getParameter("lS") != null && !(request.getParameter("lS").equals(""))) {
                 listaLibri += " and (l.titolo ilike '%" + request.getParameter("lS") + "%' or "
@@ -113,7 +114,7 @@
             int i = 0;
             while (rslu.next()) {
                 session.setAttribute("trovato", true);
-                utenteCorrente = new Object[12];
+                utenteCorrente = new Object[13];
                 utenteCorrente[0] = rslu.getString(3);
                 utenteCorrente[1] = rslu.getString(4);
                 utenteCorrente[2] = rslu.getString(5);
@@ -126,6 +127,7 @@
                 utenteCorrente[9] = rslu.getString(13);
                 utenteCorrente[10] = rslu.getInt(14);
                 utenteCorrente[11] = rslu.getString(2);
+                utenteCorrente[12] = rslu.getString(15);
                 listaUtenti.add(utenteCorrente);
                 distanze[0][i] = (int) i;
                 distanze[1][i] = Geolocalizzazione.getDistance(cord, rslu.getString(10));
@@ -153,9 +155,10 @@
                     }
                 }
         %>
-        <% if ((Boolean) session.getAttribute("trovato")) {%>
+        <% session.setAttribute("ritornoPres", "searchBook.jsp");
+          if ((Boolean) session.getAttribute("trovato")) {%>
         <div id="infoLibri">
-            <form method="POST" action="OperazioniPrestito" >
+            <form method="POST" action="OperazioniPrestito" onsubmit="window.alert('Richiesta effettata! Controlla le tue notifiche')">
                 <center>
                     <table border="1" width="30%" cellpadding="5">
                         <tbody>
@@ -197,7 +200,7 @@
 
                                 <td> <p> <%= distanze[1][pos]%> Km </p></td>
 
-                                <td> prenota </td>
+                                <td><button type="submit" name="prestito" value="<%= listaUtenti.get(p)[12]%>/<%= session.getAttribute("userEmail")%>/<%= listaUtenti.get(p)[11]%>">Borrow me!</button></td>
                             </tr>
 
                             <%}%>
@@ -207,13 +210,13 @@
                 </center>
             </form>
             <%} %>
-
+            
         </div>    
 
         <%}%>
         <%con.close();%>
+
+        <a href="main.jsp">Vai al main</a>
     </body>
 </html>
 
-</body>
-</html>

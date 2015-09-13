@@ -64,7 +64,8 @@
                     + "i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale "
                     + "FROM Indirizzo i JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "WHERE l.Book_User = '" + request.getParameter("emailSel") + "' ";
+                    + "WHERE l.disponibilita=1 and "
+                    + "l.Book_User = '" + request.getParameter("emailSel") + "' ";
 
             Statement stmt1 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rslu = stmt1.executeQuery(libriUtente);
@@ -100,7 +101,7 @@
                 i++;
             }
 
-            if (distanze[0][0]!=null) {
+            if (distanze instanceof Object[][]) {
                 if (distanze[0].length > 1) {
                     for (int j = 0; j < distanze[0].length; j++) {
                         boolean flag = false;
@@ -120,11 +121,13 @@
                         }
                     }
                 }
+                String link="profile.jsp?emailSel="+request.getParameter("emailSel");
         %>
 
-        <% if ((Boolean) session.getAttribute("trovato")) {%>
+        <%  session.setAttribute("ritornoPres", link);
+            if ((Boolean) session.getAttribute("trovato")) {%>
         <div id="infoLibri">
-            <form method="POST" action="OperazioniPrestito" >
+            <form method="POST" action="OperazioniPrestito" onsubmit="window.alert('Richiesta effettata! Controlla le tue notifiche')" >
                 <center>
                     <table border="1" width="30%" cellpadding="5">
                         <tbody>
@@ -166,7 +169,7 @@
 
                                 <td> <p> <%= distanze[1][pos]%> Km </p></td>
 
-                                <td> prenota </td>
+                                <td><button type="submit" name="prestito" value="<%= request.getParameter("emailSel")%>/<%= session.getAttribute("userEmail")%>/<%= listaUtenti.get(p)[11]%>">Borrow me!</button></td>
                             </tr>
 
                             <%}%>
@@ -181,5 +184,6 @@
 
         <%}%>
         <%con.close();%>
+        <a href="main.jsp">Vai al main</a>
     </body>
 </html>
