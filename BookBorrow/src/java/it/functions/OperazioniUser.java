@@ -13,13 +13,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 /**
  *
@@ -106,52 +107,117 @@ public class OperazioniUser extends HttpServlet {
             case "inserisciLibro": {
                 int id = 1;
                 String query = "INSERT INTO libro VALUES(?,?,?,?,?,?,null,1,?,?,?,?)";
-                String getId= "SELECT id FROM libro";
+                String getId = "SELECT id FROM libro";
 
                 try (Connection con = Connessione.getConnection()) {
                     PreparedStatement pstmt = con.prepareStatement(query);
-                    Statement state= con.createStatement();
-                    ResultSet res=state.executeQuery(getId);
+                    Statement state = con.createStatement();
+                    ResultSet res = state.executeQuery(getId);
                     pstmt.clearParameters();
-                    
-                    while(res.next()){
-                        if(Integer.parseInt(res.getString("id"))>id){
-                            id=Integer.parseInt(res.getString("id"));
+
+                    while (res.next()) {
+                        if (Integer.parseInt(res.getString("id")) > id) {
+                            id = Integer.parseInt(res.getString("id"));
                         }
                     }
-                    id+=1;
-                    
-                    
-                    
-                    pstmt.setString( 1, id+"" );
-                    pstmt.setInt( 2, Integer.parseInt(request.getParameter("annoPubblicazione")) );
-                    pstmt.setInt( 3, Integer.parseInt(request.getParameter("numeroPagine")) );
-                    pstmt.setString( 4, request.getParameter("nomeAutore") );
-                    pstmt.setString( 5, request.getParameter("cognomeAutore") );
-                    pstmt.setString( 6, request.getParameter("genere") );
-                    pstmt.setString( 7, request.getParameter("casaEd") );
-                    pstmt.setString( 8, request.getParameter("titolo") );
-                    
+                    id += 1;
+
+                    pstmt.setString(1, id + "");
+                    pstmt.setInt(2, Integer.parseInt(request.getParameter("annoPubblicazione")));
+                    pstmt.setInt(3, Integer.parseInt(request.getParameter("numeroPagine")));
+                    pstmt.setString(4, request.getParameter("nomeAutore"));
+                    pstmt.setString(5, request.getParameter("cognomeAutore"));
+                    pstmt.setString(6, request.getParameter("genere"));
+                    pstmt.setString(7, request.getParameter("casaEd"));
+                    pstmt.setString(8, request.getParameter("titolo"));
+
                     //
-                    pstmt.setString( 9, request.getParameter("mydropdown") );
-                    pstmt.setString( 10, email );
-                    
+                    pstmt.setString(9, request.getParameter("mydropdown"));
+                    pstmt.setString(10, email);
+
                     pstmt.executeUpdate();
                     setTipologiaUser(email);
                     con.close();
-                    response.sendRedirect("completeInsertion.jsp?id="+id);
+                    response.sendRedirect("completeInsertion.jsp?id=" + id);
                 } catch (ClassNotFoundException | SQLException ex) {
                     Logger.getLogger(OperazioniUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
                 break;
 
             }
-            case "modificaUser":{
-                String query = "UPDATE libro VALUES(?,?,?,?,?,?,null,1,?,?,?,?)";
-                faiquery
+            case "modificaUser": {
+                String query = "UPDATE book_user SET nome=?, cognome=?, sesso=?, data_nascita=? WHERE email='" + email + "'";
+
+                try {
+                    try (Connection con = Connessione.getConnection()) {
+                        PreparedStatement stmt = con.prepareStatement(query);
+
+                        stmt.clearParameters();
+
+                        SimpleDateFormat formato_data = new SimpleDateFormat("dd/MM/yyyy");
+                        java.util.Date parsed = formato_data.parse(request.getParameter("data_nascita"));
+                        java.sql.Date data = new java.sql.Date(parsed.getTime());
+
+                        stmt.setString(1, request.getParameter("nome"));
+                        stmt.setString(2, request.getParameter("cognome"));
+                        stmt.setString(3, request.getParameter("sesso"));
+                        stmt.setDate(4, data);
+
+                        stmt.executeUpdate();
+                    }
+
+                    response.sendRedirect("main.jsp");
+                } catch (SQLException | ClassNotFoundException | ParseException ex) {
+                    Logger.getLogger(OperazioniUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 break;
             }
-                
+
+            case "gestisciIndirizzo": {
+                String whatToDo = manageSet.split("/")[0];
+                String coord = manageSet.split("/")[1];
+                switch (whatToDo) {
+                    case "elimina": {
+                        try {
+                            String isPrinc
+                                    = "SELECT principale "
+                                    + "FROM indirizzo "
+                                    + "WHERE coordinate_geografiche='" + coord + "' AND book_user='" + email + "'";
+                            String eliminaInd = "DELETE FROM indirizzo WHERE coordinate_geografiche='" + coord + "' AND book_user='" + email + "'";
+
+                            try (Connection con = Connessione.getConnection()) {
+                                Statement stmt = con.createStatement();
+                                ResultSet rs = stmt.executeQuery(isPrinc);
+
+                                if (rs.next()) {
+                                    if (rs.getInt(1) == 1) {
+                                        con.close();
+                                        response.sendRedirect("manageIndirizzo.jsp?cancPrinc=1");
+                                        //non si puo' eliminare l indirizzo principale!!
+                                    } else {
+                                        stmt.executeUpdate(eliminaInd);
+                                        con.close();
+                                        response.sendRedirect("manageIndirizzo.jsp");
+                                    }
+                                }
+                            }
+                            break;
+                        } catch (ClassNotFoundException | SQLException ex) {
+                            Logger.getLogger(OperazioniUser.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                    }
+                    case "modifica": {
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+
         }
     }
 

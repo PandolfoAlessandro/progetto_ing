@@ -17,12 +17,13 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <script type="text/javascript">
-            function openPopUp()
-            {
-                window.open("changeImgU.jsp%>", "Cambia foto profilo", "scrollbars=1,resizable=0,height=200,width=550,left=450,top=200");
-            }
-        </script>
+        <%
+        
+        out.print("");
+        
+        %> 
+        
+
         <%
             String datiLibro = "SELECT nome,cognome,sesso,data_nascita,foto_profilo "
                     + "FROM book_user "
@@ -40,7 +41,7 @@
 
         %>
         <% session.setAttribute("Operazione", "modificaUser"); %>
-        <form method="POST" action="OperazioniUser" onsubmit="return confirm('sicuro di voler modificare i dati del profilo?');">
+        <form method="POST" action="OperazioniUser" onsubmit="return confirm('sicuro di voler modificare i dati del profilo?' );">
             <center>
                 <table border="1" width="30%" cellpadding="5">
                     <thead>
@@ -60,25 +61,27 @@
                         </tr>
                         <tr>
                             <td>Cognome:</td>
-                            <td><input type="text" name="cognome" value="<%= rs.getString(2)%>,<%= rs.getString(3)%>" ></td>
+                            <td><input type="text" name="cognome" value="<%= rs.getString(2)%>" ></td>
                         </tr>
                         <tr>
                             <td>Sesso:</td>
                             <td>
                                 <fieldset>
-                                    Maschio <input type="radio" <%=(rs.getString(2).equals("m"))?"checked = \"checked\"":""%> name="sesso" value="m" > 
-                                    Femmina <input type="radio" <%=(rs.getString(2).equals("f"))?"checked = \"checked\"":""%> name="sesso" value="f" >
+                                    Maschio <input type="radio" <%=(rs.getString(3).equals("m"))?"checked = \"checked\"":""%> name="sesso" value="m" > 
+                                    Femmina <input type="radio" <%=(rs.getString(3).equals("f"))?"checked = \"checked\"":""%> name="sesso" value="f" >
                                 </fieldset>
                             </td>
                         </tr>
                         <tr>
                             <td>data di nascita (GG/MM/AAAA)</td>
-                            <td><input type="text" name="data_nascita" value="<%= rs.getString(4)%>" ></td>
+                            <td><input type="text" name="data_nascita" value="<%=rs.getDate(4).toString().split("-")[2]+"/"+rs.getDate(4).toString().split("-")[1]+"/"+rs.getDate(4).toString().split("-")[0] %>" ></td>
                         </tr>
+                        <tr>
                             <td>Foto profilo:</td>
-                            <td><img src="PrintImage?id_img=<% out.print((String)(session.getAttribute("userEmail")));%>)&amp;what=utente" 
+                            <td><img src="PrintImage?id_img=<%=session.getAttribute("userEmail")%>&amp;what=utente" 
                                      width="200" height="200"
-                                     alt="Immagine non Disponibile"/></td>
+                                     alt="Immagine non Disponibile"/>
+                            </td>
                             <td>
                                 <button type="button" name="changeImg" onclick="openPopUp()">Modifica immagine</button>
                             </td>
@@ -91,6 +94,8 @@
             </center>
         </form>
         
+        
+        <%}else{%>
         <p>Errore caricamento dati</p>
         <%}%>
         <a href="main.jsp">Main page</a>

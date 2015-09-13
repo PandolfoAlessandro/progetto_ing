@@ -20,7 +20,7 @@
                 <tr>					
                     <td>Foto profilo: </td>
                     <td><input type="file" name="foto_profilo"></td>
-                    <td><button type="Submit" name=upload value="user/0" >Carica</button></td>
+                    <td><button type="Submit" name=upload value="user/" >Carica</button></td>
                 </tr>
                 <tr>
                     <td>
