@@ -102,7 +102,7 @@
                         </tr>
                         <tr>
                             <td>Copertina:</td>
-                            <td><img src="PrintImage?id_img=<% out.print(request.getParameter("id_img"));%>&amp;what=libro" 
+                            <td><img src="PrintImage?id_img=<% out.print(request.getParameter("id_l"));%>&amp;what=libro" 
                                      width="200" height="200"
                                      alt="Immagine non Disponibile"/></td>
                             <td>

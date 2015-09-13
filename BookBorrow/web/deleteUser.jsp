@@ -31,7 +31,7 @@
         %>
         <%
             String selectUsers = "SELECT DISTINCT b.email, b.nome, b.cognome, i.citta, i.provincia "
-                    + "FROM book_user b JOIN indirizzo i ON (r.coordinate_geografiche = i.coordinate_geografiche) WHERE i.principale=1";
+                    + "FROM book_user b JOIN indirizzo i ON (b.email=i.book_user) WHERE i.principale=1";
 
             Connection con = Connessione.getConnection();
 
