@@ -58,7 +58,10 @@ public class OperazioniPrestito extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String proprietario =request.getParameter("ep");
+        String richiedente =request.getParameter("delete").split("/")[0];
+        String libro =request.getParameter("delete").split("/")[1];
+        char stato =request.getParameter("delete").split("/")[2].charAt(0);
     }
 
     /**
