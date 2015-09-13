@@ -70,7 +70,7 @@
         %>
         <%  String indirizziList
                 = "SELECT * "
-                + "FROM indirizzi "
+                + "FROM indirizzo "
                 + "WHERE book_user='"+(String)(session.getAttribute("userEmail"))+"'";
 
             Connection con = new Connessione().getConnection();
