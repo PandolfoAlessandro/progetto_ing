@@ -1,73 +1,81 @@
 <%-- 
-    Document   : profile
-    Created on : 12-set-2015, 11.11.26
-    Author     : insan3
+    Document   : serchBook
+    Created on : 13-set-2015, 16.38.11
+    Author     : alessandro
 --%>
 
 <%@page import="it.functions.Geolocalizzazione"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
 <%@page import="it.database.Connessione"%>
+<%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link href="Resources/css/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <%  String cord = "";
-            String queryCord = "SELECT i.coordinate_geografiche FROM "
-                    + "Book_user u JOIN Indirizzo i ON (u.email=i.Book_user) "
-                    + "WHERE u.email='" + session.getAttribute("userEmail") + "' ";
+        <script type="text/javascript">
+            function CercaLibro() {
+                window.location.replace("serchBook.jsp?lS=" + document.getElementById("libroSel").value);
+            }
+        </script>
+        <div style="background-color: burlywood">
+            <table>
+                <tr>
+                    <td>Inserisci nome, cognome o mail dell'utente:</td>
+                    <td><input type="text" id="utenteSel" value="" ></td>
+                    <td><button onclick="CercaUser()">Cerca</button></td>
+                </tr>
+            </table>
+        </div>
+        <%  session.setAttribute("trovato", false);
+            String cord = null;
+            String provincia = null;
+            String qCord = "SELECT coordinate_geografiche, provincia FROM indirizzo "
+                    + "WHERE BOOK_USER='" + session.getAttribute("userEmail") + "' "
+                    + "and Principale=1 ";
 
             Connection con = Connessione.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(queryCord);
 
-            if (rs.next()) {
-                cord = rs.getString(1);
+            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
+            Statement stmt1 = con.createStatement();
+
+            ResultSet rs1;
+            rs1 = stmt1.executeQuery(qCord);
+
+            if (rs1.next()) {
+                cord = rs1.getString(1);
+                provincia = rs1.getString(2);
             }
-        %>    
-        <%
-            String profiloUtente = "SELECT u.nome, u.cognome, date_part('Year', u.data_nascita) as an, "
-                    + "i.coordinate_geografiche, i.citta, i.provincia, i.paese "
-                    + "FROM Book_user u JOIN Indirizzo i ON (u.email=i.Book_user) "
-                    + "WHERE u.email='" + request.getParameter("emailSel") + "' AND principale=1 ";
+            con.close();
+            Connection con1 = Connessione.getConnection();
 
-            con = Connessione.getConnection();
-
-            Statement stmt = con.createStatement();
-            ResultSet rspu = stmt.executeQuery(profiloUtente);
-            if (rspu.next()) {
-        %>
-        <div id="fotoProfilo">
-            <img src="PrintImage?id_img=<%=request.getParameter("emailSel")%>&amp;what=utente" 
-                 width="200" height="200" 
-                 alt="Immagine non Disponibile"/>
-        </div>
-
-        <div id="infoProfilo">
-            <h1><%= rspu.getString("nome")%> <%= rspu.getString("cognome")%></h1>
-            <p>email: <%= request.getParameter("emailSel")%></p>
-            <p>Anno di nascita: <%= rspu.getInt("an")%></p>
-            <p>Residenza: <%= rspu.getString("citta")%>(<%= rspu.getString("provincia")%>),<%= rspu.getString("paese")%></p>
-        </div>
-        <%  }
-            session.setAttribute("trovato", true);
-            String libriUtente = "SELECT 1, l.id, l.titolo, l.nome_autore, l.cognome_autore, "
+            String listaLibri = "SELECT 1, l.id, l.titolo, l.nome_autore, l.cognome_autore, "
                     + "l.casa_ed, l.n_pagine, l.anno_pubblicazione, l.genere, "
                     + "i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale "
                     + "FROM Indirizzo i JOIN libro l "
                     + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "WHERE l.Book_User = '" + request.getParameter("emailSel") + "' ";
+                    + "WHERE l.Book_User != '" + session.getAttribute("userEmail") + "' ";
 
-            Statement stmt1 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rslu = stmt1.executeQuery(libriUtente);
+            if (request.getParameter("lS") != null && !(request.getParameter("lS").equals(""))) {
+                listaLibri += " and (l.titolo ilike '" + request.getParameter("lS") + "' or "
+                        + "l.nome_autore ilike '" + request.getParameter("lS") + "' or "
+                        + "l.cognome_autore ilike '" + request.getParameter("lS") + "') ";
+                if (request.getParameter("lg") != null && !(request.getParameter("lg").equals(""))) {
+                    listaLibri += "l.genere ilike '" + request.getParameter("lg") + "'";
+                }
+            } else {
+                if (request.getParameter("lg") != null && !(request.getParameter("lg").equals(""))) {
+                    listaLibri += "l.genere ilike '" + request.getParameter("lg") + "'";
+                } else {
+                    listaLibri += "and i.provincia ilike '" + provincia + "' ";
+                }
+            }
+
+            Statement stmt = con1.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rslu = stmt.executeQuery(listaLibri);
             int size = 0;
             while (rslu.next()) {
                 size++;
@@ -77,10 +85,10 @@
             Object[] utenteCorrente;
             Object[][] distanze = null;
             rslu.beforeFirst();
-            int i = 0;
             distanze = new Object[2][size];
+            int i = 0;
             while (rslu.next()) {
-                session.setAttribute("trovato", true);           
+                session.setAttribute("trovato", true);
                 utenteCorrente = new Object[12];
                 utenteCorrente[0] = rslu.getString(3);
                 utenteCorrente[1] = rslu.getString(4);
@@ -100,7 +108,7 @@
                 i++;
             }
 
-            if (distanze[0][0]!=null) {
+            if (distanze instanceof Object[][]) {
                 if (distanze[0].length > 1) {
                     for (int j = 0; j < distanze[0].length; j++) {
                         boolean flag = false;
@@ -121,7 +129,6 @@
                     }
                 }
         %>
-
         <% if ((Boolean) session.getAttribute("trovato")) {%>
         <div id="infoLibri">
             <form method="POST" action="OperazioniPrestito" >
@@ -182,4 +189,7 @@
         <%}%>
         <%con.close();%>
     </body>
+</html>
+
+</body>
 </html>

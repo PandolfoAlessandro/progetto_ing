@@ -51,6 +51,9 @@
                         <button onclick="window.location = 'dataProfileChangeUser.jsp'">Modifica profilo</button>
                     </td>
                     <td>
+                        <button onclick="window.location = 'searchBook.jsp'">Cerca libro</button>
+                    </td>
+                    <td>
                         <button onclick="window.location = 'manageBooks.jsp'">Gestisci libri</button>
                     </td>
                     <td>
@@ -72,7 +75,7 @@
                 </tr>
             </table>
         </div>
-        <%  int c = (int) session.getAttribute("conta") + 1;
+        <%  session.setAttribute("trovato", false);
             String cord = null;
             String provincia = null;
             String qCord = "SELECT coordinate_geografiche, provincia FROM indirizzo "
@@ -133,29 +136,26 @@
 
             // Verifico che le credenziali inserite siano di un utente "normale"
             rs = stmtsel2.executeQuery(selectUsers);
-            
-            if (rs.next()) {
+            distanze = new Object[2][size];
+            int i = 0;
+            while (rs.next()) {
                 session.setAttribute("trovato", true);
-                distanze = new Object[2][size];
-                int i = 0;
-                do {
-                    utenteCorrente = new Object[8];
-                    utenteCorrente[0] = rs.getString(2);
-                    utenteCorrente[1] = rs.getString(3);
-                    utenteCorrente[2] = rs.getString(4);
-                    utenteCorrente[3] = rs.getInt(5);
-                    utenteCorrente[4] = rs.getString(7);
-                    utenteCorrente[5] = rs.getString(8);
-                    utenteCorrente[6] = rs.getInt(9);
-                    utenteCorrente[7] = rs.getInt(10);
-                    listaUtenti.add(utenteCorrente);
-                    distanze[0][i] = (int) i;
-                    distanze[1][i] = Geolocalizzazione.getDistance(cord, rs.getString(6));
-                    i++;
-                } while (rs.next());
-            } else {
-                session.setAttribute("trovato", false);
+
+                utenteCorrente = new Object[8];
+                utenteCorrente[0] = rs.getString(2);
+                utenteCorrente[1] = rs.getString(3);
+                utenteCorrente[2] = rs.getString(4);
+                utenteCorrente[3] = rs.getInt(5);
+                utenteCorrente[4] = rs.getString(7);
+                utenteCorrente[5] = rs.getString(8);
+                utenteCorrente[6] = rs.getInt(9);
+                utenteCorrente[7] = rs.getInt(10);
+                listaUtenti.add(utenteCorrente);
+                distanze[0][i] = (int) i;
+                distanze[1][i] = Geolocalizzazione.getDistance(cord, rs.getString(6));
+                i++;
             }
+
             if (distanze instanceof Object[][]) {
                 if (distanze[0].length > 1) {
                     for (int j = 0; j < distanze[0].length; j++) {
