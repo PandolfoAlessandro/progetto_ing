@@ -18,15 +18,39 @@
     <body>
         <script type="text/javascript">
             function CercaLibro() {
-                window.location.replace("serchBook.jsp?lS=" + document.getElementById("libroSel").value);
+                window.location.replace("searchBook.jsp?lS=" + document.getElementById("libroSel").value+"&lg="+ document.getElementById("genereSel").value);
             }
         </script>
         <div style="background-color: burlywood">
             <table>
                 <tr>
-                    <td>Inserisci nome, cognome o mail dell'utente:</td>
-                    <td><input type="text" id="utenteSel" value="" ></td>
-                    <td><button onclick="CercaUser()">Cerca</button></td>
+                    <td>Inserisci titolo oppure nome o cognome dell'autore:</td>
+                    <td><input type="text" id="libroSel" value="" ></td>
+                    <td> </td>
+                    <td> </td>
+                    <td>Ricerca per Genere:</td>
+                    <td><select id="genereSel">
+                                    <option value=""> 
+                                    Tutti i generi
+                                    </option>
+                                    <%
+                                        String generi = "SELECT DISTINCT genere FROM libro ";
+                                        Connection conGen = Connessione.getConnection();
+                                        Statement stmtGen = conGen.createStatement();
+                                        ResultSet rsGen = stmtGen.executeQuery(generi);
+
+                                        while (rsGen.next()) {
+                                        
+                                    %>    
+
+                                    <option value="<%= rsGen.getString(1)%> "> 
+                                        <%out.print( rsGen.getString(1));%> 
+                                    </option>                    
+                                    <%}
+                                        conGen.close();
+                                    %>
+                                </select></td>
+                    <td><button onclick="CercaLibro()">Cerca</button></td>
                 </tr>
             </table>
         </div>
@@ -60,15 +84,15 @@
                     + "WHERE l.Book_User != '" + session.getAttribute("userEmail") + "' ";
 
             if (request.getParameter("lS") != null && !(request.getParameter("lS").equals(""))) {
-                listaLibri += " and (l.titolo ilike '" + request.getParameter("lS") + "' or "
-                        + "l.nome_autore ilike '" + request.getParameter("lS") + "' or "
-                        + "l.cognome_autore ilike '" + request.getParameter("lS") + "') ";
+                listaLibri += " and (l.titolo ilike '%" + request.getParameter("lS") + "%' or "
+                        + "l.nome_autore ilike '%" + request.getParameter("lS") + "%' or "
+                        + "l.cognome_autore ilike '%" + request.getParameter("lS") + "%') ";
                 if (request.getParameter("lg") != null && !(request.getParameter("lg").equals(""))) {
-                    listaLibri += "l.genere ilike '" + request.getParameter("lg") + "'";
+                    listaLibri += " and l.genere ilike '" + request.getParameter("lg") + "' ";
                 }
             } else {
                 if (request.getParameter("lg") != null && !(request.getParameter("lg").equals(""))) {
-                    listaLibri += "l.genere ilike '" + request.getParameter("lg") + "'";
+                    listaLibri += " and l.genere ilike '" + request.getParameter("lg") + "' ";
                 } else {
                     listaLibri += "and i.provincia ilike '" + provincia + "' ";
                 }
