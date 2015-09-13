@@ -24,6 +24,16 @@
             response.setHeader("Pragma", "no-cache");
             response.setDateHeader("Expires", 0); //prevents caching at the proxy server
         %>
+        <%
+            if (session.getAttribute("userEmail") == null) {
+                response.sendRedirect("index.jsp");
+            } else {
+                if ((boolean) session.getAttribute("isAdmin")) {
+                    response.sendRedirect("admin.jsp");
+                }
+            }
+
+        %>
       
         <script type="text/javascript">
             function openPopUp()

@@ -20,6 +20,27 @@
         <link href="Resources/css/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
+        <%
+            // Set to expire far in the past.
+            response.setHeader("Expires", "Sat, 6 May 1971 12:00:00 GMT");
+            // Set standard HTTP/1.1 no-cache headers.
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+            // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+            response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+            // Set standard HTTP/1.0 no-cache header.
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0); //prevents caching at the proxy server
+        %>
+        <%
+            if (session.getAttribute("userEmail") == null) {
+                response.sendRedirect("index.jsp");
+            } else {
+                if ((boolean) session.getAttribute("isAdmin")) {
+                    response.sendRedirect("admin.jsp");
+                }
+            }
+
+        %>
         <%  String cord = "";
             String queryCord = "SELECT i.coordinate_geografiche FROM "
                     + "Book_user u JOIN Indirizzo i ON (u.email=i.Book_user) "

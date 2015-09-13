@@ -26,10 +26,11 @@
         %>
         <%
             if (exception != null) {
-                exception.printStackTrace();
+
                 PrintWriter writer = new PrintWriter(out);
 
-                exception.printStackTrace(writer);
+                exception.printStackTrace();
+                
             }
 
         %>
