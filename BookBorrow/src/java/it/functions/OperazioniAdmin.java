@@ -12,13 +12,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.catalina.connector.Response;
 
 /**
  *
@@ -122,9 +119,7 @@ public class OperazioniAdmin extends HttpServlet {
                 }
             }
             break;
-            case "statistiche":
-                statistiche(request, response);
-                break;
+            
             case "gestisciLibro": {
                 String id_libro = (String) request.getSession().getAttribute("id_lib");
                 try {
@@ -161,9 +156,6 @@ public class OperazioniAdmin extends HttpServlet {
         }
     }
 
-    private void statistiche(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     private void eliminaLibro(String id_libro) throws ClassNotFoundException, SQLException {
         String deleteBook = "DELETE FROM libro WHERE id='" + id_libro + "'";

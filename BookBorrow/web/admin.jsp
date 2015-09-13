@@ -46,7 +46,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <p>Visualizza statistiche globali<button onclick="window.location = 'stat.jsp'">qui</button>
+                        <p>Visualizza statistiche globali di utilizzo<button onclick="window.location = 'stat.jsp'">qui</button>
                         </p>
                     </td>
                 </tr>
