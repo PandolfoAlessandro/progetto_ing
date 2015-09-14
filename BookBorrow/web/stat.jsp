@@ -38,6 +38,7 @@
         %>
         <%
         ExecStatQuery exQ= ExecStatQuery.getInstance();
+        exQ.Update();
         %>
 
 

@@ -55,9 +55,6 @@ public class ExecStatQuery {
         
         }catch(SQLException | HeadlessException e){}
         
-        
-
-
     } 
     
     public static ExecStatQuery getInstance(){
@@ -87,6 +84,28 @@ public class ExecStatQuery {
 
     public String getnFe() {
         return nFe;
+    }
+    
+    public void Update(){
+        try{
+        ResultSet r1=doQuery(numUtenti);
+        r1.next();
+        ResultSet r2=doQuery(numLibri);
+        r2.next();
+        ResultSet r3=doQuery(numPrestAcc);
+        r3.next();
+        ResultSet r4=doQuery(numMaschi);
+        r4.next();
+        
+
+        this.nUt=r1.getInt(1)+"";
+        this.nLi=r2.getInt(1)+"";
+        this.nPA=r3.getInt(1)+"";
+        this.nMa=((r4.getInt(1))*100/(r1.getInt(1))*100)/100+"% ";
+        this.nFe=(((r1.getInt(1)-r4.getInt(1)))*100/r1.getInt(1)*100)/100 +"% ";
+        
+        }catch(SQLException | HeadlessException e){}
+        
     }
     
     private static ResultSet doQuery(String s) throws SQLException{
