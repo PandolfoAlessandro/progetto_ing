@@ -24,15 +24,6 @@
             response.setHeader("Pragma", "no-cache");
             response.setDateHeader("Expires", 0); //prevents caching at the proxy server
         %>
-        <%
-            if (exception != null) {
-
-                PrintWriter writer = new PrintWriter(out);
-
-                exception.printStackTrace();
-                
-            }
-
-        %>
+        <h1>ERRORE NEL SERVER</h1>
     </body>
 </html>

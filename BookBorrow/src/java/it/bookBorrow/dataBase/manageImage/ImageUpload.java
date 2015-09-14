@@ -1,6 +1,6 @@
-package it.functions;
+package it.bookBorrow.dataBase.manageImage;
 
-import it.database.Connessione;
+import it.bookBorrow.dataBase.Connessione;
 import java.io.FileInputStream;
 /**
  *

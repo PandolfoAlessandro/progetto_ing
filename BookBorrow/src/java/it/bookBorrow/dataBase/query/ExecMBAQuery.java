@@ -1,29 +1,25 @@
-package it.database;
+package it.bookBorrow.dataBase.query;
 
+import it.bookBorrow.dataBase.Connessione;
 import java.sql.*;
 
 /**
  *
  * @author alessandro
  */
-public class ExecMBQuery implements QueryExec{
-    
-    private String utente;
-    
-    public ExecMBQuery(){
-        this.utente=null;
+public class ExecMBAQuery implements QueryExec {
+
+    public ExecMBAQuery() {
     }
-    
+
     @Override
     public void setParameters(Object... obj) {
-        this.utente=(String)obj[0];
     }
 
     @Override
     public ResultSet getResult() {
         String bookList = "SELECT l.id, l.titolo, l.nome_autore, l.cognome_autore, l.casa_ed, b.nome,"
-                    + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.book_user=b.email) "
-                    + "where l.book_user='"+utente+"'";
+                    + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.book_user=b.email);";
         ResultSet rs = null;
         try {
             Connection con = Connessione.getConnection();
@@ -37,5 +33,4 @@ public class ExecMBQuery implements QueryExec{
         }
         return rs;
     }
-    
-}
+}    

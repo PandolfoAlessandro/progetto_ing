@@ -1,6 +1,7 @@
-package it.database;
+package it.bookBorrow.dataBase.query;
 
-import it.functions.Geolocalizzazione;
+import it.bookBorrow.dataBase.Connessione;
+import it.bookBorrow.geolocalizzazione.Geolocalizzazione;
 import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;

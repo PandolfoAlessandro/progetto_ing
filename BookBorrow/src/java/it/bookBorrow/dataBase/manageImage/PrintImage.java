@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.functions;
+package it.bookBorrow.dataBase.manageImage;
 
-import it.database.Connessione;
+import it.bookBorrow.dataBase.Connessione;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

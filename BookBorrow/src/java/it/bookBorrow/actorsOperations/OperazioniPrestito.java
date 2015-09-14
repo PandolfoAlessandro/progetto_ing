@@ -1,6 +1,6 @@
-package it.functions;
+package it.bookBorrow.actorsOperations;
 
-import it.database.Connessione;
+import it.bookBorrow.dataBase.Connessione;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;

@@ -1,5 +1,5 @@
 
-package it.database;
+package it.bookBorrow.dataBase.query;
 
 import java.sql.ResultSet;
 

@@ -2,27 +2,27 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>ImageUpload</servlet-name>
-        <servlet-class>it.functions.ImageUpload</servlet-class>
+        <servlet-class>it.bookBorrow.dataBase.manageImage.ImageUpload</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginAndRegistration</servlet-name>
-        <servlet-class>it.database.LoginAndRegistration</servlet-class>
+        <servlet-class>it.bookBorrow.dataBase.query.LoginAndRegistration</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>OperazioniAdmin</servlet-name>
-        <servlet-class>it.functions.OperazioniAdmin</servlet-class>
+        <servlet-class>it.bookBorrow.actorsOperations.OperazioniAdmin</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>OperazioniUser</servlet-name>
-        <servlet-class>it.functions.OperazioniUser</servlet-class>
+        <servlet-class>it.bookBorrow.actorsOperations.OperazioniUser</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PrintImage</servlet-name>
-        <servlet-class>it.functions.PrintImage</servlet-class>
+        <servlet-class>it.bookBorrow.dataBase.manageImage.PrintImage</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>OperazioniPrestito</servlet-name>
-        <servlet-class>it.functions.OperazioniPrestito</servlet-class>
+        <servlet-class>it.bookBorrow.actorsOperations.OperazioniPrestito</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ImageUpload</servlet-name>

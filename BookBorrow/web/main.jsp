@@ -66,6 +66,9 @@
                         <button onclick="window.location = 'notifiche.jsp'">Prestiti</button>
                     </td>
                     <td>
+                        <button onclick="window.location = 'disiscrizione.jsp'">Disiscriviti</button>
+                    </td>
+                    <td>
                         <button onclick="window.location = 'OperazioniUser'">Logout</button>
                     </td>            
                 </tr>

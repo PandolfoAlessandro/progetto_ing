@@ -1,5 +1,6 @@
-package it.database;
+package it.bookBorrow.dataBase.query;
 
+import it.bookBorrow.dataBase.Connessione;
 import java.sql.*;
 
 /**
