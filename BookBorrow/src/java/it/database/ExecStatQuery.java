@@ -45,12 +45,12 @@ public class ExecStatQuery {
         ResultSet r4=doQuery(numMaschi);
         r4.next();
         
-        JOptionPane.showMessageDialog(null, (r4.getInt(1)/r1.getInt(1)*100));
+
         this.nUt=r1.getInt(1)+"";
         this.nLi=r2.getInt(1)+"";
         this.nPA=r3.getInt(1)+"";
-        this.nMa=(r4.getInt(1)/r1.getInt(1)*100)+"% ";
-        this.nFe=(r1.getInt(1)-r4.getInt(1))/r1.getInt(1)*100 +"% ";
+        this.nMa=((r4.getInt(1))*100/(r1.getInt(1))*100)/100+"% ";
+        this.nFe=(((r1.getInt(1)-r4.getInt(1)))*100/r1.getInt(1)*100)/100 +"% ";
         
         }catch(SQLException | HeadlessException e){}
         
