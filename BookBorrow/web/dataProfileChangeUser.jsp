@@ -40,7 +40,12 @@
             }
 
         %>
-        
+         <script type="text/javascript">
+            function openPopUp()
+            {
+                window.open("changeImgU.jsp", "Cambia foto profilo", "scrollbars=1,resizable=0,height=200,width=550,left=450,top=200");
+            }
+        </script>
 
         <%  
             QueryExec exQ = new ExecPCUQuery();
