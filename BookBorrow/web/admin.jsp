@@ -29,8 +29,7 @@
             
         %>
         Benvenuto nella pagina di amministrazione di Book Borrow
-        <% session.setAttribute (
-        "Operazione", "null"); %>
+        <% session.setAttribute ("Operazione", "logout"); %>
         <div>
 
             <table>
@@ -52,7 +51,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <button onclick="window.location = 'logout.jsp'">Logout</button>
+                        <button onclick="window.location = 'OperazioniAdmin'">Logout</button>
                     </td>
                 </tr>
             </table>

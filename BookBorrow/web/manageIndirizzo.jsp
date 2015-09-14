@@ -48,7 +48,7 @@
 
         <%  
             QueryExec exQ = new ExecMIQuery();
-            exQ.setPrameters(session.getAttribute("userEmail"));
+            exQ.setParameters(session.getAttribute("userEmail"));
             ResultSet rs = exQ.getResult();
         
         %>    
@@ -86,8 +86,7 @@
                     </TD>
                 </TR>
 
-                <% }
-                con.close();%>
+                <%}%>
             </TABLE>
         </form>
         <a href="main.jsp">Indietro</a>

@@ -47,7 +47,7 @@
         
         <%  
             QueryExec exQ = new ExecBCAQuery();
-            exQ.setPrameters(request.getParameter("id_l"));
+            exQ.setParameters(request.getParameter("id_l"));
             ResultSet rs = exQ.getResult();
             
             if (rs.next()) {

@@ -49,7 +49,7 @@
 
         <%  
             QueryExec exQ = new ExecPCUQuery();
-            exQ.setPrameters(session.getAttribute("userEmail"));
+            exQ.setParameters(session.getAttribute("userEmail"));
             ResultSet rs =exQ.getResult();
             
             if (rs.next()) {

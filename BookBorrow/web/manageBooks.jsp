@@ -32,7 +32,7 @@
 
         %>
         <%  QueryExec exQ = new ExecMBQuery();
-            exQ.setPrameters(session.getAttribute("userEmail"));
+            exQ.setParameters(session.getAttribute("userEmail"));
             ResultSet rs = exQ.getResult();
       
         %>    

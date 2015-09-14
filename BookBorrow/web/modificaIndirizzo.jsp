@@ -21,7 +21,7 @@
     <body>
         <%
             QueryExec exQ = new ExecModIQuery();
-            exQ.setPrameters(session.getAttribute("userEmail"), request.getParameter("coor").replace('-', ' '));
+            exQ.setParameters(session.getAttribute("userEmail"), request.getParameter("coor").replace('-', ' '));
             ResultSet rs = exQ.getResult();
 
             if (rs.next()) {

@@ -34,41 +34,15 @@ public class OperazioniAdmin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet OperazioniAdmin</title>");
-            out.println("</head>");
-
-            out.print(request.getSession().getAttribute("operazione"));
-
-            out.println("<body>");
-            out.println("<h1>Servlet OperazioniAdmin at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        this.doPost(request, response);
     }
-    /*
 
-     @Override
-     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-     throws ServletException, IOException {
-     processRequest(request, response);
-        
-     switch ((String) request.getSession().getAttribute("Operazione")) {
-     case "elimina": eliminazione(request,response);
-     break;
-     case "gestisci": gestione(request,response);
-     break;
-     case "statistiche": statistiche(request,response);
-     break;
-     }
-     }
-     */
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.doPost(request, response);
+    }
+    
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -119,7 +93,7 @@ public class OperazioniAdmin extends HttpServlet {
                 }
             }
             break;
-            
+
             case "gestisciLibro": {
                 String id_libro = (String) request.getSession().getAttribute("id_lib");
                 try {
@@ -129,6 +103,12 @@ public class OperazioniAdmin extends HttpServlet {
                 }
 
                 response.sendRedirect("dataBookChangeAdmin.jsp?id_l=" + id_libro);
+                break;
+            }
+            case "logout": {
+                request.getSession().removeAttribute("userEmail");
+                request.getSession().removeAttribute("isAdmin");
+                response.sendRedirect("index.jsp");
                 break;
             }
         }
@@ -155,7 +135,6 @@ public class OperazioniAdmin extends HttpServlet {
             con.close();
         }
     }
-
 
     private void eliminaLibro(String id_libro) throws ClassNotFoundException, SQLException {
         String deleteBook = "DELETE FROM libro WHERE id='" + id_libro + "'";

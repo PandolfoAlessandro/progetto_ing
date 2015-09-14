@@ -46,7 +46,7 @@
         
         <%  
             QueryExec exQ=new ExecBCUQuery();
-            exQ.setPrameters(request.getParameter("id_l"), session.getAttribute("userEmail"));
+            exQ.setParameters(request.getParameter("id_l"), session.getAttribute("userEmail"));
             ResultSet rs = exQ.getResult();
 
             if (rs.next()) {

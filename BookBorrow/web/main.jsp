@@ -46,7 +46,7 @@
             }
         </script>
         <h1>Ciao <%out.print((String) session.getAttribute("userEmail"));%>! Sei nella mainpage di bookborrow!</h1> 
-
+        <% session.setAttribute("Operazione", "logout");%>
         <div style="background-color: aquamarine">
             <table>
                 <tr>
@@ -66,7 +66,7 @@
                         <button onclick="window.location = 'notifiche.jsp'">Prestiti</button>
                     </td>
                     <td>
-                        <button onclick="window.location = 'logout.jsp'">Logout</button>
+                        <button onclick="window.location = 'OperazioniUser'">Logout</button>
                     </td>            
                 </tr>
             </table>
@@ -142,7 +142,7 @@
                 <TH>Distanza</TH>
             </TR>
             <% int p;
-                for (int pos = 0; pos < distanze[0].length; pos++) {             
+                for (int pos = 0; pos < distanze[0].length; pos++) {
                     p = (int) distanze[0][pos];
                     exQ.setParameters(2, listaUtenti.get(p)[0]);
                     ResultSet nlib = exQ.getResult();

@@ -4,6 +4,7 @@
     Author     : alessandro
 --%>
 
+<%@page import="it.functions.Ordina"%>
 <%@page import="it.database.ExecSBQuery"%>
 <%@page import="it.database.QueryExec"%>
 <%@page import="it.functions.Geolocalizzazione"%>
@@ -42,7 +43,7 @@
         %>
         <script type="text/javascript">
             function CercaLibro() {
-                window.location.replace("searchBook.jsp?lS=" + document.getElementById("libroSel").value+"&lg="+ document.getElementById("genereSel").value);
+                window.location.replace("searchBook.jsp?lS=" + document.getElementById("libroSel").value + "&lg=" + document.getElementById("genereSel").value);
             }
         </script>
         <div style="background-color: burlywood">
@@ -54,22 +55,22 @@
                     <td> </td>
                     <td>Ricerca per Genere:</td>
                     <td><select id="genereSel">
-                                    <option value=""> 
-                                    Tutti i generi
-                                    </option>
-                                    <%
-                                        exQ.setPrameters(2);
-                                        ResultSet rsGen = exQ.getResult();
+                            <option value=""> 
+                                Tutti i generi
+                            </option>
+                            <%
+                                exQ.setParameters(2);
+                                ResultSet rsGen = exQ.getResult();
 
-                                        while (rsGen.next()) {
-                                        
-                                    %>    
+                                while (rsGen.next()) {
 
-                                    <option value="<%= rsGen.getString(1)%> "> 
-                                        <%out.print( rsGen.getString(1));%> 
-                                    </option>                    
-                                    <%}%>
-                                </select></td>
+                            %>    
+
+                            <option value="<%= rsGen.getString(1)%> "> 
+                                <%out.print(rsGen.getString(1));%> 
+                            </option>                    
+                            <%}%>
+                        </select></td>
                     <td><button onclick="CercaLibro()">Cerca</button></td>
                 </tr>
             </table>
@@ -77,8 +78,8 @@
         <%  session.setAttribute("trovato", false);
             String cord = null;
             String provincia = null;
-            
-            exQ.setPrameters(0,session.getAttribute("userEmail"));             
+
+            exQ.setParameters(0, session.getAttribute("userEmail"));
             ResultSet rs1 = exQ.getResult();
 
             if (rs1.next()) {
@@ -86,36 +87,10 @@
                 provincia = rs1.getString(2);
             }
 
-            Connection con1 = Connessione.getConnection();
+            exQ.setParameters(1, session.getAttribute("userEmail"), provincia,
+                    request.getParameter("lg"), request.getParameter("lS"));
 
-            String listaLibri = "SELECT 1, l.id, l.titolo, l.nome_autore, l.cognome_autore, "
-                    + "l.casa_ed, l.n_pagine, l.anno_pubblicazione, l.genere, "
-                    + "i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale, l.Book_User "
-                    + "FROM Indirizzo i JOIN libro l "
-                    + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "WHERE l.disponibilita=1 and "
-                    + "l.Book_User != '" + session.getAttribute("userEmail") + "' ";
-
-            if (request.getParameter("lS") != null && !(request.getParameter("lS").equals(""))) {
-                listaLibri += " and (l.titolo ilike '%" + request.getParameter("lS") + "%' or "
-                        + "l.nome_autore ilike '%" + request.getParameter("lS") + "%' or "
-                        + "l.cognome_autore ilike '%" + request.getParameter("lS") + "%') ";
-                if (request.getParameter("lg") != null && !(request.getParameter("lg").equals(""))) {
-                    listaLibri += " and l.genere ilike '" + request.getParameter("lg") + "' ";
-                }
-            } else {
-                if (request.getParameter("lg") != null && !(request.getParameter("lS").equals(""))) {
-                    listaLibri += " and l.genere ilike '" + request.getParameter("lg") + "' ";
-                } else {
-                    listaLibri += "and i.provincia ilike '" + provincia + "' ";
-                }
-            }
-            
-            exQ.setPrameters(1,session.getAttribute("userEmail"),provincia,
-                    request.getParameter("lg"),request.getParameter("lS"));
-            
-            Statement stmt = con1.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rslu = stmt.executeQuery(listaLibri);
+            ResultSet rslu = exQ.getResult();
             int size = 0;
             while (rslu.next()) {
                 size++;
@@ -151,27 +126,12 @@
 
             if (distanze instanceof Object[][]) {
                 if (distanze[0].length > 1) {
-                    for (int j = 0; j < distanze[0].length; j++) {
-                        boolean flag = false;
-                        for (int k = 0; k < distanze[0].length - 1; k++) {
-                            if (Double.compare((Double) distanze[1][k], (Double) distanze[1][k + 1]) > 0) {
-                                Double temp1 = (Double) distanze[1][k];
-                                int temp2 = (int) distanze[0][k];
-                                distanze[0][k] = distanze[0][k + 1];
-                                distanze[1][k] = distanze[1][k + 1];
-                                distanze[0][k + 1] = temp2;
-                                distanze[1][k + 1] = temp1;
-                                flag = true;
-                            }
-                            if (!flag) {
-                                break;
-                            }
-                        }
-                    }
+                    distanze = Ordina.order(distanze);
                 }
+            }
         %>
         <% session.setAttribute("ritornoPres", "searchBook.jsp");
-          if ((Boolean) session.getAttribute("trovato")) {%>
+            if ((Boolean) session.getAttribute("trovato")) {%>
         <div id="infoLibri">
             <form method="POST" action="OperazioniPrestito" onsubmit="window.alert('Richiesta effettata! Controlla le tue notifiche')">
                 <center>
@@ -224,12 +184,10 @@
                     </table>
                 </center>
             </form>
-            <%} %>
-            
+            <%}%>
+
         </div>    
 
-        <%}%>
-        <%con.close();%>
 
         <a href="main.jsp">Vai al main</a>
     </body>

@@ -15,22 +15,22 @@ public class ExecSBQuery implements QueryExec {
     private String genere;
     private String ricerca;
     private String provincia;
-    private int Operazione;
+    private int operazione;
 
     public ExecSBQuery() {
         this.utente = null;
         this.genere = null;
         this.ricerca = null;
         this.provincia = null;
-        this.Operazione = -1;
+        this.operazione = -1;
     }
 
     @Override
     public void setParameters(Object... obj) {
-        this.Operazione = (int) obj[0];
-        if (this.Operazione == 2) {
+        this.operazione = (int) obj[0];
+        if (this.operazione == 2) {
         } else {
-            if (this.Operazione == 0) {
+            if (this.operazione == 0) {
                 this.utente = (String) obj[1];
             } else {
                 this.utente = (String) obj[1];
@@ -41,7 +41,7 @@ public class ExecSBQuery implements QueryExec {
                     this.ricerca = (String) obj[4];
                 }
                 this.provincia = (String) obj[2];
-                if (this.Operazione == 1) {
+                if (this.operazione == 1) {
 
                 }
             }
@@ -52,7 +52,7 @@ public class ExecSBQuery implements QueryExec {
     public ResultSet getResult() {
         ResultSet rs = null;
         String query = "";
-        switch (this.Operazione) {
+        switch (this.operazione) {
             case 0:
                 query = "SELECT coordinate_geografiche, provincia FROM indirizzo "
                         + "WHERE BOOK_USER='" + this.utente + "' "
@@ -91,7 +91,12 @@ public class ExecSBQuery implements QueryExec {
         try {
             Connection con = Connessione.getConnection();
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            Statement stmt = con.createStatement();
+            Statement stmt;
+            if (this.operazione == 1) {
+                stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            } else {
+                stmt = con.createStatement();
+            }
             // Verifico che le credenziali inserite siano di un utente "normale"
             rs = stmt.executeQuery(query);
             con.close();

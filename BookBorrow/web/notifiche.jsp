@@ -37,8 +37,8 @@
             }
 
         %>
-        <%            QueryExec exQ = new ExecNotQuery();
-            exQ.setPrameters(session.getAttribute("userEmail"));
+        <%  QueryExec exQ = new ExecNotQuery();
+            exQ.setParameters(0, session.getAttribute("userEmail"));
             ResultSet rs = exQ.getResult();
 
             int col = 0;
@@ -61,16 +61,10 @@
                     }%>
             </table>
         </form>
-        <% conn.close();
-            String effettuate = "SELECT p.email_proprietario, l.titolo, l.nome_autore, "
-                    + "l.cognome_autore, date_part('Year', p.data_richiesta), date_part('Month', p.data_richiesta), "
-                    + "date_part('Day', p.data_richiesta), p.stato "
-                    + "FROM prestito p JOIN libro l ON (p.id_libro=l.id) "
-                    + "WHERE p.email_richiedente = '" + session.getAttribute("userEmail") + "'";
-
-            conn = Connessione.getConnection();
-            Statement stmt1 = conn.createStatement();
-            ResultSet rs1 = stmt1.executeQuery(effettuate);
+        <%
+            exQ.setParameters(1, session.getAttribute("userEmail"));
+            ResultSet rs1 = exQ.getResult();
+            
             String accettato = "&egrave stata accettata";
             String rifiutato = "&egrave stata rifiutata";
             String pendente = "non ha ancora ricevuto una risposta";

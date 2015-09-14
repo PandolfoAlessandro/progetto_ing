@@ -12,31 +12,43 @@ import java.sql.Statement;
 public class ExecNotQuery implements QueryExec{
     
     private String utente;
+    private int operazione;
     
     public ExecNotQuery(){
         this.utente=null;
+        this.operazione=-1;
     }
     
     @Override
     public void setParameters(Object... obj) {
-        this.utente=(String)obj[0];
+        this.operazione=(int)obj[0];
+        this.utente=(String)obj[1];
     }
 
     @Override
     public ResultSet getResult() {
-        String ricevute = "SELECT p.email_richiedente, l.titolo, l.nome_autore, "
+        String query="";
+        if(this.operazione==0){
+            query = "SELECT p.email_richiedente, l.titolo, l.nome_autore, "
                     + "l.cognome_autore, date_part('Year', p.data_richiesta), date_part('Month', p.data_richiesta), "
                     + "date_part('Day', p.data_richiesta), l.id "
                     + "FROM prestito p JOIN libro l ON (p.id_libro=l.id) "
                     + "WHERE p.stato ilike 'p' and "
                     + "p.email_proprietario = '" + utente + "'";
+        }else{
+            query = "SELECT p.email_proprietario, l.titolo, l.nome_autore, "
+                    + "l.cognome_autore, date_part('Year', p.data_richiesta), date_part('Month', p.data_richiesta), "
+                    + "date_part('Day', p.data_richiesta), p.stato "
+                    + "FROM prestito p JOIN libro l ON (p.id_libro=l.id) "
+                    + "WHERE p.email_richiedente = '" + utente + "'";
+        }
         ResultSet rs = null;
         try {
             Connection con = Connessione.getConnection();
             // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
             Statement stmt = con.createStatement();    
             //eseguo la query
-            rs = stmt.executeQuery(ricevute);    
+            rs = stmt.executeQuery(query);    
             
             con.close();
         } catch (ClassNotFoundException | SQLException e) {

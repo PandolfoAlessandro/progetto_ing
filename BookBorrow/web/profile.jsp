@@ -46,17 +46,17 @@
         %>
         <%  String cord = "";
             QueryExec exQ = new ExecPrQuery();
-            exQ.setPrameters(0,session.getAttribute("userEmail"));         
+            exQ.setParameters(0, session.getAttribute("userEmail"));
             ResultSet rs = exQ.getResult();
 
             if (rs.next()) {
                 cord = rs.getString(1);
             }
         %>    
-        <%  
-            exQ.setPrameters(1,request.getParameter("emailSel"));         
+        <%
+            exQ.setParameters(1, request.getParameter("emailSel"));
             ResultSet rspu = exQ.getResult();
-            
+
             if (rspu.next()) {
         %>
         <div id="fotoProfilo">
@@ -73,9 +73,9 @@
         </div>
         <%  }
             session.setAttribute("trovato", true);
-            exQ.setPrameters(2,request.getParameter("emailSel"));         
+            exQ.setParameters(2, request.getParameter("emailSel"));
             ResultSet rslu = exQ.getResult();
-            
+
             int size = 0;
             while (rslu.next()) {
                 size++;
@@ -88,7 +88,7 @@
             int i = 0;
             distanze = new Object[2][size];
             while (rslu.next()) {
-                session.setAttribute("trovato", true);           
+                session.setAttribute("trovato", true);
                 utenteCorrente = new Object[12];
                 utenteCorrente[0] = rslu.getString(3);
                 utenteCorrente[1] = rslu.getString(4);
@@ -110,9 +110,9 @@
 
             if (distanze instanceof Object[][]) {
                 if (distanze[0].length > 1) {
-                    distanze=Ordina.order(distanze);
+                    distanze = Ordina.order(distanze);
                 }
-                String link="profile.jsp?emailSel="+request.getParameter("emailSel");
+                String link = "profile.jsp?emailSel=" + request.getParameter("emailSel");
         %>
 
         <%  session.setAttribute("ritornoPres", link);
@@ -170,11 +170,10 @@
                 </center>
             </form>
             <%} %>
-
+            <a href="main.jsp">Vai al main</a>
         </div>    
 
         <%}%>
-        <%con.close();%>
-        <a href="main.jsp">Vai al main</a>
+
     </body>
 </html>
