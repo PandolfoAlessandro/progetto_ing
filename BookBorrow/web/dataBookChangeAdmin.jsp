@@ -4,6 +4,8 @@
     Author     : alessandro
 --%>
 
+<%@page import="it.database.ExecBCAQuery"%>
+<%@page import="it.database.QueryExec"%>
 <%@page import="java.sql.*"%>
 <%@page import="it.database.Connessione"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -43,21 +45,12 @@
             }
         </script>
         
-        <%
-            String datiLibro = "SELECT anno_pubblicazione, n_pagine, "
-                    + "nome_autore, cognome_autore, genere, casa_ed, titolo "
-                    + "FROM libro l WHERE l.id='" + request.getParameter("id_l") + "'";
-
-            Connection con = Connessione.getConnection();
-
-            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            Statement stmt = con.createStatement();
-
-            ResultSet rs;
-            // Verifico che le credenziali inserite siano di un utente "normale"
-            rs = stmt.executeQuery(datiLibro);
+        <%  
+            QueryExec exQ = new ExecBCAQuery();
+            exQ.setPrameters(request.getParameter("id_l"));
+            ResultSet rs = exQ.getResult();
+            
             if (rs.next()) {
-
         %>
         <% session.setAttribute("Operazione", "gestisciLibro"); %>
         <% session.setAttribute("id_lib", request.getParameter("id_l")); %>

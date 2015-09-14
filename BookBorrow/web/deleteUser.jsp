@@ -1,6 +1,8 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="it.database.QueryExec"%>
+<%@page import="it.database.ExecDelUsrQuery"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.sql.*"%>
-<%@page import="it.database.Connessione"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,18 +32,9 @@
             
         %>
         <%
-            String selectUsers = "SELECT DISTINCT b.email, b.nome, b.cognome, i.citta, i.provincia "
-                    + "FROM book_user b JOIN indirizzo i ON (b.email=i.book_user) WHERE i.principale=1";
-
-            Connection con = Connessione.getConnection();
-
-            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            Statement stmt = con.createStatement();
-
-            ResultSet rs;
-            // Verifico che le credenziali inserite siano di un utente "normale"
-            rs = stmt.executeQuery(selectUsers);
-
+            QueryExec exQ=new ExecDelUsrQuery();
+            
+            ResultSet rs = exQ.getResult();
         %>    
 
         <a href="admin.jsp">Indietro</a>
@@ -68,6 +61,5 @@
                 <% }%>
             </TABLE>
         </form>
-        <%con.close();%>
     </body>
 </html>

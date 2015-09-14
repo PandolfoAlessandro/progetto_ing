@@ -4,6 +4,8 @@
     Author     : insan3
 --%>
 
+<%@page import="it.database.QueryExec"%>
+<%@page import="it.database.ExecPCUQuery"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Statement"%>
@@ -40,19 +42,11 @@
         %>
         
 
-        <%
-            String datiLibro = "SELECT nome,cognome,sesso,data_nascita,foto_profilo "
-                    + "FROM book_user "
-                    + "WHERE email='" + (String)(session.getAttribute("userEmail"))+"'";
-
-            Connection con = Connessione.getConnection();
-
-            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            Statement stmt = con.createStatement();
-
-            ResultSet rs;
-            // Verifico che le credenziali inserite siano di un utente "normale"
-            rs = stmt.executeQuery(datiLibro);
+        <%  
+            QueryExec exQ = new ExecPCUQuery();
+            exQ.setPrameters(session.getAttribute("userEmail"));
+            ResultSet rs =exQ.getResult();
+            
             if (rs.next()) {
 
         %>

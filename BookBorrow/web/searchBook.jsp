@@ -55,7 +55,7 @@
                                     Tutti i generi
                                     </option>
                                     <%
-                                        String generi = "SELECT DISTINCT genere FROM libro ";
+                                        String generi = "SELECT DISTINCT genere FROM libro Where disponibilita=1 ";
                                         Connection conGen = Connessione.getConnection();
                                         Statement stmtGen = conGen.createStatement();
                                         ResultSet rsGen = stmtGen.executeQuery(generi);

@@ -3,6 +3,8 @@
     Created on : 11-set-2015, 12.50.25
     Author     : insan3
 --%>
+<%@page import="it.database.ExecBCUQuery"%>
+<%@page import="it.database.QueryExec"%>
 <%@page import="java.sql.*"%>
 <%@page import="it.database.Connessione"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -42,21 +44,11 @@
             }
         </script>
         
-        <%
-            String datiLibro = "SELECT anno_pubblicazione, n_pagine, "
-                    + "nome_autore, cognome_autore, genere, casa_ed, titolo, disponibilita "
-                    + "FROM libro l "
-                    + "WHERE l.id='" + request.getParameter("id_l") 
-                    + "' AND l.book_user='"+(String)(session.getAttribute("userEmail"))+"'";
+        <%  
+            QueryExec exQ=new ExecBCUQuery();
+            exQ.setPrameters(request.getParameter("id_l"), session.getAttribute("userEmail"));
+            ResultSet rs = exQ.getResult();
 
-            Connection con = Connessione.getConnection();
-
-            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            Statement stmt = con.createStatement();
-
-            ResultSet rs;
-            // Verifico che le credenziali inserite siano di un utente "normale"
-            rs = stmt.executeQuery(datiLibro);
             if (rs.next()) {
 
         %>

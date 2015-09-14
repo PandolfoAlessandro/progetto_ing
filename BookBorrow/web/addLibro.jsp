@@ -33,8 +33,8 @@
                 if (session.getAttribute("userEmail") == null) {
                     response.sendRedirect("index.jsp");
                 } else {
-                    if (!((boolean) session.getAttribute("isAdmin"))) {
-                        response.sendRedirect("main.jsp");
+                    if ((boolean) session.getAttribute("isAdmin")) {
+                        response.sendRedirect("admin.jsp");
                     }
                 }
 

@@ -4,6 +4,9 @@
     Author     : insan3
 --%>
 
+<%@page import="it.functions.Ordina"%>
+<%@page import="it.database.ExecMainQuery"%>
+<%@page import="it.database.QueryExec"%>
 <%@page import="it.functions.Geolocalizzazione"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="it.database.Connessione"%>
@@ -81,47 +84,18 @@
         <%  session.setAttribute("trovato", false);
             String cord = null;
             String provincia = null;
-            String qCord = "SELECT coordinate_geografiche, provincia FROM indirizzo "
-                    + "WHERE BOOK_USER='" + session.getAttribute("userEmail") + "' "
-                    + "and Principale=1 ";
 
-            Connection con = Connessione.getConnection();
-
-            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            Statement stmt1 = con.createStatement();
-
-            ResultSet rs1;
-            rs1 = stmt1.executeQuery(qCord);
+            QueryExec exQ = new ExecMainQuery();
+            exQ.setPrameters(0, session.getAttribute("userEmail"));
+            ResultSet rs1 = exQ.getResult();
 
             if (rs1.next()) {
                 cord = rs1.getString(1);
                 provincia = rs1.getString(2);
             }
-            con.close();
-            con = Connessione.getConnection();
-            String selectUsers = "SELECT distinct 1, u.email, u.nome, u.cognome, date_part('Year', u.data_nascita),i.coordinate_geografiche, i.citta, i.provincia, "
-                    + "count(distinct l.id), count(distinct l.coordinate_geografiche) "
-                    + "FROM Book_User u JOIN Indirizzo i on (u.email=i.Book_User) "
-                    + "JOIN libro l "
-                    + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "Where u.tipologia = 1  and u.email!='" + session.getAttribute("userEmail") + "' ";
 
-            if (request.getParameter("uS") != null && !(request.getParameter("uS").equals(""))) {
-                selectUsers += " and (u.nome ilike '" + request.getParameter("uS") + "' or "
-                        + "u.cognome ilike '" + request.getParameter("uS") + "' or "
-                        + "u.email= '" + request.getParameter("uS") + "') ";
-            } else {
-                selectUsers += "and i.provincia ilike '" + provincia + "' ";
-            }
-
-            selectUsers += "group by u.email, i.provincia, i.citta,i.coordinate_geografiche, l.id ";
-            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            Statement stmt = con.createStatement();
-
-            ResultSet rssel1;
-
-            // Verifico che le credenziali inserite siano di un utente "normale"
-            rssel1 = stmt.executeQuery(selectUsers);
+            exQ.setPrameters(1, session.getAttribute("userEmail"), provincia, request.getParameter("uS"));
+            ResultSet rssel1 = exQ.getResult();
 
             int size = 0;
             if (!rssel1.isLast()) {
@@ -133,12 +107,9 @@
             ArrayList<Object[]> listaUtenti = new ArrayList<Object[]>();
             Object[] utenteCorrente;
             Object[][] distanze = null;
-            Statement stmtsel2 = con.createStatement();
 
-            ResultSet rs;
+            ResultSet rs = exQ.getResult();
 
-            // Verifico che le credenziali inserite siano di un utente "normale"
-            rs = stmtsel2.executeQuery(selectUsers);
             distanze = new Object[2][size];
             int i = 0;
             while (rs.next()) {
@@ -160,25 +131,8 @@
             }
 
             if (distanze instanceof Object[][]) {
-                if (distanze[0].length > 1) {
-                    for (int j = 0; j < distanze[0].length; j++) {
-                        boolean flag = false;
-                        for (int k = 0; k < distanze[0].length - 1; k++) {
-                            if (Double.compare((Double) distanze[1][k], (Double) distanze[1][k + 1]) > 0) {
-                                Double temp1 = (Double) distanze[1][k];
-                                int temp2 = (int) distanze[0][k];
-                                distanze[0][k] = distanze[0][k + 1];
-                                distanze[1][k] = distanze[1][k + 1];
-                                distanze[0][k + 1] = temp2;
-                                distanze[1][k + 1] = temp1;
-                                flag = true;
-                            }
-                            if (!flag) {
-                                break;
-                            }
-                        }
-                    }
-                }
+                distanze = Ordina.order(distanze);
+
         %>    
         <% if ((Boolean) session.getAttribute("trovato")) {%>
         <TABLE BORDER="1" style="border-color: orangered">
@@ -188,8 +142,11 @@
                 <TH>Distanza</TH>
             </TR>
             <% int p;
-                for (int pos = 0; pos < distanze[0].length; pos++) {
+                for (int pos = 0; pos < distanze[0].length; pos++) {             
                     p = (int) distanze[0][pos];
+                    exQ.setPrameters(2, listaUtenti.get(p)[0]);
+                    ResultSet nlib = exQ.getResult();
+                    nlib.next();
             %>
             <TR>
                 <TD><img src="PrintImage?id_img=<%= listaUtenti.get(p)[0]%>&amp;what=utente" 
@@ -211,8 +168,8 @@
                             <td><%= listaUtenti.get(p)[4]%>(<%= listaUtenti.get(p)[5]%>)</td>
                         </tr>
                         <tr>
-                            <td>Libri nel sistema:<%= listaUtenti.get(p)[6]%><%
-                                int ind = (int) listaUtenti.get(p)[7];
+                            <td>Libri nel sistema:<%= nlib.getInt(1)%><%
+                                int ind = (int) nlib.getInt(2);
                                 if (ind - 1 > 0) {
                                 %>(Alcuni libri non sono all'indirizzo di residenza)<%}%>
                             </td>
@@ -223,9 +180,7 @@
             </TR>
             <%}%>
         </TABLE>
-        <% }%>
-        <%con.close();
-
+        <% }
             }%>
 
 
