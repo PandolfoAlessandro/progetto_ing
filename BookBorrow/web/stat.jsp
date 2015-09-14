@@ -4,6 +4,9 @@
     Author     : insan3
 --%>
 
+<%@page import="it.database.ExecStatQuery"%>
+<%@page import="it.database.ExecSBQuery"%>
+<%@page import="it.database.QueryExec"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
@@ -39,18 +42,7 @@
             
         %>
         <%
-            String numUtenti = "SELECT count(*) FROM book_user";
-            String numLibri = "SELECT count(*) FROM libro";
-            String numPrestAcc = "SELECT count(*) FROM prestito WHERE stato='a'";
-            String numMaschi = "SELECT count(*) FROM book_user WHERE sesso='m'";
-
-            int numUt = 0;
-            int maschi = 0;
-
-            Connection con = Connessione.getConnection();
-            Statement stmt = con.createStatement();
-
-
+        ExecStatQuery exQ= ExecStatQuery.getInstance();
         %>
 
 
@@ -66,54 +58,33 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <%
-                                ResultSet rs1 = stmt.executeQuery(numUtenti);
-                                if (rs1.next()) {
-                                    numUt = Integer.parseInt(rs1.getString(1));
-                                }
-                            %>
                             <td>Numero utenti iscritti:</td>
-                            <td><%=numUt%></td>
+                            <td><%=exQ.getnUt()%></td>
                         </tr>
                         <tr>
-                            <%
-                                ResultSet rs2 = stmt.executeQuery(numLibri);
-                                if (rs2.next()) {
-                            %>
                             <td>Numero libri inseriti:</td>
-                            <td><%=rs2.getString(1)%></td>
-                            <%}%>
+                            <td><%=exQ.getnLi()%></td>
+                    
                         </tr>
                         <tr>
-                            <%
-                                ResultSet rs3 = stmt.executeQuery(numPrestAcc);
-                                if (rs3.next()) {
-                            %>
-
                             <td>Numero di prestiti accettati:</td>
-                            <td><%=rs3.getString(1)%></td>
-                            <%}%>
+                            <td><%=exQ.getnPA()%></td>
+               
                         </tr>
                         <tr>
-                            <%
-                                ResultSet rs4 = stmt.executeQuery(numMaschi);
-                                if (rs4.next()) {
-                                    maschi = Integer.parseInt(rs4.getString(1));
-                                }
-                            %>
                             <td>Percentuale utenti di sesso maschile:</td>
-                            <td><%=(int) (maschi / numUt * 100)%>% </td>
+                            <td><%=exQ.getnMa()%> </td>
 
                         </tr>
                         <tr>
                             <td>Percentuale utenti di sesso femminile:</td>
-                            <td><%=(int) ((numUt - maschi) / numUt * 100)%>% </td>
+                            <td><%=exQ.getnFe()%> </td>
                         </tr>
                     </tbody>
                 </table>
             </center>
         </form>
-        <%con.close();%>
+   
         <a href="admin.jsp">indietro</a>                
     </body>
 </html>
