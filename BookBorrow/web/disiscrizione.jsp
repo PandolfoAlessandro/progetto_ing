@@ -12,16 +12,17 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form method="POST" action="OperazioniUser" onsubmit="return confirm('sicuro di voler modificare i dati del libro?');">
+        <% session.setAttribute("Operazione", "disiscrizione"); %>
+        <form method="POST" action="OperazioniUser">
             <table>
                 <tr>
                     <td>
-                        <button type="Submit" value="Conferma">SI</button>
+                        <button type="Submit" name="confermaDisiscrizione" value="si">SI</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <button onclick="window.location = 'main.jsp'">NO</button>
+                        <button type="Submit" name="confermaDisiscrizione" value="no">NO</button>
                     </td>       
                 </tr>
             </table>

@@ -8,7 +8,6 @@ package it.bookBorrow.actorsOperations;
 import it.bookBorrow.geolocalizzazione.Geolocalizzazione;
 import it.bookBorrow.dataBase.Connessione;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +21,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -302,6 +300,31 @@ public class OperazioniUser extends HttpServlet {
                 request.getSession().removeAttribute("isAdmin");
                 response.sendRedirect("index.jsp");
                 break;
+            }
+            case "disiscrizione":{
+                    
+            switch (request.getParameter("confermaDisiscrizione")) {
+                case "no":{
+                    response.sendRedirect("main.jsp");
+                    break;
+                }
+                case "si":{
+                    try{
+                    String canc="DELETE FROM book_user WHERE email='"+email+"'";
+                        try (Connection con = Connessione.getConnection()) {
+                            Statement stm=con.createStatement();
+                            stm.executeUpdate(canc);
+                            con.close();
+                        }
+                    request.getSession().removeAttribute("userEmail");
+                    response.sendRedirect("index.jsp");
+                    
+                    }catch(ClassNotFoundException | SQLException | IOException e){}
+                    break;
+                }
+            }
+                
+            break;
             }
         }
     }
