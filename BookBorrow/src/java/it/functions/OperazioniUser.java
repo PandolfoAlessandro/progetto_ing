@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -210,11 +211,101 @@ public class OperazioniUser extends HttpServlet {
                         break;
                     }
                     case "modifica": {
-
+                        response.sendRedirect("modificaIndirizzo.jsp?coor="+coord.replace(' ', '-'));
                         break;
                     }
                 }
 
+                break;
+            }
+            case "cambiaInd":{
+            try {
+                try (Connection con = Connessione.getConnection()) {
+                    String changeInd="UPDATE indirizzo SET coordinate_geografiche=?, via=?, n_civico=?, cap=?, citta=?, "
+                            + "provincia=?, paese=?, principale=? WHERE book_user='"+email+"' AND "
+                            + "coordinate_geografiche='"+request.getParameter("parametroCoord").replace('-', ' ')+"'";
+                    
+                    
+                    String nuovoInd
+                            =request.getParameter("via")+" "
+                            +request.getParameter("civico")+" "
+                            +request.getParameter("cap")+" "
+                            +request.getParameter("citta")+" "
+                            +request.getParameter("provincia")+" "
+                            +request.getParameter("paese");
+                    String nuoveCoordinate=Geolocalizzazione.getCoordinate(nuovoInd);
+                    
+                    
+                    
+                    PreparedStatement pstmt=con.prepareStatement(changeInd);
+                    pstmt.clearParameters();
+                    
+                    if(request.getParameter("principale").equals("1")){
+                        String mod="UPDATE indirizzo SET principale=0 WHERE principale=1 AND book_user='"+email+"'";
+                        Statement stMod=con.createStatement();
+                        stMod.executeUpdate(mod);
+                    }
+                    
+                    pstmt.setString(1, nuoveCoordinate);
+                    pstmt.setString(2, request.getParameter("via"));
+                    pstmt.setString(3, request.getParameter("civico"));
+                    pstmt.setString(4, request.getParameter("cap"));
+                    pstmt.setString(5, request.getParameter("citta"));
+                    pstmt.setString(6, request.getParameter("provincia"));
+                    pstmt.setString(7, request.getParameter("paese"));
+                    pstmt.setInt(8, Integer.parseInt(request.getParameter("principale")));
+                    
+                    pstmt.executeUpdate();
+                    con.close();
+                }
+                
+                
+                
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(OperazioniUser.class.getName()).log(Level.SEVERE, null, ex);
+            }     
+            response.sendRedirect("manageIndirizzo.jsp");
+            break;
+            }
+            case "addIndirizzo":{
+            try {
+                try (Connection con = Connessione.getConnection()) {
+                    if(request.getParameter("principale").equals("1")){
+                        String mod="UPDATE indirizzo SET principale=0 WHERE principale=1 AND book_user='"+email+"'";
+                        Statement stMod=con.createStatement();
+                        stMod.executeUpdate(mod);
+                    }
+                    String add="INSERT INTO indirizzo VALUES(?,?,?,?,?,?,?,?,?)";
+                    
+                    PreparedStatement pstmt=con.prepareStatement(add);
+                    pstmt.clearParameters();
+                    
+                    String nuovoInd
+                            =request.getParameter("via")+" "
+                            +request.getParameter("civico")+" "
+                            +request.getParameter("cap")+" "
+                            +request.getParameter("citta")+" "
+                            +request.getParameter("provincia")+" "
+                            +request.getParameter("paese");
+                    String nuoveCoordinate=Geolocalizzazione.getCoordinate(nuovoInd);
+                    
+                    pstmt.setString(1, nuoveCoordinate);
+                    pstmt.setString(2, email);
+                    pstmt.setString(3, request.getParameter("via"));
+                    pstmt.setString(4, request.getParameter("civico"));
+                    pstmt.setString(5, request.getParameter("cap"));
+                    pstmt.setString(6, request.getParameter("citta"));
+                    pstmt.setString(7, request.getParameter("provincia"));
+                    pstmt.setString(8, request.getParameter("paese"));
+                    pstmt.setInt(9, Integer.parseInt(request.getParameter("principale")));
+                    pstmt.executeUpdate();
+                }
+                
+                response.sendRedirect("manageIndirizzo.jsp");
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(OperazioniUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
                 break;
             }
 

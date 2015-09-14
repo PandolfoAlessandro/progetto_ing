@@ -110,8 +110,9 @@
                     <TD> <%= rs.getString(8)%> </TD>
                     <TD> <%= rs.getString(9)%> </TD>
                     <TD>
-                        <button type="submit" onclick="return confirm('sicuro di voler eliminare l indirizzo?');" name="manage" value="elimina/<%= rs.getString(1)%>">Elimina Indirizzo</button>
-                        <button type="submit" name="manage" value="modifica/<%= rs.getString(1)%>">Modifica dati indirizzo</button>
+                        
+                        <button type="submit" <%= (rs.getString(9).equals("1"))? "disabled=\"true\"": ""%>  onclick="return confirm('sicuro di voler eliminare l indirizzo?');" name="manage" value="elimina/<%= rs.getString(1)%>">Elimina Indirizzo</button>
+                        <button type="submit" name="manage" value="modifica/<%= rs.getString(1).replace(' ', '-')%>">Modifica dati indirizzo</button>
                     </TD>
                 </TR>
 
