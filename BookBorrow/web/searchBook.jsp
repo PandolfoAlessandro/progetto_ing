@@ -4,13 +4,13 @@
     Author     : alessandro
 --%>
 
-<%@page import="it.functions.Ordina"%>
-<%@page import="it.database.ExecSBQuery"%>
-<%@page import="it.database.QueryExec"%>
-<%@page import="it.functions.Geolocalizzazione"%>
+<%@page import="it.bookBorrow.Ordina"%>
+<%@page import="it.bookBorrow.geolocalizzazione.Geolocalizzazione"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="it.database.Connessione"%>
-<%@page import="java.sql.*"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="it.bookBorrow.dataBase.query.ExecSBQuery"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

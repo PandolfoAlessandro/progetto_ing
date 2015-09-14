@@ -4,13 +4,12 @@
     Author     : insan3
 --%>
 
-<%@page import="it.functions.Ordina"%>
-<%@page import="it.database.ExecMainQuery"%>
-<%@page import="it.database.QueryExec"%>
-<%@page import="it.functions.Geolocalizzazione"%>
+
+<%@page import="it.bookBorrow.geolocalizzazione.Geolocalizzazione"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="it.database.Connessione"%>
-<%@page import="java.sql.*"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="it.bookBorrow.dataBase.query.ExecMainQuery"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

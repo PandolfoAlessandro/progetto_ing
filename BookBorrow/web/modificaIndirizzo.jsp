@@ -4,13 +4,10 @@
     Author     : insan3
 --%>
 
-<%@page import="it.database.ExecModIQuery"%>
-<%@page import="it.database.QueryExec"%>
-<%@page import="javax.swing.JOptionPane"%>
+<%@page import="it.bookBorrow.dataBase.query.ExecModIQuery"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="it.database.Connessione"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

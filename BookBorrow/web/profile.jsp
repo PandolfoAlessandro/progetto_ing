@@ -4,16 +4,14 @@
     Author     : insan3
 --%>
 
-<%@page import="it.database.ExecPrQuery"%>
-<%@page import="it.database.QueryExec"%>
-<%@page import="it.functions.Ordina"%>
-<%@page import="it.functions.Geolocalizzazione"%>
+
+<%@page import="it.bookBorrow.Ordina"%>
+<%@page import="it.bookBorrow.geolocalizzazione.Geolocalizzazione"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.sql.PreparedStatement"%>
+<%@page import="it.bookBorrow.dataBase.query.ExecPrQuery"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="it.database.Connessione"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

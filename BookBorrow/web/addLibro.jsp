@@ -7,7 +7,7 @@
 
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
-<%@page import="it.database.Connessione"%>
+<%@page import="it.bookBorrow.dataBase.Connessione"%>
 <%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

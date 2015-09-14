@@ -3,10 +3,10 @@
     Created on : 11-set-2015, 12.50.25
     Author     : insan3
 --%>
-<%@page import="it.database.ExecBCUQuery"%>
-<%@page import="it.database.QueryExec"%>
-<%@page import="java.sql.*"%>
-<%@page import="it.database.Connessione"%>
+
+<%@page import="java.sql.ResultSet"%>
+<%@page import="it.bookBorrow.dataBase.query.ExecBCUQuery"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

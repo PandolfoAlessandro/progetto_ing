@@ -4,13 +4,8 @@
     Author     : insan3
 --%>
 
-<%@page import="it.database.ExecStatQuery"%>
-<%@page import="it.database.ExecSBQuery"%>
-<%@page import="it.database.QueryExec"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="it.database.Connessione"%>
+<%@page import="it.bookBorrow.dataBase.query.ExecStatQuery"%>
+<%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

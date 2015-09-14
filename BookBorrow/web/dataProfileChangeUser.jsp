@@ -4,13 +4,10 @@
     Author     : insan3
 --%>
 
-<%@page import="it.database.QueryExec"%>
-<%@page import="it.database.ExecPCUQuery"%>
+
 <%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="it.database.Connessione"%>
-<%@page import="java.sql.Connection"%>
+<%@page import="it.bookBorrow.dataBase.query.ExecPCUQuery"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

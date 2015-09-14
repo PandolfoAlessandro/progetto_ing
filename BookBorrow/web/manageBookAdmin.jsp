@@ -1,9 +1,8 @@
 
 
-<%@page import="it.database.QueryExec"%>
-<%@page import="it.database.ExecMBAQuery"%>
-<%@page import="java.sql.*"%>
-<%@page import="it.database.Connessione"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="it.bookBorrow.dataBase.query.ExecMBAQuery"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

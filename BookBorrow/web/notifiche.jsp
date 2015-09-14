@@ -4,10 +4,10 @@
     Author     : alessandro
 --%>
 
-<%@page import="it.database.ExecNotQuery"%>
-<%@page import="it.database.QueryExec"%>
-<%@page import="it.database.Connessione"%>
-<%@page import="java.sql.*"%>
+
+<%@page import="java.sql.ResultSet"%>
+<%@page import="it.bookBorrow.dataBase.query.ExecNotQuery"%>
+<%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
