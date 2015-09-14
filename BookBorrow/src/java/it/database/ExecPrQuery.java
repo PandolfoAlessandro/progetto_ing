@@ -26,7 +26,7 @@ public class ExecPrQuery implements QueryExec{
     }
 
     @Override
-    public void setPrameters(Object... obj) {
+    public void setParameters(Object... obj) {
         this.Operazione = (int) obj[0];
         switch (this.Operazione) {
             case 0:

@@ -25,7 +25,7 @@ public class ExecModIQuery implements QueryExec {
     }
 
     @Override
-    public void setPrameters(Object... obj) {
+    public void setParameters(Object... obj) {
         this.utente = (String) obj[0];
         this.indirizzo = (String) obj[1];
     }

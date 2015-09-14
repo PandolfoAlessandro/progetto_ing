@@ -29,15 +29,20 @@ public class ExecMainQuery implements QueryExec {
     }
 
     @Override
-    public void setPrameters(Object... obj) {
+    public void setParameters(Object... obj) {
         this.Operazione = (int) obj[0];
         this.utente = (String) obj[1];
         if (obj.length > 2) {
-            this.provincia = (String) obj[2];
+            if (obj[2] != null) {
+                this.provincia = (String) obj[2];
+            }
             if (obj.length > 3) {
-                this.ricerca = (String) obj[3];
+                if (obj[3] != null) {
+                    this.ricerca = (String) obj[3];
+                }
             }
         }
+
     }
 
     @Override
@@ -69,7 +74,8 @@ public class ExecMainQuery implements QueryExec {
                 query += "group by u.email, i.provincia, i.citta,i.coordinate_geografiche, l.id ";
             }
             break;
-            case 2: query = "select count(l.id), count(distinct l.coordinate_geografiche) from libro l where l.book_user='"+this.utente+"' and disponibilita=1 ";
+            case 2:
+                query = "select count(l.id), count(distinct l.coordinate_geografiche) from libro l where l.book_user='" + this.utente + "' and disponibilita=1 ";
                 break;
         }
 

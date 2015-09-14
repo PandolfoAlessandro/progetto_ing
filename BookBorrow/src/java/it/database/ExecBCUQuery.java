@@ -16,7 +16,7 @@ public class ExecBCUQuery implements QueryExec{
     }
 
     @Override
-    public void setPrameters(Object... obj) {
+    public void setParameters(Object... obj) {
         this.libro = (String) obj[0];
         this.utente= (String) obj[1]; 
     }

@@ -15,7 +15,7 @@ public class ExecMBQuery implements QueryExec{
     }
     
     @Override
-    public void setPrameters(Object... obj) {
+    public void setParameters(Object... obj) {
         this.utente=(String)obj[0];
     }
 

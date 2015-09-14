@@ -15,7 +15,7 @@ public class ExecBCAQuery implements QueryExec {
     }
 
     @Override
-    public void setPrameters(Object... obj) {
+    public void setParameters(Object... obj) {
         this.libro = (String) obj[0];
     }
 

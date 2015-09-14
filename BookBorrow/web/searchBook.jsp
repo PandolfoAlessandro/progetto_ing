@@ -4,6 +4,8 @@
     Author     : alessandro
 --%>
 
+<%@page import="it.database.ExecSBQuery"%>
+<%@page import="it.database.QueryExec"%>
 <%@page import="it.functions.Geolocalizzazione"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="it.database.Connessione"%>
@@ -36,6 +38,7 @@
                 }
             }
 
+            QueryExec exQ = new ExecSBQuery();
         %>
         <script type="text/javascript">
             function CercaLibro() {
@@ -55,10 +58,8 @@
                                     Tutti i generi
                                     </option>
                                     <%
-                                        String generi = "SELECT DISTINCT genere FROM libro Where disponibilita=1 ";
-                                        Connection conGen = Connessione.getConnection();
-                                        Statement stmtGen = conGen.createStatement();
-                                        ResultSet rsGen = stmtGen.executeQuery(generi);
+                                        exQ.setPrameters(2);
+                                        ResultSet rsGen = exQ.getResult();
 
                                         while (rsGen.next()) {
                                         
@@ -67,9 +68,7 @@
                                     <option value="<%= rsGen.getString(1)%> "> 
                                         <%out.print( rsGen.getString(1));%> 
                                     </option>                    
-                                    <%}
-                                        conGen.close();
-                                    %>
+                                    <%}%>
                                 </select></td>
                     <td><button onclick="CercaLibro()">Cerca</button></td>
                 </tr>
@@ -78,23 +77,15 @@
         <%  session.setAttribute("trovato", false);
             String cord = null;
             String provincia = null;
-            String qCord = "SELECT coordinate_geografiche, provincia FROM indirizzo "
-                    + "WHERE BOOK_USER='" + session.getAttribute("userEmail") + "' "
-                    + "and Principale=1 ";
-
-            Connection con = Connessione.getConnection();
-
-            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            Statement stmt1 = con.createStatement();
-
-            ResultSet rs1;
-            rs1 = stmt1.executeQuery(qCord);
+            
+            exQ.setPrameters(0,session.getAttribute("userEmail"));             
+            ResultSet rs1 = exQ.getResult();
 
             if (rs1.next()) {
                 cord = rs1.getString(1);
                 provincia = rs1.getString(2);
             }
-            con.close();
+
             Connection con1 = Connessione.getConnection();
 
             String listaLibri = "SELECT 1, l.id, l.titolo, l.nome_autore, l.cognome_autore, "
@@ -113,13 +104,16 @@
                     listaLibri += " and l.genere ilike '" + request.getParameter("lg") + "' ";
                 }
             } else {
-                if (request.getParameter("lg") != null && !(request.getParameter("lg").equals(""))) {
+                if (request.getParameter("lg") != null && !(request.getParameter("lS").equals(""))) {
                     listaLibri += " and l.genere ilike '" + request.getParameter("lg") + "' ";
                 } else {
                     listaLibri += "and i.provincia ilike '" + provincia + "' ";
                 }
             }
-
+            
+            exQ.setPrameters(1,session.getAttribute("userEmail"),provincia,
+                    request.getParameter("lg"),request.getParameter("lS"));
+            
             Statement stmt = con1.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rslu = stmt.executeQuery(listaLibri);
             int size = 0;

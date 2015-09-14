@@ -12,7 +12,7 @@ public class ExecMBAQuery implements QueryExec {
     }
 
     @Override
-    public void setPrameters(Object... obj) {
+    public void setParameters(Object... obj) {
     }
 
     @Override

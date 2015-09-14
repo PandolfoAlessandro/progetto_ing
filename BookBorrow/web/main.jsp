@@ -86,7 +86,7 @@
             String provincia = null;
 
             QueryExec exQ = new ExecMainQuery();
-            exQ.setPrameters(0, session.getAttribute("userEmail"));
+            exQ.setParameters(0, session.getAttribute("userEmail"));
             ResultSet rs1 = exQ.getResult();
 
             if (rs1.next()) {
@@ -94,7 +94,7 @@
                 provincia = rs1.getString(2);
             }
 
-            exQ.setPrameters(1, session.getAttribute("userEmail"), provincia, request.getParameter("uS"));
+            exQ.setParameters(1, session.getAttribute("userEmail"), provincia, request.getParameter("uS"));
             ResultSet rssel1 = exQ.getResult();
 
             int size = 0;
@@ -144,7 +144,7 @@
             <% int p;
                 for (int pos = 0; pos < distanze[0].length; pos++) {             
                     p = (int) distanze[0][pos];
-                    exQ.setPrameters(2, listaUtenti.get(p)[0]);
+                    exQ.setParameters(2, listaUtenti.get(p)[0]);
                     ResultSet nlib = exQ.getResult();
                     nlib.next();
             %>
