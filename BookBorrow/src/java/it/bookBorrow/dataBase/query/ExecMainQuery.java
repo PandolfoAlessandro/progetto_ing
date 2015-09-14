@@ -15,7 +15,7 @@ import java.sql.Statement;
  *
  * @author alessandro
  */
-public class ExecMainQuery implements QueryExec {
+public class ExecMainQuery implements ParamQueryExec {
 
     private String utente;
     private String ricerca;

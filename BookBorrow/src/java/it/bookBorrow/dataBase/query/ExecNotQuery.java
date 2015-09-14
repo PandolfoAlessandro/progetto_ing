@@ -10,7 +10,7 @@ import java.sql.Statement;
  *
  * @author alessandro
  */
-public class ExecNotQuery implements QueryExec{
+public class ExecNotQuery implements ParamQueryExec{
     
     private String utente;
     private int operazione;

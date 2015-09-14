@@ -15,7 +15,7 @@ import java.sql.Statement;
  *
  * @author alessandro
  */
-public class ExecPrQuery implements QueryExec{
+public class ExecPrQuery implements ParamQueryExec{
     private String utenteLog;
     private String utenteP;
     private int Operazione;

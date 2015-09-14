@@ -7,7 +7,7 @@ import java.sql.*;
  *
  * @author alessandro
  */
-public class ExecBCUQuery implements QueryExec{
+public class ExecBCUQuery implements ParamQueryExec{
     private String libro;
     private String utente;
 

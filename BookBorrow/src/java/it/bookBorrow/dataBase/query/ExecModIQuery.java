@@ -15,7 +15,7 @@ import java.sql.Statement;
  *
  * @author alessandro
  */
-public class ExecModIQuery implements QueryExec {
+public class ExecModIQuery implements ParamQueryExec {
 
     private String utente;
     private String indirizzo;

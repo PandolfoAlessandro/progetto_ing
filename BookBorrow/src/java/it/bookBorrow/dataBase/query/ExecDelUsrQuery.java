@@ -13,10 +13,6 @@ public class ExecDelUsrQuery implements QueryExec {
     }
 
     @Override
-    public void setParameters(Object... obj) {
-    }
-
-    @Override
     public ResultSet getResult() {
         String selectUsers = "SELECT DISTINCT b.email, b.nome, b.cognome, i.citta, i.provincia "
                 + "FROM book_user b JOIN indirizzo i ON (b.email=i.book_user) WHERE i.principale=1";

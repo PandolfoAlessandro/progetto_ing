@@ -13,10 +13,6 @@ public class ExecMBAQuery implements QueryExec {
     }
 
     @Override
-    public void setParameters(Object... obj) {
-    }
-
-    @Override
     public ResultSet getResult() {
         String bookList = "SELECT l.id, l.titolo, l.nome_autore, l.cognome_autore, l.casa_ed, b.nome,"
                     + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.book_user=b.email);";

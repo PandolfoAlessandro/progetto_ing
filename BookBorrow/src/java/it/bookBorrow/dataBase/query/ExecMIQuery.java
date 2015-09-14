@@ -10,7 +10,7 @@ import java.sql.Statement;
  *
  * @author alessandro
  */
-public class ExecMIQuery implements QueryExec {
+public class ExecMIQuery implements ParamQueryExec {
     
     private String utente;
     

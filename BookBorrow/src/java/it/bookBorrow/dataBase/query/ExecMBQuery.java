@@ -7,7 +7,7 @@ import java.sql.*;
  *
  * @author alessandro
  */
-public class ExecMBQuery implements QueryExec{
+public class ExecMBQuery implements ParamQueryExec{
     
     private String utente;
     

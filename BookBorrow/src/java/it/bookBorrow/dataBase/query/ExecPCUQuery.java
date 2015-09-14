@@ -7,7 +7,7 @@ import java.sql.*;
  *
  * @author alessandro
  */
-public class ExecPCUQuery implements QueryExec{
+public class ExecPCUQuery implements ParamQueryExec{
     private String utente;
 
     public ExecPCUQuery() {
