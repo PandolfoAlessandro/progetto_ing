@@ -54,6 +54,7 @@ public class ExecMainQuery implements QueryExec {
                 query = "SELECT coordinate_geografiche, provincia FROM indirizzo "
                         + "WHERE BOOK_USER='" + this.utente + "' "
                         + "and Principale=1 ";
+                
                 break;
             case 1: {
                 query = "SELECT distinct 1, u.email, u.nome, u.cognome, date_part('Year', u.data_nascita),i.coordinate_geografiche, i.citta, i.provincia, "

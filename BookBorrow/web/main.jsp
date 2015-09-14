@@ -92,6 +92,7 @@
             if (rs1.next()) {
                 cord = rs1.getString(1);
                 provincia = rs1.getString(2);
+                
             }
 
             exQ.setParameters(1, session.getAttribute("userEmail"), provincia, request.getParameter("uS"));
