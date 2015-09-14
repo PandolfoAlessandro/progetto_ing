@@ -6,19 +6,24 @@ import java.sql.*;
  *
  * @author alessandro
  */
-public class ExecMBAQuery implements QueryExec {
-
-    public ExecMBAQuery() {
+public class ExecMBQuery implements QueryExec{
+    
+    private String utente;
+    
+    public ExecMBQuery(){
+        this.utente=null;
     }
-
+    
     @Override
     public void setPrameters(Object... obj) {
+        this.utente=(String)obj[0];
     }
 
     @Override
     public ResultSet getResult() {
         String bookList = "SELECT l.id, l.titolo, l.nome_autore, l.cognome_autore, l.casa_ed, b.nome,"
-                    + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.book_user=b.email);";
+                    + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.book_user=b.email) "
+                    + "where l.book_user='"+utente+"'";
         ResultSet rs = null;
         try {
             Connection con = Connessione.getConnection();
@@ -32,4 +37,5 @@ public class ExecMBAQuery implements QueryExec {
         }
         return rs;
     }
-}    
+    
+}

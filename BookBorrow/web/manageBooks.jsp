@@ -1,3 +1,5 @@
+<%@page import="it.database.ExecMBQuery"%>
+<%@page import="it.database.QueryExec"%>
 <%@page import="java.sql.*"%>
 <%@page import="it.database.Connessione"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -29,18 +31,10 @@
             }
 
         %>
-        <%  String bookList = "SELECT l.id, l.titolo, l.nome_autore, l.cognome_autore, l.casa_ed, b.nome,"
-                    + " b.cognome, b.email FROM libro l JOIN book_user b ON (l.book_user=b.email) "
-                    + "where l.book_user='"+(String)(session.getAttribute("userEmail"))+"'";
-
-            Connection con = new Connessione().getConnection();
-
-            // connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-            Statement stmt = con.createStatement();
-
-            ResultSet rs;
-            // Verifico che le credenziali inserite siano di un utente "normale"
-            rs = stmt.executeQuery(bookList);
+        <%  QueryExec exQ = new ExecMBQuery();
+            exQ.setPrameters(session.getAttribute("userEmail"));
+            ResultSet rs = exQ.getResult();
+      
         %>    
 
         

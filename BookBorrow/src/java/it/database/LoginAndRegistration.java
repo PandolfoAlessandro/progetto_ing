@@ -117,6 +117,7 @@ public class LoginAndRegistration extends HttpServlet {
                     session.setAttribute("userEmail", request.getParameter("userEmail"));
                     session.setAttribute("userName", request.getParameter("userName"));
                     session.setAttribute("userSurname", request.getParameter("userSurname"));
+                    session.setAttribute("isBanned", false);
                     session.setAttribute("isAdmin", false);
                     response.sendRedirect("completeRegistration.jsp"); // completata l'iscrizione, l'utente viene reindirizzato alla sua home page
 
@@ -162,6 +163,7 @@ public class LoginAndRegistration extends HttpServlet {
                 session.setAttribute("userName", rs.getString(1));
                 session.setAttribute("userSurname", rs.getString(2));
                 session.setAttribute("isAdmin", false);
+                session.setAttribute("isBanned", false);
                 response.sendRedirect("main.jsp"); // home page personale dell'utente
             } else {
                 rs = stmt.executeQuery(loginAdmin);
@@ -169,6 +171,7 @@ public class LoginAndRegistration extends HttpServlet {
                     session.setAttribute("loginFailed", false);
                     session.setAttribute("userEmail", userEmail);
                     session.setAttribute("isAdmin", true);
+                    session.setAttribute("isBanned", false);
                     response.sendRedirect("admin.jsp"); // home page dell'amministratore di sistema
                 } else {
                     rs = stmt.executeQuery(isBanned);

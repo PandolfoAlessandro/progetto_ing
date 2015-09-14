@@ -4,6 +4,9 @@
     Author     : insan3
 --%>
 
+<%@page import="it.database.ExecPrQuery"%>
+<%@page import="it.database.QueryExec"%>
+<%@page import="it.functions.Ordina"%>
 <%@page import="it.functions.Geolocalizzazione"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.PreparedStatement"%>
@@ -42,28 +45,18 @@
 
         %>
         <%  String cord = "";
-            String queryCord = "SELECT i.coordinate_geografiche FROM "
-                    + "Book_user u JOIN Indirizzo i ON (u.email=i.Book_user) "
-                    + "WHERE u.email='" + session.getAttribute("userEmail") + "' ";
-
-            Connection con = Connessione.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(queryCord);
+            QueryExec exQ = new ExecPrQuery();
+            exQ.setPrameters(0,session.getAttribute("userEmail"));         
+            ResultSet rs = exQ.getResult();
 
             if (rs.next()) {
                 cord = rs.getString(1);
             }
         %>    
-        <%
-            String profiloUtente = "SELECT u.nome, u.cognome, date_part('Year', u.data_nascita) as an, "
-                    + "i.coordinate_geografiche, i.citta, i.provincia, i.paese "
-                    + "FROM Book_user u JOIN Indirizzo i ON (u.email=i.Book_user) "
-                    + "WHERE u.email='" + request.getParameter("emailSel") + "' AND principale=1 ";
-
-            con = Connessione.getConnection();
-
-            Statement stmt = con.createStatement();
-            ResultSet rspu = stmt.executeQuery(profiloUtente);
+        <%  
+            exQ.setPrameters(1,request.getParameter("emailSel"));         
+            ResultSet rspu = exQ.getResult();
+            
             if (rspu.next()) {
         %>
         <div id="fotoProfilo">
@@ -80,16 +73,9 @@
         </div>
         <%  }
             session.setAttribute("trovato", true);
-            String libriUtente = "SELECT 1, l.id, l.titolo, l.nome_autore, l.cognome_autore, "
-                    + "l.casa_ed, l.n_pagine, l.anno_pubblicazione, l.genere, "
-                    + "i.coordinate_geografiche, i.citta, i.provincia, i.paese, i.principale "
-                    + "FROM Indirizzo i JOIN libro l "
-                    + "on (i.coordinate_geografiche=l.coordinate_geografiche and i.Book_User=l.Book_User) "
-                    + "WHERE l.disponibilita=1 and "
-                    + "l.Book_User = '" + request.getParameter("emailSel") + "' ";
-
-            Statement stmt1 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rslu = stmt1.executeQuery(libriUtente);
+            exQ.setPrameters(2,request.getParameter("emailSel"));         
+            ResultSet rslu = exQ.getResult();
+            
             int size = 0;
             while (rslu.next()) {
                 size++;
@@ -124,23 +110,7 @@
 
             if (distanze instanceof Object[][]) {
                 if (distanze[0].length > 1) {
-                    for (int j = 0; j < distanze[0].length; j++) {
-                        boolean flag = false;
-                        for (int k = 0; k < distanze[0].length - 1; k++) {
-                            if (Double.compare((Double) distanze[1][k], (Double) distanze[1][k + 1]) > 0) {
-                                Double temp1 = (Double) distanze[1][k];
-                                int temp2 = (int) distanze[0][k];
-                                distanze[0][k] = distanze[0][k + 1];
-                                distanze[1][k] = distanze[1][k + 1];
-                                distanze[0][k + 1] = temp2;
-                                distanze[1][k + 1] = temp1;
-                                flag = true;
-                            }
-                            if (!flag) {
-                                break;
-                            }
-                        }
-                    }
+                    distanze=Ordina.order(distanze);
                 }
                 String link="profile.jsp?emailSel="+request.getParameter("emailSel");
         %>

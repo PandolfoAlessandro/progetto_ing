@@ -4,6 +4,8 @@
     Author     : insan3
 --%>
 
+<%@page import="it.database.ExecModIQuery"%>
+<%@page import="it.database.QueryExec"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
@@ -18,20 +20,15 @@
     </head>
     <body>
         <%
-        String getInd
-                = "SELECT * "
-                + "FROM indirizzo "
-                + "WHERE book_user='"+(String)(session.getAttribute("userEmail"))+"' AND coordinate_geografiche='"+request.getParameter("coor").replace('-', ' ')+"'";
-       
-        Connection con=Connessione.getConnection();
-        Statement stmt=con.createStatement();
-        ResultSet rs=stmt.executeQuery(getInd);
-        
-        if(rs.next()){
+            QueryExec exQ = new ExecModIQuery();
+            exQ.setPrameters(session.getAttribute("userEmail"), request.getParameter("coor").replace('-', ' '));
+            ResultSet rs = exQ.getResult();
+
+            if (rs.next()) {
         %>
-        
-        <% session.setAttribute("Operazione", "cambiaInd"); %>
-        <form method="POST" action="OperazioniUser" onsubmit="return confirm('sicuro di voler modificare i dati dell indirizzo?' );">
+
+        <% session.setAttribute("Operazione", "cambiaInd");%>
+        <form method="POST" action="OperazioniUser" onsubmit="return confirm('sicuro di voler modificare i dati dell indirizzo?');">
             <center>
                 <table border="1" width="30%" cellpadding="5">
                     <thead>
@@ -42,7 +39,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        
+
                         <tr>
                             <td>via:</td>
                             <td><input type="text" name="via" value="<%= rs.getString(3)%>" ></td>
@@ -71,10 +68,10 @@
                             <td>Principale:</td>
                             <td>
                                 <fieldset>
-                                    1<input type="radio" <%=(rs.getInt(9)==1)?"checked = \"checked\"":""%> name="principale" value="1" > 
-                                    0<input type="radio" <%=(rs.getInt(9)==0)?"checked = \"checked\"":""%> <%= (rs.getString(9).equals("1"))? "disabled=\"true\"": ""%> name="principale" value="0" >
+                                    1<input type="radio" <%=(rs.getInt(9) == 1) ? "checked = \"checked\"" : ""%> name="principale" value="1" > 
+                                    0<input type="radio" <%=(rs.getInt(9) == 0) ? "checked = \"checked\"" : ""%> <%= (rs.getString(9).equals("1")) ? "disabled=\"true\"" : ""%> name="principale" value="0" >
                                 </fieldset>
-                        </td>
+                            </td>
                         </tr>
                         <tr>
                             <td><button type="Submit" name="parametroCoord" value="<%=rs.getString(1)%>" >Modifica</button></td>

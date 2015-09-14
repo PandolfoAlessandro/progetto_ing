@@ -4,6 +4,8 @@
     Author     : alessandro
 --%>
 
+<%@page import="it.database.ExecNotQuery"%>
+<%@page import="it.database.QueryExec"%>
 <%@page import="it.database.Connessione"%>
 <%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -35,17 +37,10 @@
             }
 
         %>
-        <%
-            String ricevute = "SELECT p.email_richiedente, l.titolo, l.nome_autore, "
-                    + "l.cognome_autore, date_part('Year', p.data_richiesta), date_part('Month', p.data_richiesta), "
-                    + "date_part('Day', p.data_richiesta), l.id "
-                    + "FROM prestito p JOIN libro l ON (p.id_libro=l.id) "
-                    + "WHERE p.stato ilike 'p' and "
-                    + "p.email_proprietario = '" + session.getAttribute("userEmail") + "'";
+        <%            QueryExec exQ = new ExecNotQuery();
+            exQ.setPrameters(session.getAttribute("userEmail"));
+            ResultSet rs = exQ.getResult();
 
-            Connection conn = Connessione.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(ricevute);
             int col = 0;
 
         %>
@@ -84,20 +79,20 @@
             <th>RICHIESTE DI PRESTITO EFFETTUATE</th>
                 <%while (rs1.next()) {%>
             <tr style="background-color:  <%
-                    switch (rs1.getString(8).charAt(0)) {
-                        case 'P':
-                        case 'p':
-                            out.print("orange");
-                            break;
-                        case 'A':
-                        case 'a':
-                            out.print("greenyellow");
-                            break;
-                        case 'R':
-                        case 'r':
-                            out.print("coral");
-                            break;
-                    }
+                switch (rs1.getString(8).charAt(0)) {
+                    case 'P':
+                    case 'p':
+                        out.print("orange");
+                        break;
+                    case 'A':
+                    case 'a':
+                        out.print("greenyellow");
+                        break;
+                    case 'R':
+                    case 'r':
+                        out.print("coral");
+                        break;
+                }
                 %>">
                 <td>Il prestito del libro <%= rs1.getString(2)%> di <%= rs1.getString(3)%> <%= rs1.getString(4)%> richiesto a <%= rs1.getString(1)%> il <%= rs1.getInt(7)%>/<%= rs1.getInt(6)%>/<%= rs1.getInt(5)%> <%
                     switch (rs1.getString(8).charAt(0)) {
