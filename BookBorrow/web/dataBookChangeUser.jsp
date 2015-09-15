@@ -4,6 +4,7 @@
     Author     : insan3
 --%>
 
+<%@page import="it.bookBorrow.dataBase.query.ParamQueryExec"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="it.bookBorrow.dataBase.query.ExecBCUQuery"%>
 <%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
@@ -45,7 +46,7 @@
         </script>
         
         <%  
-            QueryExec exQ=new ExecBCUQuery();
+            ParamQueryExec exQ=new ExecBCUQuery();
             exQ.setParameters(request.getParameter("id_l"), session.getAttribute("userEmail"));
             ResultSet rs = exQ.getResult();
 

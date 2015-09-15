@@ -4,6 +4,7 @@
     Author     : insan3
 --%>
 
+<%@page import="it.bookBorrow.dataBase.query.ParamQueryExec"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="it.bookBorrow.dataBase.query.ExecMIQuery"%>
 <%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
@@ -46,7 +47,7 @@
         </script>
 
         <%  
-            QueryExec exQ = new ExecMIQuery();
+            ParamQueryExec exQ = new ExecMIQuery();
             exQ.setParameters(session.getAttribute("userEmail"));
             ResultSet rs = exQ.getResult();
         

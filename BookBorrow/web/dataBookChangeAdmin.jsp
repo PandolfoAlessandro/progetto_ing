@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="it.bookBorrow.dataBase.query.ParamQueryExec"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="it.bookBorrow.dataBase.query.ExecBCAQuery"%>
 <%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
@@ -46,7 +47,7 @@
         </script>
         
         <%  
-            QueryExec exQ = new ExecBCAQuery();
+            ParamQueryExec exQ = new ExecBCAQuery();
             exQ.setParameters(request.getParameter("id_l"));
             ResultSet rs = exQ.getResult();
             

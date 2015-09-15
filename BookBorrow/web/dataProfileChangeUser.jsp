@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="it.bookBorrow.dataBase.query.ParamQueryExec"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="it.bookBorrow.dataBase.query.ExecPCUQuery"%>
 <%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
@@ -45,7 +46,7 @@
         </script>
 
         <%  
-            QueryExec exQ = new ExecPCUQuery();
+            ParamQueryExec exQ = new ExecPCUQuery();
             exQ.setParameters(session.getAttribute("userEmail"));
             ResultSet rs =exQ.getResult();
             

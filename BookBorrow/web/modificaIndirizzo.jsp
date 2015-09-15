@@ -4,6 +4,7 @@
     Author     : insan3
 --%>
 
+<%@page import="it.bookBorrow.dataBase.query.ParamQueryExec"%>
 <%@page import="it.bookBorrow.dataBase.query.ExecModIQuery"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
@@ -17,7 +18,7 @@
     </head>
     <body>
         <%
-            QueryExec exQ = new ExecModIQuery();
+            ParamQueryExec exQ = new ExecModIQuery();
             exQ.setParameters(session.getAttribute("userEmail"), request.getParameter("coor").replace('-', ' '));
             ResultSet rs = exQ.getResult();
 

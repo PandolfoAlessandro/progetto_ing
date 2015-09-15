@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="it.bookBorrow.dataBase.query.ParamQueryExec"%>
 <%@page import="it.bookBorrow.Ordina"%>
 <%@page import="it.bookBorrow.geolocalizzazione.Geolocalizzazione"%>
 <%@page import="java.util.ArrayList"%>
@@ -43,7 +44,7 @@
 
         %>
         <%  String cord = "";
-            QueryExec exQ = new ExecPrQuery();
+            ParamQueryExec exQ = new ExecPrQuery();
             exQ.setParameters(0, session.getAttribute("userEmail"));
             ResultSet rs = exQ.getResult();
 

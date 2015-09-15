@@ -1,4 +1,5 @@
 
+<%@page import="it.bookBorrow.dataBase.query.ParamQueryExec"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="it.bookBorrow.dataBase.query.ExecMBQuery"%>
 <%@page import="it.bookBorrow.dataBase.query.QueryExec"%>
@@ -31,7 +32,7 @@
             }
 
         %>
-        <%  QueryExec exQ = new ExecMBQuery();
+        <%  ParamQueryExec exQ = new ExecMBQuery();
             exQ.setParameters(session.getAttribute("userEmail"));
             ResultSet rs = exQ.getResult();
       

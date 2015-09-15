@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="it.bookBorrow.dataBase.query.ParamQueryExec"%>
 <%@page import="it.bookBorrow.geolocalizzazione.Geolocalizzazione"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
@@ -87,7 +88,7 @@
             String cord = null;
             String provincia = null;
 
-            QueryExec exQ = new ExecMainQuery();
+            ParamQueryExec exQ = new ExecMainQuery();
             exQ.setParameters(0, session.getAttribute("userEmail"));
             ResultSet rs1 = exQ.getResult();
 
