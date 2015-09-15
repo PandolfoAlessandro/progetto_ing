@@ -157,7 +157,7 @@
 
                                 <td><img src="PrintImage?id_img=<%= listaUtenti.get(p)[11]%>&amp;what=libro" 
                                          width="50" height="50"
-                                         alt="Immagine non Disponibile"/>
+                                         alt="Immagine non Disponibile"/></td>
 
                                 <td> <p><%= listaUtenti.get(p)[0]%> </p></td>
 

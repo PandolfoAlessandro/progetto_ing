@@ -47,6 +47,7 @@
             <TABLE BORDER="1">
                 
                 <TR>
+                    <TH>Copertina</TH>
                     <TH>Titolo</TH>
                     <TH>Autore</TH>
                     <TH>Casa Editrice</TH>
@@ -55,7 +56,9 @@
                 <% while (rs.next()) {%>
 
                 <TR>
-
+                    <td><img src="PrintImage?id_img=<%= rs.getString(1)%>&amp;what=libro" 
+                                         width="50" height="50"
+                                         alt="Immagine non Disponibile"/></td>
                     <TD> <%= rs.getString(2)%> </TD>
                     <TD> <%= rs.getString(3)%> <%= rs.getString(4)%> </TD>
                     <TD> <%= rs.getString(5)%> </TD>
