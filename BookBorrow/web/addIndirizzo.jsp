@@ -13,7 +13,16 @@
     </head>
     <body>
 
-        
+        <%
+            if (session.getAttribute("userEmail") == null) {
+                response.sendRedirect("index.jsp");
+            } else {
+                if ((boolean) session.getAttribute("isAdmin")) {
+                    response.sendRedirect("admin.jsp");
+                }
+            }
+
+        %>
         
         <% session.setAttribute("Operazione", "addIndirizzo"); %>
         <form method="POST" action="OperazioniUser" onsubmit="return confirm('sicuro di voler modificare i dati dell indirizzo?' );">
